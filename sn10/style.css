@@ -89,6 +89,46 @@ h1 {
         /*margin:0 auto;*/
 }
 
+/************** PAGINACION **************/
+
+a{
+text-decoration:none;
+color:#B2b2b2;
+}
+
+a:hover{
+color:blue;
+text-decoration:underline;
+}
+
+#loading { 
+width: 100%; 
+position: absolute;
+}
+
+#pagination{
+text-align:center;
+margin:0 auto;
+width: 300px;
+overflow: auto;
+}
+
+li{	
+list-style: none; 
+float: left; 
+margin-right: 16px; 
+padding:5px; 
+border:solid 1px #dddddd;
+color:black; 
+}
+
+li:hover{ 
+color:blue; 
+cursor: pointer; 
+}
+
+/************** PAGINACION **************/
+
 #column{
 width:100%;
 overflow: hidden;

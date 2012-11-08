@@ -4,12 +4,12 @@ $id = $_GET['id'];
 require('class/news.php');
 $news = new News($id,null,null,null,null,null,null,null,null,null,null,null,null);
 $noticias = $news->getNewsById();
-echo $_SERVER['REQUEST_URI'];
+/*echo $_SERVER['REQUEST_URI'];*/
 if(count($noticias)) {
     foreach($noticias as $news) {
 ?>
 <h2 style="text-align:center;">Editar Noticia</h2>
-<form action="modules/processnews.php" method="post" name="nnews" id="nnews">
+<form action="modules/processnews.php" method="post" name="enews" id="enews">
 <div class="centered">
 <table>
 <tr>
@@ -20,7 +20,7 @@ if(count($noticias)) {
 <td><label for="permalink">Link Permanente:<br /> http://localhost/modular/noticias/</label></td>
 <td><input id="permalink" name="permalink" type="text" style="background-color:#E5E5E5;" readonly="readonly" value="<?php echo $news->getUrl();?>" /></td>
 <td><button type="button" id="iremove" class="iremove"></button></td>
-</tr>
+</tr><?php $url = $news->getUrl();?>
 <tr>
 <td><label for="mininewsimage">Imagen miniatura noticia:</label></td>
 <td><input id="mininewsimage" name="mininewsimage" type="text" style="background-color:#E5E5E5;" readonly="readonly" value="<?php echo $news->getImg();?>" /></td>

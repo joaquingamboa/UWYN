@@ -193,6 +193,29 @@ require_once('conexion.php');
         // run and return the query
         return $this->query($this->sql,$this->replace);
     }
+    
+    function update_ConFechas($table,$vals,$where=array()){
+        // empty the replace array
+        $this->replace=array();
+       
+        $this->sql="UPDATE ".$table." SET ";
+       
+        // build the replace array and the query
+        $c=count($this->replace);
+        foreach($vals as $key=>$v){
+            $this->sql.=$key.'=:'.$c.', ';
+            $this->replace[':'.$c]=$v;
+            $c++;
+        }
+        $this->sql=substr($this->sql,0,-2);
+       
+        // build the WHERE portion of the query
+        $this->build_where($where);
+       
+        // run and return the query
+        return $this->query($this->sql,$this->replace);
+    }
+    
     function delete($table,$where){
         // empty the replace array
         $this->replace=array();

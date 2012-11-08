@@ -5,6 +5,9 @@
 	var permalink="";
 	var mininewsimage="";
         var estado=0;
+        var cpermalink=$("#permalink").val();
+        var pnewstitle=$("#newstitle").val();
+        
 $("#nnews").validate({
 	rules:{
 		area3:"required",
@@ -21,7 +24,7 @@ $("#nnews").validate({
 			type:"POST",
 			dataType:"html",
 			url: "modules/processnews.php",
-			data:"&resumen="+area1+"&contenido="+area2+"&newstitle="+newstitle+"&url="+permalink+"&imageurl="+mininewsimage+"&estado="+estado+"&tarea=ajax",
+			data:"&resumen="+area1+"&contenido="+area2+"&newstitle="+newstitle+"&url="+permalink+"&imageurl="+mininewsimage+"&estado="+estado+"&tarea=add-new",
 			success:function(msg){
 				alert(msg);
 				window.location.href="index.php?page=noticias";
@@ -29,6 +32,30 @@ $("#nnews").validate({
 				});
 									 }
 									});
+$("#enews").validate({
+	rules:{
+		area3:"required",
+		area4:"required",
+		newstitle:"required"
+	},
+	messages:{
+		area3: "Texto de Resumen Requerido",
+		area4: "Texto de Contenido Requerido",
+		newstitle: "Campo requerido"
+	},
+		  submitHandler: function(form) {										   	
+  		  $.ajax({
+			type:"POST",
+			dataType:"html",
+			url: "modules/processnews.php",
+			data:"&resumen="+area1+"&contenido="+area2+"&newstitle="+newstitle+"&url="+permalink+"&imageurl="+mininewsimage+"&estado="+estado+"&cpermalink="+cpermalink+"&tarea=edit-new",
+			success:function(msg){
+				alert(msg);
+				window.location.href="index.php?page=noticias";
+								}
+				});
+									 }
+									});                                                                       
 	
 $("#sentnews").click(function(){
 	  newstitle=$("#newstitle").val();
@@ -36,6 +63,9 @@ $("#sentnews").click(function(){
           estado=$("#estado").val();
           estado=parseInt(estado);
 	  mininewsimage=$("#mininewsimage").val();
+          if(mininewsimage=""){
+              mininewsimage=null;
+          }
 	  if (typeof nicEditors.findEditor("area1") != "undefined"){	
 	  	  area1=myNicEditor1.instanceById('area1').getContent();
                   area1=area1.trim();		                
@@ -63,9 +93,7 @@ $("#sentnews").click(function(){
                 $("#area4").val(""); 
 							          }
 								    }
-        
-        
-        
+    
     /*    if (typeof nicEditors.findEditor("area1") != "undefined"){
         myNicEditor1.removeInstance('area1');	   
         }
@@ -99,12 +127,10 @@ $("#updatenews").click(function(){
               $("#area4").val(area2);         
           if (nicEditors.findEditor("area2").getContent()=="<br>"){	
               $("#area4").val(""); 
-							          }
-								    }       
-      
-        			
-		});	
-		
+							          }                                                                 
+								    }
+                                                              
+            });	
 	
 	/*$('#area1').focus(function(){
 	  myNicEditor1.panelInstance('area1');	
@@ -128,7 +154,7 @@ $('#newstitle').focusout(function(){
 		pl = pl.trim();
 		var newstitle = $(this).val();
 		newstitle = newstitle.trim();
-		if(newstitle!="" && pl==""){
+		if(newstitle!="" && pl=="" && newstitle!=pnewstitle){
 			$.ajax({
 				type:"POST",
 				dataType:"html",
@@ -143,9 +169,53 @@ $('#newstitle').focusout(function(){
                                                     }
 				
 				});
-						}	
+                                                                    }
 	
 		});
+
+	//Display Loading Image
+	function Display_Load()
+	{
+	    $("#loading").fadeIn(900,0);
+		$("#loading").html("<img src='bigLoader.gif' />");
+	}
+	//Hide Loading Image
+	function Hide_Load()
+	{
+		$("#loading").fadeOut('slow');
+	};
+	
+
+   //Default Starting Page Results
+   
+	$("#pagination li:first").css({'color' : 'black'}).css({'border' : 'none'});
+	
+	Display_Load();
+	
+	$("#contentt").load("pagination_data.php?pagina=1", Hide_Load());
+
+
+
+	//Pagination Click
+	$("#pagination li").click(function(){
+			
+		Display_Load();
+		
+		//CSS Styles
+		$("#pagination li")
+		.css({'border' : 'solid #dddddd 1px'})
+		.css({'color' : 'black'});
+		
+		$(this)
+		.css({'color' : 'blue'})
+		.css({'border' : 'none'});
+
+		//Loading Data
+		var pageNum = this.id;
+		
+		$("#contentt").load("pagination_data.php?pagina=" + pageNum, Hide_Load());
+	});
+	
 	
 	
 	
@@ -158,3 +228,5 @@ function window_onload(){
 	myNicEditor1 = new nicEditor({fullPanel : false, iconsPath : 'editor/nicEditorIcons.gif'}).panelInstance('area1');
 	myNicEditor2 = new nicEditor({fullPanel : false, iconsPath : 'editor/nicEditorIcons.gif'}).panelInstance('area2');
 }
+
+

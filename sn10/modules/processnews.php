@@ -21,7 +21,7 @@ function registerNews(){
         $user_id=$_SESSION['user_id'];
         $nickname = $_SESSION['user_nickname'];
 	$noticia = new News(null,$user_id,$titulo,$url,$contenido,$fechaInicio,$fechaModificacion,$resumen,$estado,$imageurl,$user_id,$nickname,$nickname);
-	$id=$noticia->addNews();
+	$id = $noticia->addNews();
         $noticia = null;
 	if($id){
 	echo "Registro Exitoso";	
@@ -30,10 +30,34 @@ function registerNews(){
         }
 								}
 
+function updateNews(){
+    $titulo = $_POST['newstitle'];
+    $url = $_POST['url'];
+    $firsttitle = $_POST['cpermalink'];
+    $estado = $_POST['estado'];
+     if($estado==""){
+            $estado = 1;
+        }
+     $imageurl = $_POST['imageurl'];
+     if($url==""){
+         $url = $firsttitle;
+     }
+     $contenido = $_POST['contenido'];
+     $resumen=$_POST['resumen'];
+     date_default_timezone_set('Chile/Continental');
+     $fechaModificacion=date("Y-m-d H:i:s");
+     $user_id=$_SESSION['user_id']; 
+     $user_modificador = $_SESSION['user_nickname'];
+     $noticia = new News(null,null,$titulo,$url,$contenido,null,$fechaModificacion,$resumen,$estado,$imageurl,$user_id,null,$user_modificador);
+     $count = $noticia->updateNewsById($firsttitle);
+     return $count;
+ 
+}
+
 function permLinkUsed($value){
-         $noticia = new News(null,1,null,$value,null,null,null,null,null,null,null,null,null);
+         $noticia = new News(null,null,null,$value,null,null,null,null,null,null,null,null,null);
          $cont = $noticia->getUrlUse();
-         return $cont[0];
+         return $cont;
         
 }                                                             
                                                                 
@@ -90,7 +114,9 @@ if($_POST){
         switch($_POST["tarea"]){
                 case "permlink":getPermLink($_POST['newstitle'],null);
                 break;		
-		case "ajax":registerNews();
+		case "add-new":registerNews();
+                break;
+                case "edit-new":updateNews();
                 break;
         }
     }

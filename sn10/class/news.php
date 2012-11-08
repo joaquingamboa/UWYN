@@ -1,7 +1,6 @@
 <?php
-require('mysql_pdo.php');
-
-class News extends DB{
+require('conexion.php');
+class News extends PDO{
 	protected $id;
 	public $author;
 	public $title;
@@ -15,6 +14,7 @@ class News extends DB{
 	public $usermod;
         public $nombre_author;
         public $nombre_usermod;
+        private $db;
         
         
         
@@ -32,7 +32,23 @@ class News extends DB{
                 $this->usermod=$usermod;
                 $this->nombre_author=$nombre_author;
                 $this->nombre_usermod=$nombre_usermod;
-       } 
+                   
+       }
+       
+       function open_conecction(){
+        try {
+            $dsn="mysql:dbname=".DB_NAME.";host=".DB_HOST;
+            $this->db = parent::__construct($dsn, DB_USER, DB_PASS);
+        } catch (PDOException $e ) {
+            print "Error!: " . $e->getMessage() . "<br/>";
+            die();
+        }
+                                }
+        
+        function close_conecction(){
+            $this->db==null;
+        }
+                                       
                 
                 public function getNuserMod(){
 			return $this->nombre_usermod;
@@ -142,55 +158,65 @@ class News extends DB{
 		
 	/************************ FUNCIONES ***********************************/
 	public function addNews(){
-	$database = new DB();
+            $this->open_conecction();
+            $stmt = $this->prepare('INSERT INTO news (news_author, news_title, news_url, news_content, news_date, news_modified,
+                                    news_description, news_usermodified, news_status, url_image)
+                                    VALUES(:author, :title, :url, :content, :date, :modified, :description, :usermodified, :status, :image)');       
 	$options=array(
-            "news_author"=>$this->getAuthor(),
-            "news_title"=>$this->getTitle(),
-            "news_url"=>$this->getUrl(),
-            "news_content"=>$this->getContent(),
-            "news_date"=>$this->getDatef(),
-            "news_modified"=>$this->getmodified(),
-            "news_description"=>$this->getDescription(),
-            "news_usermodified"=>$this->getUserMod(),
-            "news_status"=>$this->getStatus(),
-            "url_image"=>$this->getImg()
+            ":author"=>$this->getAuthor(),
+            ":title"=>$this->getTitle(),
+            ":url"=>$this->getUrl(),
+            ":content"=>$this->getContent(),
+            ":date"=>$this->getDatef(),
+            ":modified"=>$this->getmodified(),
+            ":description"=>$this->getDescription(),
+            ":usermodified"=>$this->getUserMod(),
+            ":status"=>$this->getStatus(),
+            ":image"=>$this->getImg()
                        );
-	$dat = $database->insert('news',$options);
-        $database = null;
-	return $dat;
+	$stmt->execute($options);
+        $id = $this->lastInsertId();
+        $this->close_conecction();
+	return $id;
 	}
         
         public function getUrlUse(){
         $url = $this->getUrl();
-        $database = new DB();
-        $dat = $database->get_count('news',array("news_url"=>$url));
-        return $dat[0];
+        $this->open_conecction();    
+        $stmt = $this->prepare("SELECT COUNT(*) FROM news WHERE news_url = ?;");
+        //$stmt->bindParam(':data1', $url);
+        $stmt->execute(array($url));
+        //$count =  $stmt->rowCount();
+        $result = $stmt->fetch();
+        $this->close_conecction();
+        return $result[0];
         }
         
-        public function getNews(){
-            $noticias=array();
-            $cont=0;
-            $conn = new DB();
-            $conn = $conn->getdb();
-            $stmt = $conn->prepare('SELECT t1.*, t2.user_nickname, t3.user_nickname as user_modificador FROM news t1 INNER JOIN users t2 ON t1.news_author = t2.ID INNER JOIN users t3 ON t1.news_usermodified = t3.ID');
-            $stmt->execute();
-            while($fila = $stmt->fetch()){
-                $noticia = new News($fila['ID'],$fila['news_author'],$fila['news_title'],$fila['news_url'],
-                $fila['news_content'],$fila['news_date'],$fila['news_modified'],$fila['news_description'],
-                $fila['news_status'],$fila['url_image'],$fila['news_usermodified'],$fila['user_nickname'],$fila['user_modificador']);
-                $noticias[$cont]=$noticia;
-                $cont++;
-            }     
-             return $noticias;             
+        public function getNews($start, $per_page){
+        $this->open_conecction();
+        $cont=0;    
+        $stmt = $this->prepare("SELECT t1.*, t2.user_nickname, t3.user_nickname as user_modificador 
+                                FROM news t1 INNER JOIN users t2 ON t1.news_author = t2.ID 
+                                INNER JOIN users t3 ON t1.news_usermodified = t3.ID ORDER BY t1.news_date DESC LIMIT $start,$per_page");
+        $stmt->execute();
+        $noticias=array();     
+         while($fila = $stmt->fetch()){
+               $noticia = new News($fila['ID'],$fila['news_author'],$fila['news_title'],$fila['news_url'],
+               $fila['news_content'],$fila['news_date'],$fila['news_modified'],$fila['news_description'],
+               $fila['news_status'],$fila['url_image'],$fila['news_usermodified'],$fila['user_nickname'],$fila['user_modificador']);
+               $noticias[$cont]=$noticia;
+               $cont++;
+            } 
+         $this->close_conecction();
+         return $noticias;            
         }
         
-        public function getNewsById(){
+        public function getNewsById(){     
             $noticias=array();
             $cont=0;
-            $conn = new DB();
+            $this->open_conecction();
             $id = $this->getId();
-            $conn = $conn->getdb();
-            $stmt = $conn->prepare('SELECT * from news WHERE ID = ? LIMIT 1');
+            $stmt = $this->prepare('SELECT * from news WHERE ID = ? LIMIT 1');
             $stmt->execute(array($id));
             while($fila = $stmt->fetch()){
                 $noticia = new News($fila['ID'],$fila['news_author'],$fila['news_title'],$fila['news_url'],
@@ -198,19 +224,52 @@ class News extends DB{
                 $fila['news_status'],$fila['url_image'],null,null,null);
                 $noticias[$cont]=$noticia;
                 $cont++;
-            }     
-             return $noticias;             
+            }
+            $this->close_conecction();
+            return $noticias;             
         } 
         
         
         public function deleteNewsById(){
-        $conn = new DB();
+        $this->open_conecction();
         $id = $this->getId();
-        $conn = $conn->getdb();
-        $stmt = $conn->prepare("DELETE FROM news WHERE ID = ?");
+        $stmt = $this->prepare("DELETE FROM news WHERE ID = ?");
         $stmt->execute(array($id));
         $count = $stmt->rowCount();
+        $this->close_conecction();
         return $count;
+        }
+        
+        public function updateNewsById($firsturl){
+        $options=array(
+        "news_title"=>$this->getTitle(),
+        "news_content"=>$this->getContent(),
+        "news_modified"=>$this->getModified(),
+        "news_description"=>$this->getDescription(),
+        "news_status"=>$this->getStatus(),
+        "url_image"=>$this->getImg(),
+        "news_usermodified"=>$this->getUserMod(),
+        "news_url"=>$this->getUrl()
+                      );
+        $this->open_conecction();
+        $stmt = $this->prepare("UPDATE news SET news_title = :title, news_content = :content ,news_modified = :modified, 
+                                news_description = :description, news_date = :date, news_status = :status, 
+                                url_image = :image , news_usermodified = :usermodified, news_url = :url
+                                WHERE news_url = :firsturl"); 
+        $stmt->bindValue(':title', $this->getTitle(), PDO::PARAM_STR);
+        $stmt->bindValue(':content', $this->getContent(), PDO::PARAM_STR);
+        $stmt->bindValue(':modified', $this->getModified(), PDO::PARAM_STR);
+        $stmt->bindValue(':description', $this->getDescription(), PDO::PARAM_STR);
+        $stmt->bindValue(':date', $this->getModified(), PDO::PARAM_STR);
+        $stmt->bindValue(':status', $this->getStatus(), PDO::PARAM_INT);
+        $stmt->bindValue(':image', $this->getImg(), PDO::PARAM_STR);
+        $stmt->bindValue(':usermodified', $this->getUserMod(), PDO::PARAM_INT);
+        $stmt->bindValue(':url', $this->getUrl(), PDO::PARAM_STR);
+        $stmt->bindValue(':firsturl', $firsturl, PDO::PARAM_STR);
+        $stmt->execute();
+        $arr = $stmt->errorInfo();
+        print_r($arr);    
+        
         }
 	/************************ FUNCIONES ***********************************/
 		

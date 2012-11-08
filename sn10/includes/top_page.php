@@ -5,10 +5,11 @@
 <title>Mi pagina modular Parte 2</title>
 <link href="style.css" rel="stylesheet" type="text/css" />
 <link href="tables.css" rel="stylesheet" type="text/css" />	
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.0/jquery.min.js"></script>
 <?php if ($_SERVER['REQUEST_URI']=="/modular/sn10/index.php?page=add-news" || substr($_SERVER['REQUEST_URI'],0,38)=="/modular/sn10/index.php?page=edit-news") echo "<script type=\"text/javascript\" src=\"editor/nicEdit.js\"></script>"; ?>
 <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
-<?php if ($_SERVER['REQUEST_URI']=="/modular/sn10/index.php?page=add-news" || substr($_SERVER['REQUEST_URI'],0,38)=="/modular/sn10/index.php?page=edit-news") echo "<script type=\"text/javascript\" src=\"js/functions.js\"></script>"; ?>
-<?php if ($_SERVER['REQUEST_URI']=="/modular/sn10/index.php?page=add-news" || substr($_SERVER['REQUEST_URI'],0,38)=="/modular/sn10/index.php?page=edit-news") echo "<script type=\"text/javascript\" src=\"js/jquery.validate.js\"></script>"; ?>
+<?php if ($_SERVER['REQUEST_URI']=="/modular/sn10/index.php?page=noticias" || $_SERVER['REQUEST_URI']=="/modular/sn10/index.php?page=add-news" || substr($_SERVER['REQUEST_URI'],0,38)=="/modular/sn10/index.php?page=edit-news") echo "<script type=\"text/javascript\" src=\"js/functions.js\"></script>"; ?>
+<?php if ($_SERVER['REQUEST_URI']=="/modular/sn10/index.php?page=noticias" || $_SERVER['REQUEST_URI']=="/modular/sn10/index.php?page=add-news" || substr($_SERVER['REQUEST_URI'],0,38)=="/modular/sn10/index.php?page=edit-news") echo "<script type=\"text/javascript\" src=\"js/jquery.validate.js\"></script>"; ?>
 <style type="text/css">
 label.error { float: none; color: red; padding-left: .5em;}
 /*.submit { margin-left: 12em; }*/
