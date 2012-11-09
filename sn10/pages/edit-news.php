@@ -11,7 +11,7 @@ if(count($noticias)) {
 <h2 style="text-align:center;">Editar Noticia</h2>
 <form action="modules/processnews.php" method="post" name="enews" id="enews">
 <div class="centered">
-<table>
+<table class="lst">
 <tr>
 <td style="width:291px;"><label for="newstitle">T&iacute;tulo:</label></td>
 <td><input id="newstitle" name="newstitle" type="text" class="required" value="<?php echo $news->getTitle();?>" /></td>
@@ -29,12 +29,16 @@ if(count($noticias)) {
 <tr>
 <td><label for="estado">Estado:</label></td>
     <td>
-    <select id="estado" name="estado">
+    <select style="float:left;" id="estado" name="estado">
         <?php $status = $news->getStatus(); ?>
         <option value="1" <?php if($status==1){ echo "selected";}?>>P&uacute;blico</option>
         <option value="0" <?php if($status==0){ echo "selected";}?>>No publicado</option>
     </select>
     </td> 
+</tr>
+<tr>
+    <td><label for="fechaRegistro">Fecha/Hora:</label></td>
+    <td colspan="2"><input style="float:left;width: 130px;" type="input" id="fechaRegistro" name="FechaRegistro" class="required" readonly="readonly" value="<?php echo $news->getDatef(); ?>" /></td>
 </tr>
 </table>
 

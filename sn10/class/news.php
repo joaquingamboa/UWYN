@@ -187,9 +187,9 @@ class News extends PDO{
         //$stmt->bindParam(':data1', $url);
         $stmt->execute(array($url));
         //$count =  $stmt->rowCount();
-        $result = $stmt->fetch();
+        $result = $stmt->fetchColumn();
         $this->close_conecction();
-        return $result[0];
+        return $result;
         }
         
         public function getNews($start, $per_page){
@@ -210,6 +210,15 @@ class News extends PDO{
          $this->close_conecction();
          return $noticias;            
         }
+        
+      /*  public function getAllNewsPagination(){
+        $this->open_conecction();
+        $stmt = $this->prepare("SELECT * FROM news");
+        $result = $stmt->execute();
+        
+        $count = mysql_num_rows($rsd);
+        $paged = ceil($count/$per_page)
+        }*/
         
         public function getNewsById(){     
             $noticias=array();
@@ -240,27 +249,17 @@ class News extends PDO{
         return $count;
         }
         
-        public function updateNewsById($firsturl){
-        $options=array(
-        "news_title"=>$this->getTitle(),
-        "news_content"=>$this->getContent(),
-        "news_modified"=>$this->getModified(),
-        "news_description"=>$this->getDescription(),
-        "news_status"=>$this->getStatus(),
-        "url_image"=>$this->getImg(),
-        "news_usermodified"=>$this->getUserMod(),
-        "news_url"=>$this->getUrl()
-                      );
+        public function updateNewsById($firsturl){ 
         $this->open_conecction();
         $stmt = $this->prepare("UPDATE news SET news_title = :title, news_content = :content ,news_modified = :modified, 
-                                news_description = :description, news_date = :date, news_status = :status, 
+                               news_date = :date, news_description = :description, news_status = :status, 
                                 url_image = :image , news_usermodified = :usermodified, news_url = :url
                                 WHERE news_url = :firsturl"); 
         $stmt->bindValue(':title', $this->getTitle(), PDO::PARAM_STR);
         $stmt->bindValue(':content', $this->getContent(), PDO::PARAM_STR);
+        $stmt->bindValue(':date', $this->getDatef(), PDO::PARAM_STR);
         $stmt->bindValue(':modified', $this->getModified(), PDO::PARAM_STR);
         $stmt->bindValue(':description', $this->getDescription(), PDO::PARAM_STR);
-        $stmt->bindValue(':date', $this->getModified(), PDO::PARAM_STR);
         $stmt->bindValue(':status', $this->getStatus(), PDO::PARAM_INT);
         $stmt->bindValue(':image', $this->getImg(), PDO::PARAM_STR);
         $stmt->bindValue(':usermodified', $this->getUserMod(), PDO::PARAM_INT);

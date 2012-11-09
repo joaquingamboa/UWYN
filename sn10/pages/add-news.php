@@ -6,10 +6,10 @@ if (isset($_SESSION['user_id'])){
 <div class="centered">
 
 
-<table>
+<table class="lst">
 <tr>
 <td style="width:291px;"><label for="newstitle">T&iacute;tulo:</label></td>
-<td><input id="newstitle" name="newstitle" type="text" class="required"/></td>
+<td colspan="2"><input style="float:left" id="newstitle" name="newstitle" type="text" class="required"/></td>
 </tr>
 <tr>
 <td><label for="permalink">Link Permanente:<br /> http://localhost/modular/noticias/</label></td>
@@ -23,12 +23,16 @@ if (isset($_SESSION['user_id'])){
 </tr>
 <tr>
 <td><label for="estado">Estado:</label></td>
-    <td>
-    <select id="estado" name="estado">
+    <td colspan="2">
+    <select style="float:left;" id="estado" name="estado">
         <option value="1" selected="selected">P&uacute;blico</option>
         <option value="0">No publicado</option>
     </select>
     </td> 
+</tr>
+<tr>
+    <td><label for="fechaRegistro">Fecha/Hora:</label></td>
+    <td colspan="2"><input style="float:left;width: 130px;" type="input" id="fechaRegistro" name="fechaRegistro" class="required" readonly="readonly"></td>
 </tr>
 </table>
 

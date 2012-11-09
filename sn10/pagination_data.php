@@ -22,7 +22,7 @@ $noticias = $news->getNews($start, $per_page);
 ?>
 
 
-<table style="width:100%;">
+<table class="lst" style="width:100%;">
     <tr>
     <th>T&iacute;tulo Noticia</th>
     <th>Autor</th>

@@ -16,7 +16,7 @@ function registerNews(){
 	$contenido = $_POST['contenido'];
 	$resumen=$_POST['resumen'];
         date_default_timezone_set('Chile/Continental');
-        $fechaInicio=date("Y-m-d H:i:s");
+        $fechaInicio=$_POST['fecha'];
         $fechaModificacion=date("Y-m-d H:i:s");
         $user_id=$_SESSION['user_id'];
         $nickname = $_SESSION['user_nickname'];
@@ -48,7 +48,8 @@ function updateNews(){
      $fechaModificacion=date("Y-m-d H:i:s");
      $user_id=$_SESSION['user_id']; 
      $user_modificador = $_SESSION['user_nickname'];
-     $noticia = new News(null,null,$titulo,$url,$contenido,null,$fechaModificacion,$resumen,$estado,$imageurl,$user_id,null,$user_modificador);
+     $fecha = $_POST['fecha'];
+     $noticia = new News(null,null,$titulo,$url,$contenido,$fecha,$fechaModificacion,$resumen,$estado,$imageurl,$user_id,null,$user_modificador);
      $count = $noticia->updateNewsById($firsttitle);
      return $count;
  
@@ -73,13 +74,13 @@ function getPermLink($value,$from)
     $dat = permLinkUsed($url);
     if($dat == 0 && $from == "registerNews"){
     return $url; 
-    }else{
-     if($dat == 1){
-         echo 1;   
-         }elseif($dat == 0){
-         echo $url;    
-         }    
-    }
+                }else{
+                      if($dat == 1){
+                        echo $dat;   
+                        }elseif($dat == 0 && $from != "registerNews"){
+                        echo $url;    
+                        }    
+                      }
     
      
  /*   $result = array("link" => $url);
