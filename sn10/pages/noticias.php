@@ -1,12 +1,9 @@
 <?php
 include('config.php');
+include('class/news.php');
 $per_page = 10; 
-
-//getting number of rows and calculating no of pages
-$sql = "SELECT * FROM NEWS";
-$rsd = mysql_query($sql);
-$count = mysql_num_rows($rsd);
-$paged = ceil($count/$per_page)
+$news = new News(null, null, null, null, null, null, null, null, null, null, null, null, null);
+$paged = $news->getAllNewsPagination($per_page);
 ?>
 
 <div id="content">  

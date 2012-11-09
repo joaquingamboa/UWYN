@@ -211,14 +211,13 @@ class News extends PDO{
          return $noticias;            
         }
         
-      /*  public function getAllNewsPagination(){
+        public function getAllNewsPagination($per_page){
         $this->open_conecction();
         $stmt = $this->prepare("SELECT * FROM news");
-        $result = $stmt->execute();
-        
-        $count = mysql_num_rows($rsd);
-        $paged = ceil($count/$per_page)
-        }*/
+        $stmt->execute();
+        $count = $stmt->rowCount();
+        return ceil($count/$per_page);
+        }
         
         public function getNewsById(){     
             $noticias=array();
