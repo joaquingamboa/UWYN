@@ -11,7 +11,7 @@ if (isset($_SESSION['user_id'])){
     <div id="header">    	
     	<?php include("includes/header.php"); ?>        
     </div>  
-    <div id="menu">
+    <div id="menu" style="font-size-adjust: 0.4;">
     		<?php include("includes/menu.php"); ?>
     </div>	
     <div id="content">
@@ -23,7 +23,8 @@ if (isset($_SESSION['user_id'])){
     </div>
 </div>
 <?php include("includes/bottom_page.php");
-}else {?>
+}else{
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -36,7 +37,9 @@ if (isset($_SESSION['user_id'])){
 <script type="text/javascript" src="js/validateLogin.js"></script>
 <style type="text/css">
 label.error { float: none; color: red; padding-left: .5em;}
-/*.submit { margin-left: 12em; }*/
+
+/*.submit { margin-left: 12em; }
+*/
 </style>
 </head>
 <body>

@@ -44,7 +44,7 @@ function loadMyFrame(url,target){
 <script language="javascript">
 $(document).ready(function(){
    	$('#navBar').fileTree({ 
-		root: '<?php echo '../'._folder; ?>', 
+		root: '<?php echo '../../'._folder; ?>', 
 		script: 'jqueryFileTree.php', 
 		loadMessage: 'Loading...',
 		exts: 'jpeg,jpg,png,gif,tiff,pdf,doc' }

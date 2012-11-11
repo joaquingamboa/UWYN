@@ -1,8 +1,8 @@
 body {
 	font-family:Verdana, Arial, Helvetica, sans-serif;
-	font-size:11px;
 	color:#333333;
         min-width: 800px;
+       /* font-size:11px;*/
 	/*margin:0px;
         padding:0;*/
 }
@@ -14,8 +14,8 @@ html, body, h1{
     padding: 0;
 }
 
-html, body{
-        height:100%;
+.sizeEleven{
+    font-size:11px;
 }
 
 h1 {
@@ -106,7 +106,14 @@ width: 100%;
 position: absolute;
 }
 
-#pagination{
+#paginationNoticias{
+text-align:center;
+margin:0 auto;
+width: 300px;
+overflow: auto;
+}
+
+#paginationUsuarios{
 text-align:center;
 margin:0 auto;
 width: 300px;
@@ -179,6 +186,25 @@ float:left;
 	/*color:#C87533;*/
         color:#969696;
 }
+
+.add-user {
+    background:#f1f1f1;
+    border: 0 none;
+    font-family: sans-serif;
+    font-size: 12px;
+    margin-left: 4px;
+    padding: 3px 8px;
+    position: relative;
+    text-decoration: none;
+    top: -3px;
+    color:#000000;
+}
+
+.add-user:hover{
+	/*color:#C87533;*/
+        color:#969696;
+}
+
 
 #newstitle{
 	width: 609px;

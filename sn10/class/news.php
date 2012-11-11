@@ -12,9 +12,9 @@ class News extends PDO{
 	public $status;
 	public $img;
 	public $usermod;
-        public $nombre_author;
-        public $nombre_usermod;
-        private $db;
+    public $nombre_author;
+    public $nombre_usermod;
+    private $db;
         
         
         
@@ -34,126 +34,157 @@ class News extends PDO{
                 $this->nombre_usermod=$nombre_usermod;
                    
        }
+
        
        function open_conecction(){
         try {
             $dsn="mysql:dbname=".DB_NAME.";host=".DB_HOST;
             $this->db = parent::__construct($dsn, DB_USER, DB_PASS);
-        } catch (PDOException $e ) {
+        }
+ catch (PDOException $e ) {
             print "Error!: " . $e->getMessage() . "<br/>";
             die();
         }
+
                                 }
+
         
         function close_conecction(){
             $this->db==null;
         }
+
                                        
                 
                 public function getNuserMod(){
 			return $this->nombre_usermod;
 		}
+
 		
 		public function setNuserMod($value){
 			$this->nombre_usermod=$value;
 		}
+
                 
 		public function getNA(){
 			return $this->nombre_author;
 		}
+
 		
 		public function setNA($value){
 			$this->nombre_author=$value;
 		}
+
                 
 	
 		public function getId(){
 			return $this->id;
 		}
+
 		
 		public function setId($value){
 			$this->id=$value;
 		}
+
 		
 		public function getAuthor(){
 			return $this->author;
 		}
+
 		
 		public function setAuthor($value){
 			$this->author=$value;
 		}
+
 		
 		public function getTitle(){
 			return $this->title;
 		}
+
 		
 		public function setTitle($value){
 			$this->title=$value;
 		}
+
 		
 		public function getUrl(){
 			return $this->url;
 		}
+
 		
 		public function setUrl($value){
 			$this->url=$value;
 		}
+
 		
 		public function getContent(){
 			return $this->content;
 		}
+
 		
 		public function setContent($value){
 			$this->content=$value;
 		}
+
 		
 		public function getDatef(){
 			return $this->datef;
 		}
+
 		
 		public function setDatef($value){
 			$this->datef=$value;
 		}
+
 		
 		public function getModified(){
 			return $this->modified;
 		}
+
 		
 		public function setModified($value){
 			$this->modified=$value;
 		}
+
 		
 		public function getDescription(){
 			return $this->description;
 		}
+
 		
 		public function setDescription($value){
 			$this->description=$value;
 		}
+
 		
 		public function getStatus(){
 			return $this->status;
 		}
+
 		
 		public function setStatus($value){
 			$this->status=$value;
 		}
+
 		
 		public function getImg(){
 			return $this->img;
 		}
+
 		
 		public function setImg($value){
 			$this->img=$value;
 		}
+
 		
 		public function getUserMod(){
 			return $this->usermod;
 		}
+
 		
 		public function setUserMod($value){
 			$this->usermod=$value;
 		}
+
                 
 		
 	/************************ FUNCIONES ***********************************/
@@ -162,7 +193,7 @@ class News extends PDO{
             $stmt = $this->prepare('INSERT INTO news (news_author, news_title, news_url, news_content, news_date, news_modified,
                                     news_description, news_usermodified, news_status, url_image)
                                     VALUES(:author, :title, :url, :content, :date, :modified, :description, :usermodified, :status, :image)');       
-	$options=array(
+			$options=array(
             ":author"=>$this->getAuthor(),
             ":title"=>$this->getTitle(),
             ":url"=>$this->getUrl(),
@@ -174,11 +205,12 @@ class News extends PDO{
             ":status"=>$this->getStatus(),
             ":image"=>$this->getImg()
                        );
-	$stmt->execute($options);
-        $id = $this->lastInsertId();
-        $this->close_conecction();
-	return $id;
+			$stmt->execute($options);
+			$id = $this->lastInsertId();
+			$this->close_conecction();
+			return $id;
 	}
+
         
         public function getUrlUse(){
         $url = $this->getUrl();
@@ -191,6 +223,7 @@ class News extends PDO{
         $this->close_conecction();
         return $result;
         }
+
         
         public function getNews($start, $per_page){
         $this->open_conecction();
@@ -206,10 +239,12 @@ class News extends PDO{
                $fila['news_status'],$fila['url_image'],$fila['news_usermodified'],$fila['user_nickname'],$fila['user_modificador']);
                $noticias[$cont]=$noticia;
                $cont++;
-            } 
+            }
+ 
          $this->close_conecction();
          return $noticias;            
         }
+
         
         public function getAllNewsPagination($per_page){
         $this->open_conecction();
@@ -218,6 +253,7 @@ class News extends PDO{
         $count = $stmt->rowCount();
         return ceil($count/$per_page);
         }
+
         
         public function getNewsById(){     
             $noticias=array();
@@ -235,7 +271,8 @@ class News extends PDO{
             }
             $this->close_conecction();
             return $noticias;             
-        } 
+        }
+ 
         
         
         public function deleteNewsById(){
@@ -247,6 +284,7 @@ class News extends PDO{
         $this->close_conecction();
         return $count;
         }
+
         
         public function updateNewsById($firsturl){ 
         $this->open_conecction();
@@ -267,8 +305,8 @@ class News extends PDO{
         $stmt->execute();
         $arr = $stmt->errorInfo();
         print_r($arr);    
-        
         }
+
 	/************************ FUNCIONES ***********************************/
 		
 		
@@ -279,6 +317,7 @@ class News extends PDO{
 	
 	
 }
+
 
 	
 ?>

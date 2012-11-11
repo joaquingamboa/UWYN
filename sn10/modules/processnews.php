@@ -27,8 +27,8 @@ function registerNews(){
 	echo "Registro Exitoso";	
 	}else{
         echo "Registro Fallido";
-        }
-								}
+              }
+                    }
 
 function updateNews(){
     $titulo = $_POST['newstitle'];
@@ -53,14 +53,14 @@ function updateNews(){
      $count = $noticia->updateNewsById($firsttitle);
      return $count;
  
-}
+					}
 
 function permLinkUsed($value){
          $noticia = new News(null,null,null,$value,null,null,null,null,null,null,null,null,null);
          $cont = $noticia->getUrlUse();
          return $cont;
         
-}                                                             
+								}                                                             
                                                                 
 
 function getPermLink($value,$from)

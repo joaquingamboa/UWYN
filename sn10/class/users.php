@@ -17,60 +17,91 @@ class User extends PDO{
         $this->nickname = $nickname;
         $this->registertime = $registertime;
         $this->status = $status;
-        $dsn="mysql:dbname=".DB_NAME.";host=".DB_HOST;
-        parent::__construct($dsn, DB_USER, DB_PASS);       
+             
     }
+
     
+    function open_conecction(){
+        try {
+            $dsn="mysql:dbname=".DB_NAME.";host=".DB_HOST;
+            $this->db = parent::__construct($dsn, DB_USER, DB_PASS);
+        }
+ catch (PDOException $e ) {
+            print "Error!: " . $e->getMessage() . "<br/>";
+            die();
+        }
+
+    }
+
+    
+    function close_conecction(){
+            $this->db==null;
+        }
+
+            
     public function getId() {
         return $this->id;
     }
+
 
     public function setId($id) {
         $this->id = $id;
     }
 
+
     public function getEmail() {
         return $this->email;
     }
+
 
     public function setEmail($email) {
         $this->email = $email;
     }
 
+
     public function getPass() {
         return $this->pass;
     }
+
 
     public function setPass($pass) {
         $this->pass = $pass;
     }
 
+
     public function getNickname() {
         return $this->nickname;
     }
+
 
     public function setNickname($nickname) {
         $this->nickname = $nickname;
     }
 
+
     public function getRegistertime() {
         return $this->registertime;
     }
+
 
     public function setRegistertime($registertime) {
         $this->registertime = $registertime;
     }
 
+
     public function getStatus() {
         return $this->status;
     }
+
 
     public function setStatus($status) {
         $this->status = $status;
     }
 
+
         
     public function inicia($tiempo=3600) { 
+        $this->open_conecction();
         $email = $this->getEmail();
         $pass = $this->getPass();
             if ($email==NULL && $pass==NULL) {
@@ -79,15 +110,21 @@ class User extends PDO{
                 $url="http://localhost/modular/sn10/index.php?page=index";
                 $comando = "<script>window.setTimeout('window.location=".chr(34).$url.chr(34).";',".'1000'.");</script>";
                 echo ($comando);
-                } else {
+                }
+ else {
                         // Si no hay sesion regresa al login
                 header( "Location: http://localhost/modular/sn10/index.php" );
-                    }   
+                    }
+   
             //Si email o pass tienen algo verifica el usuario     
-            } else {
+            }
+ else {
                 $this->verifica_usuario($tiempo, $email, $pass);
             }
-        }  
+
+        $this->close_conecction();
+        }
+  
         
         
     //  Verifica login
@@ -105,15 +142,46 @@ class User extends PDO{
             $_SESSION['user_id'] = $result->ID;
             $_SESSION['user_email'] = $usuario;
             $_SESSION['user_nickname'] = $result->user_nickname;   
-        } else {
+        }
+ else {
             // Si la clave es incorrecta
-         $url="http://localhost/modular/sn10/login.php";
+                $url="http://localhost/modular/sn10/login.php";
                 $comando = "<script>window.setTimeout('window.location=".chr(34).$url.chr(34).";',".'1000'.");</script>";
                 echo ($comando);
         }
+
     }
+
     
-     function obtenerNickname() {  
+     public function getUsers($start, $per_page){
+        $this->open_conecction();
+        $cont=0;    
+        $stmt = $this->prepare("SELECT ID, user_email, user_nickname, user_registertime, user_status
+                                FROM users LIMIT $start,$per_page");
+        $stmt->execute();
+        $usuarios=array();     
+         while($fila = $stmt->fetch()){
+               $usuario = new User($fila['ID'],$fila['user_email'],null,$fila['user_nickname'],$fila['user_registertime'],
+               $fila['user_status']);
+               $usuarios[$cont]=$usuario;
+               $cont++;
+            }
+ 
+         $this->close_conecction();
+         return $usuarios;            
+        }
+
+        
+        public function getAllNewsPagination($per_page){
+        $this->open_conecction();
+        $stmt = $this->prepare("SELECT * FROM users");
+        $stmt->execute();
+        $count = $stmt->rowCount();
+        return ceil($count/$per_page);
+        }
+
+    
+     /*function obtenerNickname() {  
         $tables = array();
         $user_id = $this->getId();
         $stmt = $this->prepare("SELECT user_nickname FROM users WHERE ID = :data1;");
@@ -123,8 +191,11 @@ class User extends PDO{
         $result = $stmt->fetchObject();
        if ($count==1) {
            $this->setNickname($result->user_nickname);
-                      }      
+                      }
+      
                                  }
+*/
 
 }
+
 ?>

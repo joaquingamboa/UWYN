@@ -323,7 +323,6 @@
 				return true;
 			}
 		},
-
 		/*
 		* generate and inject html for timepicker into ui datepicker
 		*/
@@ -365,8 +364,7 @@
 								var tmph = $.datepicker.formatTime(useAmpm(o.pickerTimeFormat || o.timeFormat)? 'hht':'HH', {hour:h}, o);									
 								html += '<td data-for="'+litem+'">' + tmph + '</td>';
 							}
-						}
-						else{
+						}else{
 							for (var m = o[litem+'Min']; m <= max[litem]; m += parseInt(o[litem+'Grid'], 10)) {
 								gridSize[litem]++;
 								html += '<td data-for="'+litem+'">' + ((m < 10) ? '0' : '') + m + '</td>';
@@ -390,16 +388,13 @@
 				if (o.timeOnly === true) {
 					$tp.prepend('<div class="ui-widget-header ui-helper-clearfix ui-corner-all">' + '<div class="ui-datepicker-title">' + o.timeOnlyTitle + '</div>' + '</div>');
 					$dp.find('.ui-datepicker-header, .ui-datepicker-calendar').hide();
-				}
-				
+				}	
 				// add sliders, adjust grids, add events
 				for(var i=0,l=tp_inst.units.length; i<l; i++){
 					litem = tp_inst.units[i];
-					uitem = litem.substr(0,1).toUpperCase() + litem.substr(1);
-					
+					uitem = litem.substr(0,1).toUpperCase() + litem.substr(1);				
 					// add the slider
 					tp_inst[litem+'_slider'] = tp_inst.control.create(tp_inst, $tp.find('.ui_tpicker_'+litem+'_slider'), litem, tp_inst[litem], o[litem+'Min'], max[litem], o['step'+uitem]);
-
 					// adjust the grid and add click event
 					if (o['show'+uitem] && o[litem+'Grid'] > 0) {
 						size = 100 * gridSize[litem] * o[litem+'Grid'] / (max[litem] - o[litem+'Min']);
@@ -425,12 +420,11 @@
 										}
 									}
 								}
-								
 								tp_inst.control.value(tp_inst, tp_inst[f+'_slider'], litem, n);
 
 								tp_inst._onTimeChange();
 								tp_inst._onSelectHandler();
-							})
+													})
 						.css({
 								cursor: 'pointer',
 								width: (100 / gridSize[litem]) + '%',

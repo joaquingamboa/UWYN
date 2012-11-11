@@ -30,6 +30,5 @@ $(document).ready(function(){
       pass = $("#password").val();  
       user = user.trim();
       pass = pass.trim();
-    });                                                                   
-                                                                        
-                                                                        });
+    });                                 
+								});

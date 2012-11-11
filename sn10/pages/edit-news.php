@@ -8,9 +8,9 @@ $noticias = $news->getNewsById();
 if(count($noticias)) {
     foreach($noticias as $news) {
 ?>
-<h2 style="text-align:center;">Editar Noticia</h2>
+<h2 style="text-align:center;font-size-adjust: 0.5;">Editar Noticia</h2>
 <form action="modules/processnews.php" method="post" name="enews" id="enews">
-<div class="centered">
+<div class="centered" style="font-size-adjust: 0.4;">
 <table class="lst">
 <tr>
 <td style="width:291px;"><label for="newstitle">T&iacute;tulo:</label></td>
@@ -64,10 +64,10 @@ echo ($comando);
 </div>
 </form>
 <?php 
-     }
+                      }
                        } else {
-                           echo "Ninguna noticia ingresada.";
-                           
-                           }      
-} ?>
+                           echo "Ninguna noticia ingresada.";                          
+                              }      
+                            } 
+?>
 

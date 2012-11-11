@@ -13,28 +13,36 @@ require_once('conexion.php');
         try {
             $dsn="mysql:dbname=".DB_NAME.";host=".DB_HOST;
             $this->db = new PDO($dsn, DB_USER, DB_PASS);
-        } catch (PDOException $e) {
+        }
+ catch (PDOException $e) {
             print "Error!: " . $e->getMessage() . "<br/>";
             die();
         }
+
     }
+
     
   /*  function open_conecction(){
         try {
             $dsn="mysql:dbname=".DB_NAME.";host=".DB_HOST;
             $this->db = new PDO($dsn, DB_USER, DB_PASS);
-        } catch (PDOException $e ) {
+        }
+ catch (PDOException $e ) {
             print "Error!: " . $e->getMessage() . "<br/>";
             die();
         }
-     }*/
+
+     }
+*/
     
     function __destruct() {
         $this->db = null;
     }
+
     public function getdb(){
         return $this->db;
     }
+
    
     private function build_where($where){
         if(!empty($where)){       
@@ -47,6 +55,7 @@ require_once('conexion.php');
                     $this->sql.=$key.'=%:'.$c.'% && ';
                     $this->replace[':'.$c]=$w;
                 }
+
                 else{
                     if(substr($w,0,2)=='<=')
                         $eq='<=';
@@ -65,11 +74,15 @@ require_once('conexion.php');
                     $this->sql.=$key.$eq."'".$w."'".' && ';
                     $this->replace[':'.$c]=$w;
                 }
+
                 $c++;
             }
+
             $this->sql=substr($this->sql,0,-4);
         }
+
     }
+
    
     // remove slashes from all retrieved variables
     private function prep_vars($vars){
@@ -78,18 +91,23 @@ require_once('conexion.php');
             foreach($vars as $key=>$value)
                 $ret[$key]=prep_vars($value);
         }
+
         elseif(is_object($vars)){
             foreach($vars as $key=>$value)
                 $ret->$key=prep_vars($value);
         }
+
         elseif(is_string($vars)){
             $ret=stripslashes($vars);
         }
+
         else{
             $ret=$vars;
         }
+
         return $ret;
     }
+
    
     // general query function
     function query($query,$vals=''){
@@ -107,17 +125,21 @@ require_once('conexion.php');
                 else
                     echo '<strong>ERROR:</strong>: General Error';
             }
+
         }
+
         if($this->debug)
             $this->_get_query($query,$vals,$e);
         return $this->prep_vars($result);
     }
+
    
     //select and return only one row
     function select_one($table,$vals='*',$where=array(),$extra=''){
         $s=$this->select($table,$vals,$where);
         return $s[0];
     }
+
    
     // select function
     function select($table,$vals='*',$where=array(),$extra=''){
@@ -131,6 +153,7 @@ require_once('conexion.php');
                 $this->sql.=$v.',';
             $this->sql=substr($this->sql,0,-1);
         }
+
         else
             $this->sql.=$vals;
        
@@ -143,6 +166,7 @@ require_once('conexion.php');
         $ret=$this->query($this->sql,$this->replace);
         return $ret;
     }
+
    
     // insert
     function insert($table,$vals){
@@ -158,6 +182,7 @@ require_once('conexion.php');
             $this->replace[':'.$c]=$v;
             $c++;
         }
+
         $this->sql=substr($this->sql,0,-2);
         // run and return the query
         $ret=$this->query($this->sql,$this->replace);
@@ -170,6 +195,7 @@ require_once('conexion.php');
 		
               
     }
+
    
     // update
     function update($table,$vals,$where=array()){
@@ -185,6 +211,7 @@ require_once('conexion.php');
             $this->replace[':'.$c]=$v;
             $c++;
         }
+
         $this->sql=substr($this->sql,0,-2);
        
         // build the WHERE portion of the query
@@ -193,6 +220,7 @@ require_once('conexion.php');
         // run and return the query
         return $this->query($this->sql,$this->replace);
     }
+
     
     function update_ConFechas($table,$vals,$where=array()){
         // empty the replace array
@@ -207,6 +235,7 @@ require_once('conexion.php');
             $this->replace[':'.$c]=$v;
             $c++;
         }
+
         $this->sql=substr($this->sql,0,-2);
        
         // build the WHERE portion of the query
@@ -215,6 +244,7 @@ require_once('conexion.php');
         // run and return the query
         return $this->query($this->sql,$this->replace);
     }
+
     
     function delete($table,$where){
         // empty the replace array
@@ -228,6 +258,7 @@ require_once('conexion.php');
         // run and return the query
         return $this->query($this->sql,$this->replace);
     }
+
    
     // get the number of records matching the requirements
     function get_count($table,$where=false){
@@ -247,6 +278,7 @@ require_once('conexion.php');
         // return the row count
         return $sth->fetch(PDO::FETCH_NUM);
     }
+
     
     function select_count($table,$where){
         $this->sql="SELECT count(*) FROM ".$table;
@@ -257,6 +289,7 @@ require_once('conexion.php');
         $rows = $sth->fetch(PDO::FETCH_NUM);*/
         
     }
+
    
     // gets value of requested column
     function get_value($table,$val,$where=array()){
@@ -269,6 +302,7 @@ require_once('conexion.php');
         // return requested value
         return $v[$val];
     }
+
    
     //debugging function
     private function _get_query($query,$val,$er=0){
@@ -281,8 +315,11 @@ require_once('conexion.php');
             print_r($er);
             echo '</pre>';
         }
+
         echo '</p><hr />';
     }
+
 }
+
 ?>
 

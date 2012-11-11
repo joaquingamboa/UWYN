@@ -18,8 +18,8 @@ function destroySession(){
     $comando = "<script>window.setTimeout('window.location=".chr(34).$url.chr(34).";',".'1000'.");</script>";
     echo ($comando);
     echo "Redireccionando a Login";
-}                                                        
-}
+                        }                                                        
+								}
 
 
 if($_POST){
@@ -35,5 +35,5 @@ if($_GET){
                 break;
         }
     }
-}
+								}
 ?>
