@@ -15,6 +15,17 @@
                     $('#fechaRegistro').datetimepicker({ dateFormat:'yy-mm-dd ', timeFormat: "HH:mm:ss", showSecond: true, showButtonPanel: true, changeMonth: true, changeYear: true, currentText: "Hoy", hourText: "Hora", minuteText: "minuto", timeText: "Tiempo", secondText: "Segundo",closeText: "Cerrar", dayNamesMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],monthNamesShort: ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"] });
                 })
             }
+$("#add-page").validate({
+	rules:{
+		editor:"required"	                       
+	},
+	messages:{
+		editor: "Texto de Resumen Requerido"
+	},
+		  submitHandler: function(form) {										   	
+  		}
+									});            
+            
 
 $("#nnews").validate({
 	rules:{
@@ -37,7 +48,7 @@ $("#nnews").validate({
 			data:"&resumen="+area1+"&contenido="+area2+"&newstitle="+newstitle+"&url="+permalink+"&imageurl="+mininewsimage+"&estado="+estado+"&fecha="+tiempo+"&tarea=add-new",
 			success:function(msg){
 				alert(msg);
-				window.location.href="index.php?page=noticias";
+				window.setTimeout('window.location="http://localhost/modular/sn10/index.php?page=noticias"',500)
 								}
 				});
 									 }
@@ -61,7 +72,7 @@ $("#enews").validate({
 			data:"&resumen="+area1+"&contenido="+area2+"&newstitle="+newstitle+"&url="+permalink+"&imageurl="+mininewsimage+"&estado="+estado+"&cpermalink="+cpermalink+"&fecha="+tiempo+"&tarea=edit-new",
 			success:function(msg){
 				alert(msg);
-				window.location.href="index.php?page=noticias";
+				window.setTimeout('window.location="http://localhost/modular/sn10/index.php?page=noticias"',500)
 								}
 				});
 									 }

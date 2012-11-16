@@ -27,7 +27,6 @@ $usuarios = $users->getUsers($start, $per_page);
 
 <table class="lst" style="width:100%;">
     <tr>
-    <th>Email</th>
     <th>Nickname</th>
     <th>Fecha de registro</th>   
     <th>Estado</th>
@@ -40,9 +39,6 @@ if(count($usuarios)) {
      foreach($usuarios as $users) {
 ?>
 <tr>
-<td> 
-    <?php echo $users->getEmail();?>
-</td>
 <!--<td> 
     <?php // echo "http://localhost/modular/".$news->getUrl();?>
 </td>-->
@@ -58,23 +54,22 @@ if(count($usuarios)) {
     <?php 
     if($users->getStatus()==1){
         echo "Activo";
-    }elseif ($news->getStatus()==0){
+    }elseif ($users->getStatus()==0){
         echo "Deshabilitado";            
                 }   
     ?>
 </td>
-
 <td> 
-    <a href="modules/processusers.php?tarea=deleteNew&amp;id=<?php $users->getId();?>" onClick="if(confirm('Seguro de Eliminar noticia?'))return true;else return false;"><img src="img/page_delete.png" alt="Eliminar noticia" height="16" width="16" style="border:none;" /></a>
+    <a href="modules/processusers.php?tarea=deleteNew&amp;id=<?php $users->getId();?>" onClick="if(confirm('Seguro de Eliminar noticia?'))return true;else return false;"><img src="img/user_delete.png" alt="Eliminar Usuario" height="16" width="16" style="border:none;" /></a>
 </td>
 <td>
-    <a href="index.php?page=edit-news&amp;id=<?php echo $users->getId();?>"><img src="img/page_edit.png" alt="Editar noticia" height="16" width="16" style="border:none;" /></a>
+    <a href="index.php?page=edit-news&amp;id=<?php echo $users->getId();?>"><img src="img/user_edit.png" alt="Editar Usuario" height="16" width="16" style="border:none;" /></a>
 </td>
 </tr> 
 <?php
                                 }
                        } else {
-                           echo "Ninguna noticia ingresada."; 
+                           echo "Ninguna Usuario ingresado."; 
                               }      
                                 ?>
 

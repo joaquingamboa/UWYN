@@ -32,7 +32,8 @@ $opts = array(
 		array(
 			'driver'        => 'LocalFileSystem',   // driver for accessing file system (REQUIRED)
 			'path'          => '../mydocuments/',         // path to files (REQUIRED)
-			'URL'           => dirname($_SERVER['PHP_SELF']) . '/../mydocuments/', // URL to files (REQUIRED)
+			//'URL'           => dirname($_SERVER['PHP_SELF']) . '/../mydocuments/', // URL to files (REQUIRED)
+                        'URL'           => 'http://localhost/modular/sn10/mydocuments/',
 			'accessControl' => 'access'             // disable and hide dot starting files (OPTIONAL)
 		)
 	)

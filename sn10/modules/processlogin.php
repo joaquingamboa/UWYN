@@ -2,15 +2,14 @@
 session_start();
 require('../class/users.php');
 function getUserLogin(){
-    $email=$_POST['user'];
-    $password=md5($_POST['pass']);
-    $usuario = new User(null, $email, $password, null, null, null);
+    $username=$_POST['user'];
+    $password=$_POST['pass'];
+    $usuario = new User(null, $username, $password, null, null, null);
     $usuario->inicia(3600);   
 }
 //http://localhost/modular/sn10/modules/processlogin.php?tarea=logout                                                
 if (isset($_SESSION['user_id'])){
 function destroySession(){
-
     session_unset();
     session_destroy();
     echo "<script>alert(\"Desconectando.\");</script>";

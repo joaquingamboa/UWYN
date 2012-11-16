@@ -54,7 +54,7 @@ if(count($noticias)) {
 </td>   
 <td> 
     <?php
-     echo $news->getDatef();
+     echo $news->getDate();
     ?>
 </td>
 <td> 

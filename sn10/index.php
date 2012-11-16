@@ -46,7 +46,7 @@ label.error { float: none; color: red; padding-left: .5em;}
 <form id="login" name="login" method="post" action="modules/processlogin.php">
    <h1>Log In</h1>
     <fieldset id="inputs">
-        <input id="username" name="username" type="email" autofocus placeholder="Username" class="required" />   
+        <input id="username" name="username" type="input" autofocus placeholder="Username" class="required" />   
         <input id="password" name="password" type="password" placeholder="Password" class="required" />
     </fieldset>
     <fieldset id="actions">

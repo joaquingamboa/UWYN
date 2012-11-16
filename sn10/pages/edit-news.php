@@ -38,7 +38,7 @@ if(count($noticias)) {
 </tr>
 <tr>
     <td><label for="fechaRegistro">Fecha/Hora:</label></td>
-    <td colspan="2"><input style="float:left;width: 130px;" type="input" id="fechaRegistro" name="FechaRegistro" class="required" readonly="readonly" value="<?php echo $news->getDatef(); ?>" /></td>
+    <td colspan="2"><input style="float:left;width: 130px;" type="input" id="fechaRegistro" name="FechaRegistro" class="required" readonly="readonly" value="<?php echo $news->getDate(); ?>" /></td>
 </tr>
 </table>
 

@@ -21,13 +21,25 @@ function registerNews(){
         $user_id=$_SESSION['user_id'];
         $nickname = $_SESSION['user_nickname'];
 	$noticia = new News(null,$user_id,$titulo,$url,$contenido,$fechaInicio,$fechaModificacion,$resumen,$estado,$imageurl,$user_id,$nickname,$nickname);
-	$id = $noticia->addNews();
-        $noticia = null;
-	if($id){
+	$count = $noticia->addNews();
+        /*$noticia = null;*/
+        $buscar = "INSERT command denied to user";
+        $pos = strpos($count[1][2], $buscar);
+        if ($pos === false){
+        if($count[0]){
+        echo "Noticia Ingresada";
+         }else{
+         echo "La noticia No ha sido Ingresada";
+              }   
+                           }else{
+          echo "No tienes privilegios para ingresar registros en la tabla noticias";         
+                                 }
+        
+	/*if($id){
 	echo "Registro Exitoso";	
 	}else{
         echo "Registro Fallido";
-              }
+              }*/
                     }
 
 function updateNews(){
@@ -51,7 +63,26 @@ function updateNews(){
      $fecha = $_POST['fecha'];
      $noticia = new News(null,null,$titulo,$url,$contenido,$fecha,$fechaModificacion,$resumen,$estado,$imageurl,$user_id,null,$user_modificador);
      $count = $noticia->updateNewsById($firsttitle);
-     return $count;
+     $buscar = "UPDATE command denied to user";
+     $pos = strpos($count[1][2], $buscar);
+      if ($pos === false){
+        if($count[0] == 1){
+        echo "Noticia Actualizada";
+     }else{
+         if($count[0] == 0){
+         echo "La noticia No ha sido actualizada";
+         echo "<script>alert(\"Noticia no Actualizada.\");</script>"; 
+         }else{
+          echo "Ha ocurrido un error";
+          echo "<script>alert(\"Error.\");</script>";
+         }       
+     }
+                        }else{
+          echo "No tienes privilegios para actualizar registros de la tabla noticias";         
+                       }
+    /*$url="../index.php?page=noticias";
+    $comando = "<script>window.setTimeout('window.location=".chr(34).$url.chr(34).";',".'500'.");</script>";
+    echo ($comando);*/  //Realizado en javascript
  
 					}
 
@@ -90,20 +121,26 @@ function getPermLink($value,$from)
 function deleteBI($id){
      $noticia = new News($id,null,null,null,null,null,null,null,null,null,null,null,null);
      $count = $noticia->deleteNewsById();
-     if($count == 1){
+     $buscar = "DELETE command denied to user";
+     $pos = strpos($count[1][2], $buscar);
+     if ($pos === false){
+        if($count[0] == 1){
         echo "Noticia Eliminada";
         echo "<script>alert(\"Noticia Eliminada.\");</script>";
      }else{
-         if($count == 0){
+         if($count[0] == 0){
          echo "La noticia No ha sido eliminada";
          echo "<script>alert(\"Noticia no Eliminada.\");</script>";
          
          }else{
           echo "Ha ocurrido un error";
           echo "<script>alert(\"Error.\");</script>";
-         }
-       
+         }       
      }
+                        }else{
+          echo "No tienes privilegios para borrar registros de la tabla noticias";  
+          echo "<script>alert(\"No tienes privilegios para borrar registros de la tabla noticias.\");</script>"; 
+                       }
     $url="../index.php?page=noticias";
     $comando = "<script>window.setTimeout('window.location=".chr(34).$url.chr(34).";',".'500'.");</script>";
     echo ($comando);

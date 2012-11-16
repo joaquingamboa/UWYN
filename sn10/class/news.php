@@ -6,25 +6,25 @@ class News extends PDO{
 	public $title;
 	public $url;
 	public $content;
-	public $datef;
+	public $date;
 	public $modified;
 	public $description;
 	public $status;
 	public $img;
 	public $usermod;
-    public $nombre_author;
-    public $nombre_usermod;
-    private $db;
+        public $nombre_author;
+        public $nombre_usermod;
+        private $db;
         
         
         
-     public function __construct($id,$author,$title,$url,$content,$datef,$modified,$description,$status,$img,$usermod,$nombre_author,$nombre_usermod) {
+     public function __construct($id,$author,$title,$url,$content,$date,$modified,$description,$status,$img,$usermod,$nombre_author,$nombre_usermod) {
            	$this->id=$id;
                 $this->author=$author;
 		$this->title=$title;
 		$this->url=$url;
 		$this->content=$content;
-                $this->datef=$datef;
+                $this->date=$date;
                 $this->modified=$modified;
 		$this->description=$description;
 		$this->img=$img;
@@ -40,8 +40,18 @@ class News extends PDO{
         try {
             $dsn="mysql:dbname=".DB_NAME.";host=".DB_HOST;
             $this->db = parent::__construct($dsn, DB_USER, DB_PASS);
+        }catch (PDOException $e ) {
+            print "Error!: " . $e->getMessage() . "<br/>";
+            die();
         }
- catch (PDOException $e ) {
+
+                                }
+        
+        function open_UserConecction(){
+        try {
+            $dsn="mysql:dbname=".DB_NAME.";host=".DB_HOST;
+            $this->db = parent::__construct($dsn, $_SESSION['user_username'], $_SESSION['user_password']);
+        }catch (PDOException $e ) {
             print "Error!: " . $e->getMessage() . "<br/>";
             die();
         }
@@ -126,13 +136,13 @@ class News extends PDO{
 		}
 
 		
-		public function getDatef(){
-			return $this->datef;
+		public function getDate(){
+			return $this->date;
 		}
 
 		
-		public function setDatef($value){
-			$this->datef=$value;
+		public function setDate($value){
+			$this->date=$value;
 		}
 
 		
@@ -189,7 +199,7 @@ class News extends PDO{
 		
 	/************************ FUNCIONES ***********************************/
 	public function addNews(){
-            $this->open_conecction();
+            $this->open_UserConecction();
             $stmt = $this->prepare('INSERT INTO news (news_author, news_title, news_url, news_content, news_date, news_modified,
                                     news_description, news_usermodified, news_status, url_image)
                                     VALUES(:author, :title, :url, :content, :date, :modified, :description, :usermodified, :status, :image)');       
@@ -198,23 +208,25 @@ class News extends PDO{
             ":title"=>$this->getTitle(),
             ":url"=>$this->getUrl(),
             ":content"=>$this->getContent(),
-            ":date"=>$this->getDatef(),
+            ":date"=>$this->getDate(),
             ":modified"=>$this->getmodified(),
             ":description"=>$this->getDescription(),
             ":usermodified"=>$this->getUserMod(),
             ":status"=>$this->getStatus(),
             ":image"=>$this->getImg()
                        );
-			$stmt->execute($options);
-			$id = $this->lastInsertId();
-			$this->close_conecction();
-			return $id;
+	    $stmt->execute($options);
+            $id = $this->lastInsertId();
+            $count[0] = $id;
+            $count[1] = $stmt->errorInfo();
+            $this->close_conecction();
+	    return $count;
 	}
 
         
         public function getUrlUse(){
         $url = $this->getUrl();
-        $this->open_conecction();    
+        $this->open_UserConecction();   
         $stmt = $this->prepare("SELECT COUNT(*) FROM news WHERE news_url = ?;");
         //$stmt->bindParam(':data1', $url);
         $stmt->execute(array($url));
@@ -226,7 +238,7 @@ class News extends PDO{
 
         
         public function getNews($start, $per_page){
-        $this->open_conecction();
+        $this->open_UserConecction();
         $cont=0;    
         $stmt = $this->prepare("SELECT t1.*, t2.user_nickname, t3.user_nickname as user_modificador 
                                 FROM news t1 INNER JOIN users t2 ON t1.news_author = t2.ID 
@@ -234,7 +246,7 @@ class News extends PDO{
         $stmt->execute();
         $noticias=array();     
          while($fila = $stmt->fetch()){
-               $noticia = new News($fila['ID'],$fila['news_author'],$fila['news_title'],$fila['news_url'],
+               $noticia = new News($fila['news_id'],$fila['news_author'],$fila['news_title'],$fila['news_url'],
                $fila['news_content'],$fila['news_date'],$fila['news_modified'],$fila['news_description'],
                $fila['news_status'],$fila['url_image'],$fila['news_usermodified'],$fila['user_nickname'],$fila['user_modificador']);
                $noticias[$cont]=$noticia;
@@ -247,7 +259,7 @@ class News extends PDO{
 
         
         public function getAllNewsPagination($per_page){
-        $this->open_conecction();
+        $this->open_UserConecction();
         $stmt = $this->prepare("SELECT * FROM news");
         $stmt->execute();
         $count = $stmt->rowCount();
@@ -258,12 +270,12 @@ class News extends PDO{
         public function getNewsById(){     
             $noticias=array();
             $cont=0;
-            $this->open_conecction();
+            $this->open_UserConecction();
             $id = $this->getId();
-            $stmt = $this->prepare('SELECT * from news WHERE ID = ? LIMIT 1');
+            $stmt = $this->prepare('SELECT * from news WHERE news_id = ? LIMIT 1');
             $stmt->execute(array($id));
             while($fila = $stmt->fetch()){
-                $noticia = new News($fila['ID'],$fila['news_author'],$fila['news_title'],$fila['news_url'],
+                $noticia = new News($fila['news_id'],$fila['news_author'],$fila['news_title'],$fila['news_url'],
                 $fila['news_content'],$fila['news_date'],$fila['news_modified'],$fila['news_description'],
                 $fila['news_status'],$fila['url_image'],null,null,null);
                 $noticias[$cont]=$noticia;
@@ -276,25 +288,27 @@ class News extends PDO{
         
         
         public function deleteNewsById(){
-        $this->open_conecction();
+        $this->open_UserConecction();
         $id = $this->getId();
-        $stmt = $this->prepare("DELETE FROM news WHERE ID = ?");
+        $stmt = $this->prepare("DELETE FROM news WHERE news_id = ?");
         $stmt->execute(array($id));
-        $count = $stmt->rowCount();
+        $count = array();
+        $count[0] = $stmt->rowCount();
+        $count[1] = $stmt->errorInfo();
         $this->close_conecction();
         return $count;
         }
 
         
         public function updateNewsById($firsturl){ 
-        $this->open_conecction();
+        $this->open_UserConecction();
         $stmt = $this->prepare("UPDATE news SET news_title = :title, news_content = :content ,news_modified = :modified, 
                                news_date = :date, news_description = :description, news_status = :status, 
                                 url_image = :image , news_usermodified = :usermodified, news_url = :url
                                 WHERE news_url = :firsturl"); 
         $stmt->bindValue(':title', $this->getTitle(), PDO::PARAM_STR);
         $stmt->bindValue(':content', $this->getContent(), PDO::PARAM_STR);
-        $stmt->bindValue(':date', $this->getDatef(), PDO::PARAM_STR);
+        $stmt->bindValue(':date', $this->getDate(), PDO::PARAM_STR);
         $stmt->bindValue(':modified', $this->getModified(), PDO::PARAM_STR);
         $stmt->bindValue(':description', $this->getDescription(), PDO::PARAM_STR);
         $stmt->bindValue(':status', $this->getStatus(), PDO::PARAM_INT);
@@ -303,8 +317,10 @@ class News extends PDO{
         $stmt->bindValue(':url', $this->getUrl(), PDO::PARAM_STR);
         $stmt->bindValue(':firsturl', $firsturl, PDO::PARAM_STR);
         $stmt->execute();
-        $arr = $stmt->errorInfo();
-        print_r($arr);    
+        $count[0] = $stmt->rowCount();
+        $count[1] = $stmt->errorInfo(); 
+        $this->close_conecction();
+        return $count;
         }
 
 	/************************ FUNCIONES ***********************************/

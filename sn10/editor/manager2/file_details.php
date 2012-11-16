@@ -2,7 +2,7 @@
 session_start();
 if (isset($_SESSION['user_id'])){
 include("config.inc.php");
-$file=substr($_GET['file'], strlen(_folder)+3);
+$file=substr($_GET['file'], strlen(_folder)+6);
 ?>
 <div id="optionsWrapper2">
 	<p>
