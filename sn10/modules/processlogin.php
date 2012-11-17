@@ -4,7 +4,7 @@ require('../class/users.php');
 function getUserLogin(){
     $username=$_POST['user'];
     $password=$_POST['pass'];
-    $usuario = new User(null, $username, $password, null, null, null);
+    $usuario = new User(null, $username, $password, null, null, null,null,null,null);
     $usuario->inicia(3600);   
 }
 //http://localhost/modular/sn10/modules/processlogin.php?tarea=logout                                                

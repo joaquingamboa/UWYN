@@ -39,7 +39,7 @@ jQuery.validator.addMethod("lettersonly", function(value, element) {
     $("#submit").click(function(){
       user = $("#username").val();  
       pass = $("#password").val();  
-      user = user.trim();
-      pass = pass.trim();
+      user = $.trim(user);
+      pass = $.trim(pass);
     });                                 
 								});

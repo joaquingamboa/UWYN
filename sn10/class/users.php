@@ -11,29 +11,32 @@ class User extends PDO{
     public $status;
     public $tnoticias;
     public $tpaginas;
-    
-    function __construct($id, $username, $pass, $nickname, $registertime, $status) {
+    public $admin;
+    public $db;
+   
+        function __construct($id, $username, $pass, $nickname, $registertime, $status, $tpaginas, $tnoticias, $admin) {
         $this->id = $id;
         $this->username = $username;
         $this->pass = $pass;
         $this->nickname = $nickname;
         $this->registertime = $registertime;
         $this->status = $status;
-             
+        $this->tpaginas = $tpaginas;
+        $this->tnoticias = $tnoticias;
+        $this->admin = $admin;
     }
-
     
-    function open_conecction(){
-        try {
+    function open_conecction($username, $pass){
+        try{
             $dsn="mysql:dbname=".DB_NAME.";host=".DB_HOST;
-            $this->db = parent::__construct($dsn, DB_USER, DB_PASS);
+            $this->db = parent::__construct($dsn, $username, $pass);
         }catch (PDOException $e ) {
             print "Error!: " . $e->getMessage() . "<br/>";
             die();
         }
     }
     
-    function open_UserConecction(){
+    function open_UserConecction(){ //cuando esta logueado
         try {
             $dsn="mysql:dbname=".DB_NAME.";host=".DB_HOST;
             $this->db = parent::__construct($dsn, $_SESSION['user_username'], $_SESSION['user_password']);
@@ -41,12 +44,21 @@ class User extends PDO{
             print "Error!: " . $e->getMessage() . "<br/>";
             die();
         }
-                                }
+                                }                         
 
     
-    function close_conecction(){
-            $this->db==null;
+   function close_conecction(){
+            $this->db=null;
         }
+        
+    public function getAdmin() {
+        return $this->admin;
+    }
+
+    public function setAdmin($admin) {
+        $this->admin = $admin;
+    }    
+        
 
     public function getTnoticias(){
         return $this->tnoticias;
@@ -122,32 +134,82 @@ class User extends PDO{
     public function setStatus($status) {
         $this->status = $status;      
     }
-
+    
+    
+    function borrarUsuarioPorId(){
+    $iduser = $this->getId();
+    $username = $this->getUsername();
+    try{
+    $this->open_UserConecction();
+    $stmt = $this->prepare("SELECT t1.* FROM sitio.users t1 INNER JOIN mysql.user t2 ON t1.username=t2.User WHERE t2.User = :data1;");
+    $stmt->bindValue(':data1', $username);
+    $stmt->execute();
+    $count =  $stmt->rowCount();
+    $this->open_UserConecction();
+    if($count==1){
+         if($username == 'admin'){
+                $url="http://localhost/modular/sn10/index.php?page=usuarios";
+                $comando = "<script>alert(\"El usuario no puede ser Eliminado\");</script><script>window.setTimeout('window.location=".chr(34).$url.chr(34).";',".'1000'.");</script>";
+               throw new Exception($comando);     
+                                 }
+    $stmt = $this->prepare("DELETE FROM sitio.users WHERE users.ID = :data1");
+    $stmt->bindValue(':data1', $iduser);
+    $stmt->execute(); 
+          if ($stmt->errorCode()) {
+               $arr = $stmt->errorInfo();
+                 if ($arr[0]!='00000'){
+                        throw new Exception($arr[2]);     
+                                       } 
+                                    }
+     $stmt = $this->prepare("DROP USER :data1@'localhost';"); //
+     $stmt->bindValue(':data1', $username);
+     $stmt->execute();                       
+            if ($stmt->errorCode()) {
+                  $arr = $stmt->errorInfo();
+                      if ($arr[0]!='00000'){
+                         throw new Exception($arr[2]);     
+                                             } 
+                                       }
+      $url="http://localhost/modular/sn10/index.php?page=usuarios";
+      $comando = "<script>alert(\"El usuario Fue Eliminado\");</script><script>window.setTimeout('window.location=".chr(34).$url.chr(34).";',".'1000'.");</script>";                            
+      echo $comando;                                  
+                }    
+            }catch(Exception $e){
+               $rsp = $e->getMessage();
+               $url="http://localhost/modular/sn10/index.php?page=usuarios";
+               $comando = "<script>alert(\"$rsp\");</script><script>window.setTimeout('window.location=".chr(34).$url.chr(34).";',".'1000'.");</script>";                            
+               echo $comando;
+                                 }                               
+    }
+    
+    
     function verifica_UserEnUso(){
     $usuario = $this->getUsername();
-    $this->open_conecction();
+    $this->open_UserConecction();
     $stmt = $this->prepare("SELECT t1.* FROM sitio.users t1 INNER JOIN mysql.user t2 ON t1.username=t2.User WHERE t2.User = :data1;");    
     $stmt->bindParam(':data1', $usuario);
     $stmt->execute();
     $count =  $stmt->rowCount();
     $true = "true";
     $false = "false";
+    $this->close_conecction();
     if($count==1){
         return $false;
     }
     
     if($count==0){
         return $true;
-    }  
+    }
     }
     
     function verifica_NickEnUso(){
     $nickname = $this->getNickname();
-    $this->open_conecction();
+    $this->open_UserConecction();
     $stmt = $this->prepare("SELECT * FROM sitio.users WHERE user_nickname = :data1;");    
     $stmt->bindParam(':data1', $nickname);
     $stmt->execute();
     $count =  $stmt->rowCount();
+    $this->close_conecction();
     $true = "true";
     $false = "false";
     if($count==1){
@@ -160,9 +222,9 @@ class User extends PDO{
     } 
         
     public function inicia($tiempo=3600) { 
-        $this->open_conecction();
         $username = $this->getUsername();
         $pass = $this->getPass();
+        $this->open_conecction($username, $pass);
             if ($username==NULL && $pass==NULL) {
                 // Verifica sesion
                 if (isset($_SESSION['user_id'])) {
@@ -178,8 +240,6 @@ class User extends PDO{
             }else{
                 $this->verifica_usuario($tiempo, $username, $pass);
             }
-
-        $this->close_conecction();
         }   
         
     //  Verifica login
@@ -198,8 +258,8 @@ class User extends PDO{
             $_SESSION['user_username'] = $usuario;
             $_SESSION['user_nickname'] = $result->user_nickname;   
             $_SESSION['user_password'] = $clave;
-        }
- else {
+            $_SESSION['isAdmin'] = $result->isAdmin;
+       }else{
             // Si la clave es incorrecta
                 $url="http://localhost/modular/sn10/login.php";
                 $comando = "<script>window.setTimeout('window.location=".chr(34).$url.chr(34).";',".'1000'.");</script>";
@@ -210,15 +270,15 @@ class User extends PDO{
 
     
      public function getUsers($start, $per_page){
-        $this->open_conecction();
+        $this->open_UserConecction();
         $cont=0;    
-        $stmt = $this->prepare("SELECT ID, username, user_nickname, user_registertime, user_status
+        $stmt = $this->prepare("SELECT ID, username, user_nickname, user_registertime, user_status, isAdmin
                                 FROM users LIMIT $start,$per_page");
         $stmt->execute();
         $usuarios=array();     
          while($fila = $stmt->fetch()){
                $usuario = new User($fila['ID'],$fila['username'],null,$fila['user_nickname'],$fila['user_registertime'],
-               $fila['user_status']);
+               $fila['user_status'],null,null, $fila['isAdmin']);
                $usuarios[$cont]=$usuario;
                $cont++;
             }
@@ -229,10 +289,11 @@ class User extends PDO{
 
         
         public function getAllUsersPagination($per_page){
-        $this->open_conecction();
+        $this->open_UserConecction();
         $stmt = $this->prepare("SELECT * FROM users");
         $stmt->execute();
         $count = $stmt->rowCount();
+        $this->close_conecction();
         return ceil($count/$per_page);
         }
 
@@ -244,6 +305,7 @@ class User extends PDO{
         $nickname = $this->getNickname();
         $status = $this->getStatus();
         $registertime = $this->getRegistertime();
+        $isAdmin = $this->getAdmin();
         try{
          $this->open_UserConecction();  
          $stmt = $this->prepare("CREATE USER :data1@'localhost' IDENTIFIED BY :data2;");
@@ -256,6 +318,22 @@ class User extends PDO{
                throw new Exception($arr[2]);     
                 } 
         }
+        
+        if($isAdmin == 1){
+         $stmt = $this->prepare("GRANT ALL PRIVILEGES ON *.* TO :data1@'localhost' WITH GRANT OPTION;");  
+        $stmt->bindValue(':data1', $username);
+        $stmt->execute();
+          if ($stmt->errorCode()) {
+               $arr = $stmt->errorInfo();
+               if ($arr[0]!='00000'){
+        $stmt = $this->prepare("DROP USER :data1@'localhost';"); //Si no pudo dar privilegios el usuario se borra automaticamente.
+        $stmt->bindValue(':data1', $username);
+        $stmt->execute();
+        throw new Exception($arr[2]);     
+                } 
+                                   }    
+        }else{
+               
         if($tnoticias!=''){
         $stmt = $this->prepare("GRANT ".$tnoticias." ON sitio.news TO :data1@'localhost';");  
         $stmt->bindValue(':data1', $username);
@@ -263,11 +341,13 @@ class User extends PDO{
           if ($stmt->errorCode()) {
                $arr = $stmt->errorInfo();
                if ($arr[0]!='00000'){
-               throw new Exception($arr[2]);     
+        $stmt = $this->prepare("DROP USER :data1@'localhost';"); //Si no pudo dar privilegios el usuario se borra automaticamente.
+        $stmt->bindValue(':data1', $username);
+        $stmt->execute();
+        throw new Exception($arr[2]);     
                 } 
                                    }
-        }
-
+        }                      
        if($tpaginas!=''){
         $stmt = $this->prepare("GRANT ".$tpaginas." ON sitio.pages TO :data1@'localhost';");  
         $stmt->bindParam(':data1', $username);
@@ -275,31 +355,67 @@ class User extends PDO{
           if ($stmt->errorCode()) {
                $arr = $stmt->errorInfo();
                if ($arr[0]!='00000'){
-               throw new Exception($arr[2]);     
+        $stmt = $this->prepare("DROP USER :data1@'localhost';"); //Si no pudo dar privilegios el usuario se borra automaticamente.
+        $stmt->bindValue(':data1', $username);
+        $stmt->execute();          
+        throw new Exception($arr[2]);     
                 } 
                                    }
         }
         
-        $stmt = $this->prepare("INSERT INTO sitio.users(username,user_nickname,user_registertime,user_status,users_ID) VALUES(:data1, :data2, :data3, :data4, :data5);");
+        $stmt = $this->prepare("GRANT SELECT ON mysql.user TO :data1@'localhost';");  
+        $stmt->bindParam(':data1', $username);
+        $stmt->execute();
+          if ($stmt->errorCode()) {
+               $arr = $stmt->errorInfo();
+               if ($arr[0]!='00000'){
+        $stmt = $this->prepare("DROP USER :data1@'localhost';"); //Si no pudo dar privilegios el usuario se borra automaticamente.
+        $stmt->bindValue(':data1', $username);
+        $stmt->execute();          
+        throw new Exception($arr[2]);     
+                } 
+                                   }
+                                   
+        $stmt = $this->prepare("GRANT SELECT ON sitio.users TO :data1@'localhost';");  
+        $stmt->bindParam(':data1', $username);
+        $stmt->execute();
+          if ($stmt->errorCode()) {
+               $arr = $stmt->errorInfo();
+               if ($arr[0]!='00000'){
+        $stmt = $this->prepare("DROP USER :data1@'localhost';"); //Si no pudo dar privilegios el usuario se borra automaticamente.
+        $stmt->bindValue(':data1', $username);
+        $stmt->execute();          
+        throw new Exception($arr[2]);     
+                } 
+                                   } 
+                                   
+        
+        
+          }
+        $stmt = $this->prepare("INSERT INTO sitio.users(username,user_nickname,user_registertime,user_status,users_ID,isAdmin) VALUES(:data1, :data2, :data3, :data4, :data5, :data6);");
         $stmt->bindParam(':data1', $username);
         $stmt->bindParam(':data2', $nickname);
         $stmt->bindParam(':data3', $registertime);
         $stmt->bindParam(':data4', $status);
         $stmt->bindParam(':data5', $_SESSION['user_id']);
+        $stmt->bindParam(':data6', $isAdmin, PDO::PARAM_INT);
         $stmt->execute();
           if ($stmt->errorCode()) {
                $arr = $stmt->errorInfo();
                if ($arr[0]!='00000'){
-               throw new Exception($arr[2]);     
+        $stmt = $this->prepare("DROP USER :data1@'localhost';"); //Si no pudo crear usuario en BD sitio, se borra de mysql el usuario
+        $stmt->bindValue(':data1', $username);
+        $stmt->execute();                     
+        throw new Exception($arr[2]);     
                 }else{
                     return true;
                 }
-                                   }
-
+                                   }  
         /* $this->exec("CREATE USER 'admin'@'localhost';") or die(print_r($this->errorInfo(),true));*/
         }catch(Exception $e){
-             echo $e->getMessage();
-        }
+             $this->close_conecction();
+             echo $e->getMessage()."\n";
+                            }
         }
      /*function obtenerNickname() {  
         $tables = array();

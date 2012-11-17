@@ -1,7 +1,7 @@
 <?php
 include('class/users.php');
 $per_page = 10; 
-$users = new User(null, null, null, null, null, null);
+$users = new User(null, null, null, null, null, null, null, null, null);
 $paged = $users->getAllUsersPagination($per_page);
 /*
  * To change this template, choose Tools | Templates

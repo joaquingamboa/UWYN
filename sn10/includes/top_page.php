@@ -5,25 +5,15 @@
 <title>Mi pagina modular Parte 2</title>
 <link href="style.css" rel="stylesheet" type="text/css" />
 <link href="tables.css" rel="stylesheet" type="text/css" />	
-	
-<!-- jQuery and jQuery UI -->
-   <!-- jQuery and jQuery UI (REQUIRED) -->
-
-    <!-- elRTE CSS (REQUIRED)-->
-
-
-
 <?php
 if ($_SERVER['REQUEST_URI']=="/modular/sn10/index.php?page=add-news" || substr($_SERVER['REQUEST_URI'],0,38)=="/modular/sn10/index.php?page=edit-news"){
-echo "
-<script type=\"text/javascript\" src=\"js/jquery-1.8.2.min.js\"></script>  
+echo "<script type=\"text/javascript\" src=\"js/jquery-1.8.2.min.js\"></script>  
 <script type=\"text/javascript\" src=\"js/jquery-ui-1.9.1.custom/js/jquery-ui-1.9.1.custom.min.js\"></script>
 <link href=\"css/smoothness/jquery-ui-1.9.1.custom.min.css\" rel=\"stylesheet\" type=\"text/css\" />
 <script type=\"text/javascript\" src=\"js/jquery-ui-timepicker-addon.js\"></script>
 <script type=\"text/javascript\" src=\"editor/nicEdit.js\"></script>
 <script type=\"text/javascript\" src=\"js/functions.js\"></script>
 <script type=\"text/javascript\" src=\"js/jquery.validate.js\"></script>";}?>
-
 <?php if ($_SERVER['REQUEST_URI']=="/modular/sn10/index.php?page=add-page"){
 echo "<link rel=\"stylesheet\" href=\"css/smoothness/jquery-ui-1.8.13.custom.css\" type=\"text/css\" media=\"screen\" charset=\"utf-8\">
 <link rel=\"stylesheet\" href=\"css/elrte.min.css\" type=\"text/css\" media=\"screen\" charset=\"utf-8\">
@@ -84,24 +74,19 @@ $(\"#add-page\").submit(function(e) {
 				});
     }
 })
-
-		})
+		});
 	</script>";
 }?>
-
 <?php if ($_SERVER['REQUEST_URI']=="/modular/sn10/index.php?page=noticias" || $_SERVER['REQUEST_URI']=="/modular/sn10/index.php?page=usuarios"){
 echo "<script type=\"text/javascript\" src=\"js/jquery-1.8.2.min.js\"></script>
 <script type=\"text/javascript\" src=\"js/pagination.js\"></script>";
-
 }?> 
-    
 <?php if ($_SERVER['REQUEST_URI']=="/modular/sn10/index.php?page=add-user"){
 echo "<script type=\"text/javascript\" src=\"js/jquery-1.8.2.min.js\"></script>
 <script type=\"text/javascript\" src=\"js/validateUserManagement.js\"></script>
 <script type=\"text/javascript\" src=\"js/jquery.validate.js\"></script>";
 
 }?>     
-
 <?php if ($_SERVER['REQUEST_URI']=="/modular/sn10/index.php?page=files-management") {
 echo "<link rel=\"stylesheet\" href=\"css/smoothness/jquery-ui-1.8.13.custom.css\" type=\"text/css\" media=\"screen\" charset=\"utf-8\">
 <script src=\"js/jquery-1.7.2.min.js\" type=\"text/javascript\" charset=\"utf-8\"></script>
