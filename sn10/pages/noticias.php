@@ -1,4 +1,5 @@
 <?php
+if (isset($_SESSION['user_id'])){
 include('class/news.php');
 $per_page = 10; 
 $news = new News(null, null, null, null, null, null, null, null, null, null, null, null, null);
@@ -23,5 +24,7 @@ $paged = $news->getAllNewsPagination($per_page);
 	</ul>	       
             
 </div>              
-            
+<?php
+}
+?>
        

@@ -1,9 +1,5 @@
 <?php
-
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+if (isset($_SESSION['user_id'])){
 ?>
 <h2 style="text-align:center;font-size-adjust: 0.5;">Agregar nuevo Usuario</h2>
 <form action="modules/processuser.php" method="post" name="nuser" id="nuser">
@@ -64,4 +60,7 @@
         </tr>
     </table>
 </div>  
-</form>     
+</form>
+<?php
+}
+?>

@@ -89,8 +89,7 @@ function updateNews(){
 function permLinkUsed($value){
          $noticia = new News(null,null,null,$value,null,null,null,null,null,null,null,null,null);
          $cont = $noticia->getUrlUse();
-         return $cont;
-        
+         return $cont;   
 								}                                                             
                                                                 
 

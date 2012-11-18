@@ -135,23 +135,137 @@ class User extends PDO{
         $this->status = $status;      
     }
     
-    
-    function borrarUsuarioPorId(){
+    function verificarRelacionAEliminar(){
     $iduser = $this->getId();
     $username = $this->getUsername();
     try{
+    if($username == 'admin'){
+       $url="http://localhost/modular/sn10/index.php?page=usuarios";
+       $comando = "<script>alert(\"El usuario no puede ser Eliminado\");</script><script>window.setTimeout('window.location=".chr(34).$url.chr(34).";',".'1000'.");</script>";
+       throw new Exception($comando);     
+                            }        
     $this->open_UserConecction();
-    $stmt = $this->prepare("SELECT t1.* FROM sitio.users t1 INNER JOIN mysql.user t2 ON t1.username=t2.User WHERE t2.User = :data1;");
+    $stmt = $this->prepare("SELECT t1.* FROM sitio.users t1 INNER JOIN mysql.user t2 ON t1.username=t2.User WHERE t2.User = :data1 AND t2.Host='localhost';");
     $stmt->bindValue(':data1', $username);
     $stmt->execute();
     $count =  $stmt->rowCount();
-    $this->open_UserConecction();
-    if($count==1){
-         if($username == 'admin'){
-                $url="http://localhost/modular/sn10/index.php?page=usuarios";
-                $comando = "<script>alert(\"El usuario no puede ser Eliminado\");</script><script>window.setTimeout('window.location=".chr(34).$url.chr(34).";',".'1000'.");</script>";
-               throw new Exception($comando);     
-                                 }
+              if ($stmt->errorCode()) {
+               $arr = $stmt->errorInfo();
+                 if ($arr[0]!='00000'){
+                        throw new Exception($arr[2]);     
+                                       } 
+                                    }
+    if($count == 1){
+    $stmt = $this->prepare("SELECT * FROM news where news_author = :data1;");
+    $stmt->bindValue(':data1', $iduser, PDO::PARAM_INT);
+    $stmt->execute();
+    $contador1 = $stmt->rowCount();
+              if ($stmt->errorCode()) {
+               $arr = $stmt->errorInfo();
+                 if ($arr[0]!='00000'){
+                        throw new Exception($arr[2]);     
+                                       } 
+                                    }
+    $stmt = $this->prepare("SELECT * FROM news where news_usermodified = :data1;");
+    $stmt->bindValue(':data1', $iduser, PDO::PARAM_INT);
+    $stmt->execute();
+    $contador2 = $stmt->rowCount();
+              if ($stmt->errorCode()) {
+               $arr = $stmt->errorInfo();
+                 if ($arr[0]!='00000'){
+                        throw new Exception($arr[2]);     
+                                       } 
+                                    }
+    $stmt = $this->prepare("SELECT * FROM pages where page_author = :data1;");
+    $stmt->bindValue(':data1', $iduser, PDO::PARAM_INT);
+    $stmt->execute();
+    $contador3 = $stmt->rowCount();
+              if ($stmt->errorCode()) {
+               $arr = $stmt->errorInfo();
+                 if ($arr[0]!='00000'){
+                        throw new Exception($arr[2]);     
+                                       } 
+                                    }
+    $stmt = $this->prepare("SELECT * FROM pages WHERE user_mod = :data1;");
+    $stmt->bindValue(':data1', $iduser, PDO::PARAM_INT);
+    $stmt->execute();
+    $contador4 = $stmt->rowCount();
+              if ($stmt->errorCode()) {
+               $arr = $stmt->errorInfo();
+                 if ($arr[0]!='00000'){
+                        throw new Exception($arr[2]);     
+                                       } 
+                                    } 
+    if($contador1 >= 1 || $contador2 >= 1 || $contador3 >= 1 || $contador4 >= 1){
+    $url="http://localhost/modular/sn10/index.php?page=pasarAUser&IdAElim=$iduser&username=$username";
+    $comando = "<script>window.setTimeout('window.location=".chr(34).$url.chr(34).";',".'1000'.");</script>";    
+    return $comando;   
+    }else{
+      $this->borrarUsuarioPorId(NULL);
+    }
+    
+    }
+   
+    }catch(Exception $e){
+           echo $e->getMessage();  
+    }
+    
+    }
+    
+    
+    function borrarUsuarioPorId($idTPass){
+    $username = $this->getUsername();
+    $iduser = $this->getId();
+    $TPass = $idTPass;
+    try{  
+    if($username == 'admin'){
+       $url="http://localhost/modular/sn10/index.php?page=usuarios";
+       $comando = "<script>alert(\"El usuario no puede ser Eliminado\");</script><script>window.setTimeout('window.location=".chr(34).$url.chr(34).";',".'1000'.");</script>";
+       throw new Exception($comando);    
+                            }                                                                
+    $this->open_UserConecction();                        
+    if($idTPass != NULL){
+    $stmt = $this->prepare("UPDATE news SET news_author = :data2 WHERE news_author = :data1;");
+    $stmt->bindValue(':data1', $iduser, PDO::PARAM_INT);
+    $stmt->bindValue(':data2', $TPass, PDO::PARAM_INT);
+    $stmt->execute(); 
+          if ($stmt->errorCode()) {
+               $arr = $stmt->errorInfo();
+                 if ($arr[0]!='00000'){
+                        throw new Exception($arr[2]);     
+                                       } 
+                                    }
+    $stmt = $this->prepare("UPDATE news SET news_usermodified = :data2 WHERE news_usermodified = :data1;");
+    $stmt->bindValue(':data1', $iduser, PDO::PARAM_INT);
+    $stmt->bindValue(':data2', $TPass, PDO::PARAM_INT);
+    $stmt->execute(); 
+          if ($stmt->errorCode()) {
+               $arr = $stmt->errorInfo();
+                 if ($arr[0]!='00000'){
+                        throw new Exception($arr[2]);     
+                                       } 
+                                    } 
+    $stmt = $this->prepare("UPDATE pages SET page_author = :data2 WHERE page_author = :data1;");
+    $stmt->bindValue(':data1', $iduser, PDO::PARAM_INT);
+    $stmt->bindValue(':data2', $TPass, PDO::PARAM_INT);
+    $stmt->execute(); 
+          if ($stmt->errorCode()) {
+               $arr = $stmt->errorInfo();
+                 if ($arr[0]!='00000'){
+                        throw new Exception($arr[2]);     
+                                       } 
+                                    }
+    $stmt = $this->prepare("UPDATE pages SET user_mod = :data2 WHERE user_mod = :data1;");
+    $stmt->bindValue(':data1', $iduser, PDO::PARAM_INT);
+    $stmt->bindValue(':data2', $TPass, PDO::PARAM_INT);
+    $stmt->execute(); 
+          if ($stmt->errorCode()) {
+               $arr = $stmt->errorInfo();
+                 if ($arr[0]!='00000'){
+                        throw new Exception($arr[2]);  
+                                       } 
+                                    }                                 
+    }                         
     $stmt = $this->prepare("DELETE FROM sitio.users WHERE users.ID = :data1");
     $stmt->bindValue(':data1', $iduser);
     $stmt->execute(); 
@@ -170,17 +284,19 @@ class User extends PDO{
                          throw new Exception($arr[2]);     
                                              } 
                                        }
+                                       
       $url="http://localhost/modular/sn10/index.php?page=usuarios";
       $comando = "<script>alert(\"El usuario Fue Eliminado\");</script><script>window.setTimeout('window.location=".chr(34).$url.chr(34).";',".'1000'.");</script>";                            
-      echo $comando;                                  
-                }    
+      echo $comando;  
+      
             }catch(Exception $e){
                $rsp = $e->getMessage();
                $url="http://localhost/modular/sn10/index.php?page=usuarios";
                $comando = "<script>alert(\"$rsp\");</script><script>window.setTimeout('window.location=".chr(34).$url.chr(34).";',".'1000'.");</script>";                            
                echo $comando;
-                                 }                               
-    }
+                                 }     
+      }
+   
     
     
     function verifica_UserEnUso(){
@@ -283,6 +399,25 @@ class User extends PDO{
                $cont++;
             }
  
+         $this->close_conecction();
+         return $usuarios;            
+        }
+        
+        public function getUsersTPass($where){
+        $id = $where;
+        $this->open_UserConecction();
+        $cont=0;    
+        $stmt = $this->prepare("SELECT ID,user_nickname
+                                FROM users WHERE ID!= :data1");
+        $stmt->bindValue(':data1', $id);
+        $stmt->execute();
+        $usuarios=array();     
+         while($fila = $stmt->fetch()){
+               $usuario = new User($fila['ID'],null,null,$fila['user_nickname'],null,
+               null,null,null,null);
+               $usuarios[$cont]=$usuario;
+               $cont++;
+            }
          $this->close_conecction();
          return $usuarios;            
         }

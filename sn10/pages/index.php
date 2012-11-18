@@ -1,4 +1,6 @@
-
+<?php
+if (isset($_SESSION['user_id'])){
+?>
 <div id="column">
 
 <div id="left_content">
@@ -20,7 +22,8 @@ Maecenas accumsan, diam ut dignissim pretium, est diam tempus sapien, sed faucib
 Vestibulum et orci? Sed est pede, porta in, interdum et, sagittis sit amet, mauris. Suspendisse at neque at arcu mattis aliquet. Vivamus erat! In bibendum. Fusce ultricies vehicula urna. Cras felis velit, convallis vitae, accumsan vitae, euismod ac, tortor. Donec pellentesque, orci ac aliquet placerat, lectus lectus vulputate tellus, quis lacinia nisi lorem nec justo. Suspendisse nulla ipsum, porta sed, feugiat vestibulum, venenatis vel, sapien. Praesent sollicitudin lectus sed ipsum. Nulla lorem. Suspendisse lacus massa, porta placerat, malesuada et, sodales in, libero. Cras dapibus, magna rutrum pellentesque adipiscing, mauris nisi tempus pede, sit amet interdum arcu lacus sit amet eros. Proin fringilla metus sed dolor. Mauris pellentesque tristique nibh. Donec vitae sapien vitae mauris posuere pellentesque. Nulla mattis laoreet leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
 </p>
 </div>
-
-
-
 </div>
+
+<?php
+}
+?>

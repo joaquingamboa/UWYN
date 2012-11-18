@@ -1,4 +1,5 @@
 <?php
+if (isset($_SESSION['user_id'])){
 include('class/users.php');
 $per_page = 10; 
 $users = new User(null, null, null, null, null, null, null, null, null);
@@ -28,3 +29,6 @@ $paged = $users->getAllUsersPagination($per_page);
     
     
 </div>
+<?php
+}
+?>

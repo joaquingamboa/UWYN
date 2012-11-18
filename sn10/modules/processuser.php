@@ -53,13 +53,23 @@ if($from =='register'){
 
 function deleteUserById($id,$username){
 $usuario = new User($id, $username, null, null, null, null, null, null, null);  
-$usuario->borrarUsuarioPorId();
+//$usuario->borrarUsuarioPorId();
+$rsp = $usuario->verificarRelacionAEliminar();
+echo $rsp;
+}
+
+function deleteFinal(){
+$usuario = new User($_POST['IdAElim'], $_POST['username'], null, null, null, null, null, null, null);
+$IdTPass = $_POST['IdTPass'];
+$usuario->borrarUsuarioPorId($IdTPass);
 }
 
 if($_POST){
         switch($_POST["tarea"]){
                 case "add-user":registrarUser();
-                break;			
+                break;
+                case "finalDelete":deleteFinal();
+                break;
         }
     }
 
