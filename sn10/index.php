@@ -11,7 +11,7 @@ if (isset($_SESSION['user_id'])){
     <div id="header">    	
     	<?php include("includes/header.php"); ?>        
     </div>  
-    <div id="menu" style="font-size-adjust: 0.4;">
+    <div id="menu">
     		<?php include("includes/menu.php"); ?>
     </div>	
     <div id="content">

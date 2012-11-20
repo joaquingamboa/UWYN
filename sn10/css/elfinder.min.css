@@ -6,20 +6,13 @@
  * Copyright 2009-2012, Studio 42
  * Licensed under a 3 clauses BSD license
  */
-.elfinder-dialog-resize{margin-top:.3em
-}
-.elfinder-resize-type{float:left;margin-bottom:.4em
-}
-.elfinder-resize-control{padding-top:3em
-}
-.elfinder-resize-control input[type=text]{border:1px solid #aaa;text-align:right
-}
-.elfinder-resize-preview{width:400px;height:400px;padding:10px;background:#fff;border:1px solid #aaa;float:right;position:relative;overflow:auto
-}
-.elfinder-resize-handle{position:relative
-}
-.elfinder-resize-handle-hline,.elfinder-resize-handle-vline{position:absolute;background-image:url("../img/crop.gif")
-}
+.elfinder-dialog-resize{margin-top:.3em}
+.elfinder-resize-type{float:left;margin-bottom:.4em}
+.elfinder-resize-control{padding-top:3em}
+.elfinder-resize-control input[type=text]{border:1px solid #aaa;text-align:right}
+.elfinder-resize-preview{width:400px;height:400px;padding:10px;background:#fff;border:1px solid #aaa;float:right;position:relative;overflow:auto}
+.elfinder-resize-handle{position:relative}
+.elfinder-resize-handle-hline,.elfinder-resize-handle-vline{position:absolute;background-image:url("../img/crop.gif")}
 .elfinder-resize-handle-hline{width:100%;height:1px!important;background-repeat:repeat-x
 }
 .elfinder-resize-handle-vline{width:1px!important;height:100%;background-repeat:repeat-y
@@ -178,7 +171,7 @@
 }
 .elfinder-cwd-wrapper-list{padding:0
 }
-.elfinder-cwd{position:relative;font-size:.7em;cursor:default;padding:0;margin:0;-moz-user-select:-moz-none;-khtml-user-select:none;-webkit-user-select:none;user-select:none
+.elfinder-cwd{position:relative;/*font-size:.7em;*/cursor:default;padding:0;margin:0;-moz-user-select:-moz-none;-khtml-user-select:none;-webkit-user-select:none;user-select:none
 }
 .elfinder .elfinder-cwd-wrapper.elfinder-droppable-active{padding:0;border:2px solid #8cafed
 }
@@ -408,7 +401,7 @@
 }
 .elfinder-rtl .dialogelfinder-drag-close{left:12px
 }
-.elfinder .elfinder-navbar{width:230px;padding:3px 5px;font-size:.72em;background-image:none;border-top:0 solid;border-bottom:0 solid;overflow:auto;display:none;position:relative;-moz-user-select:none;-khtml-user-select:none;-webkit-user-select:none;user-select:none
+.elfinder .elfinder-navbar{width:230px;padding:3px 5px;/*font-size:.72em;*/background-image:none;border-top:0 solid;border-bottom:0 solid;overflow:auto;display:none;position:relative;-moz-user-select:none;-khtml-user-select:none;-webkit-user-select:none;user-select:none
 }
 .elfinder-ltr .elfinder-navbar{float:left;border-left:0 solid
 }
@@ -548,8 +541,7 @@ embed.elfinder-quicklook-preview-audio{height:30px;background:0 0
 }
 .elfinder-statusbar a{text-decoration:none
 }
-.elfinder-statusbar div{font-size:.7em
-}
+.elfinder-statusbar div{/*font-size:.7em*/ font-size:9px}
 .elfinder-path{max-width:30%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;-o-text-overflow:ellipsis
 }
 .elfinder-ltr .elfinder-path{float:left

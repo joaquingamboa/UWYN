@@ -65,7 +65,7 @@ if(count($usuarios)) {
     if($users->getStatus()==1){
         echo "Activo";
     }elseif ($users->getStatus()==0){
-        echo "Deshabilitado";            
+        echo "Bloqueado";            
                 }             
     ?>
 </td>

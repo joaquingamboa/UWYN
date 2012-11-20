@@ -81,7 +81,7 @@ $(\"#add-page\").submit(function(e) {
 echo "<script type=\"text/javascript\" src=\"js/jquery-1.8.2.min.js\"></script>
 <script type=\"text/javascript\" src=\"js/pagination.js\"></script>";
 }?> 
-<?php if ($_SERVER['REQUEST_URI']=="/modular/sn10/index.php?page=add-user"){
+<?php if ($_SERVER['REQUEST_URI']=="/modular/sn10/index.php?page=add-user" || substr($_SERVER['REQUEST_URI'],0,38)=="/modular/sn10/index.php?page=edit-user"){
 echo "<script type=\"text/javascript\" src=\"js/jquery-1.8.2.min.js\"></script>
 <script type=\"text/javascript\" src=\"js/validateUserManagement.js\"></script>
 <script type=\"text/javascript\" src=\"js/jquery.validate.js\"></script>";

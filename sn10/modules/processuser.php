@@ -22,7 +22,7 @@ $registertime=date("Y-m-d H:i:s");
 if($usuarioEU == 'false' || $nicknameEU == 'false'){
     exit("USUARIO O NICKNAME EN USO");
 }
-$creacion = new User(null, $usuario, $password, $nickname, $registertime, $status,$tnoticias,$tpaginas, $admin);
+$creacion = new User(null, $usuario, $password, $nickname, $registertime, $status,$tpaginas,$tnoticias, $admin);
 $rsp = $creacion->addUser();
 if($rsp == true){
    echo "USUARIO AGREGADO CON EXITO"; 
@@ -64,11 +64,32 @@ $IdTPass = $_POST['IdTPass'];
 $usuario->borrarUsuarioPorId($IdTPass);
 }
 
+function editarUser(){
+$id = $_POST['idTEdit'];
+$admin = $_POST['administrador'];
+$tnoticias = $_POST['tnoticias'];
+$tpaginas = $_POST['tpaginas'];
+$usuario = $_POST['usuario'];
+$nickname = $_POST['nombredepila'];
+$password = $_POST['contrasena'];
+$status = $_POST['estado'];    
+$usuario = new User($id, $usuario, $password, $nickname, null, $status, $tpaginas, $tnoticias, $admin);
+$rsp = $usuario->editUserById();
+if($rsp == true){
+   echo "USUARIO MODIFICADO CON EXITO"; 
+        }else{
+        echo "ERROR AL MODIFICAR USUARIO";
+        }
+}
+
+
 if($_POST){
         switch($_POST["tarea"]){
                 case "add-user":registrarUser();
                 break;
                 case "finalDelete":deleteFinal();
+                break;
+                case "edit-user":editarUser();
                 break;
         }
     }

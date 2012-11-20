@@ -135,6 +135,207 @@ class User extends PDO{
         $this->status = $status;      
     }
     
+    
+    function editUserById(){       
+    $this->open_UserConecction();
+    $id = $this->getId();
+    $username = $this->getUsername();
+    $status = $this->getStatus();
+    $tnoticias = $this->getTnoticias();
+    $tpaginas = $this->getTpaginas();
+    try{
+        $stmt = $this->prepare("UPDATE SITIO.users set user_status = :data1 WHERE ID=:data2;");  
+        $stmt->bindValue(':data1', $status, PDO::PARAM_INT);
+        $stmt->bindValue(':data2', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        if ($stmt->errorCode()) {
+               $arr = $stmt->errorInfo();
+               if ($arr[0]!='00000'){   
+                    throw new Exception($arr[2]);     
+                } 
+                                   }      
+        $stmt = $this->prepare("SELECT isAdmin FROM sitio.users where username=:data1;");
+        $stmt->bindValue(':data1', $username);
+        $stmt->execute();
+        $result = $stmt->fetchObject();
+        $isAdminOld = $result->isAdmin;      
+        if($isAdminOld == 1){
+        $stmt = $this->prepare("REVOKE ALL PRIVILEGES ON *.* FROM :data1@'localhost';");
+        $stmt->bindValue(':data1', $username);
+        $stmt->execute();
+         if ($stmt->errorCode()) {
+             $arr = $stmt->errorInfo();
+             if ($arr[0]!='00000'){
+             throw new Exception($arr[2]);     
+                                    } 
+                                   }
+        }else{               
+        if($isAdminOld == 0){
+        $stmt = $this->prepare("SELECT Table_priv FROM MYSQL.tables_priv where Host='localhost' and  User=:data1 and Db='sitio' and Table_name='news';");
+        $stmt->bindValue(':data1', $username);
+        $stmt->execute();
+        $count =  $stmt->rowCount();        
+        if($count == 1){
+        $stmt = $this->prepare("REVOKE SELECT, INSERT, UPDATE, DELETE on sitio.news FROM :data1@'localhost';");
+        $stmt->bindValue(':data1', $username);
+        $stmt->execute();
+         if ($stmt->errorCode()) {
+             $arr = $stmt->errorInfo();
+             if ($arr[0]!='00000'){
+             throw new Exception($arr[2]);     
+                                    } 
+                                   }
+        }
+        $stmt = $this->prepare("SELECT Table_priv FROM MYSQL.tables_priv where Host='localhost' and  User=:data1 and Db='sitio' and Table_name='pages';");
+        $stmt->bindValue(':data1', $username);
+        $stmt->execute();
+        $count =  $stmt->rowCount();        
+        if($count == 1){
+        $stmt = $this->prepare("REVOKE SELECT, INSERT, UPDATE, DELETE on sitio.pages FROM :data1@'localhost';");
+        $stmt->bindValue(':data1', $username);
+        $stmt->execute();
+         if ($stmt->errorCode()) {
+             $arr = $stmt->errorInfo();
+             if ($arr[0]!='00000'){
+             throw new Exception($arr[2]);     
+                                    } 
+                                   }
+        }     
+        }
+        }
+        
+        $isAdmin = $this->getAdmin();
+        if($isAdmin == 1){           
+        $stmt = $this->prepare("GRANT ALL PRIVILEGES ON *.* TO :data1@'localhost' WITH GRANT OPTION;");  
+        $stmt->bindValue(':data1', $username);
+        $stmt->execute();
+          if ($stmt->errorCode()) {
+               $arr = $stmt->errorInfo();
+               if ($arr[0]!='00000'){   
+                    throw new Exception($arr[2]);     
+                } 
+                                   }                              
+        }else{   
+            
+        if($tnoticias!=''){
+        $stmt = $this->prepare("GRANT ".$tnoticias." ON sitio.news TO :data1@'localhost';");  
+        $stmt->bindValue(':data1', $username);
+        $stmt->execute();
+          if ($stmt->errorCode()) {
+               $arr = $stmt->errorInfo();
+               if ($arr[0]!='00000'){   
+                    throw new Exception($arr[2]);     
+                } 
+                                   }
+        }    
+        
+       if($tpaginas!=''){
+        $stmt = $this->prepare("GRANT ".$tpaginas." ON sitio.pages TO :data1@'localhost';");  
+        $stmt->bindParam(':data1', $username);
+        $stmt->execute();
+          if ($stmt->errorCode()) {
+               $arr = $stmt->errorInfo();
+               if ($arr[0]!='00000'){   
+                    throw new Exception($arr[2]);     
+                } 
+                                   }
+        }
+        
+        $stmt = $this->prepare("GRANT SELECT ON mysql.user TO :data1@'localhost';");  
+        $stmt->bindParam(':data1', $username);
+        $stmt->execute();
+          if ($stmt->errorCode()) {
+               $arr = $stmt->errorInfo();
+               if ($arr[0]!='00000'){   
+                    throw new Exception($arr[2]);     
+                } 
+                                   }
+                                   
+        $stmt = $this->prepare("GRANT SELECT ON sitio.users TO :data1@'localhost';");  
+        $stmt->bindParam(':data1', $username);
+        $stmt->execute();
+          if ($stmt->errorCode()) {
+               $arr = $stmt->errorInfo();
+               if ($arr[0]!='00000'){   
+                    throw new Exception($arr[2]);     
+                }              
+                                   }
+ 
+          } 
+        $stmt = $this->prepare("UPDATE SITIO.users set isAdmin = :data1 WHERE ID = :data2;");  
+        $stmt->bindValue(':data1', $isAdmin, PDO::PARAM_INT);
+        $stmt->bindValue(':data2', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        if ($stmt->errorCode()) {
+               $arr = $stmt->errorInfo();
+               if ($arr[0]!='00000'){   
+                    throw new Exception($arr[2]);     
+                } 
+                                   }     
+        return true;   
+        }catch(Exception $e){
+                    echo $e->getMessage();
+                                 }
+    
+                        
+    }
+    
+    
+    
+    
+    function getInfoTEdit(){
+    try{        
+        $this->open_UserConecction();
+        $id = $this->getId();
+        $stmt = $this->prepare("SELECT t1.*,t2.Password FROM sitio.users t1 INNER JOIN mysql.user t2 ON t1.username=t2.User WHERE t1.ID = :data1;");
+        $stmt->bindParam(':data1', $id);
+        $stmt->execute();
+        $count =  $stmt->rowCount();
+        $result = $stmt->fetchObject();
+           if ($count==1) {     
+              $this->setNickname($result->user_nickname);
+              $this->setAdmin($result->isAdmin);
+              $this->setStatus($result->user_status);
+              $this->setUsername($result->username);
+            if($this->getUsername()=='admin'){
+                   $url="http://localhost/modular/sn10/index.php?page=usuarios";
+                   $comando = "<script>alert(\"El usuario no puede ser Eliminado\");</script><script>window.setTimeout('window.location=".chr(34).$url.chr(34).";',".'1000'.");</script>";
+                   throw new Exception($comando);       
+                                              }else{
+        $stmt = $this->prepare("SELECT Table_priv FROM MYSQL.tables_priv where Host='localhost' and  User=:data1 and Db='sitio' and Table_name='news';");
+        $stmt->bindValue(':data1', $this->getUsername());
+        $stmt->execute();
+        $count =  $stmt->rowCount();
+        $result = $stmt->fetchObject();
+        if($count == 1){
+        $tnoticias = $result->Table_priv;
+        $rsp = explode(',', $tnoticias);
+        $this->setTnoticias($rsp);      
+        }         
+        
+        $stmt = $this->prepare("SELECT Table_priv FROM MYSQL.tables_priv where Host='localhost' and  User=:data1 and Db='sitio' and Table_name='pages';");
+        $stmt->bindValue(':data1', $this->getUsername());
+        $stmt->execute();
+        $count =  $stmt->rowCount();
+        $result = $stmt->fetchObject();
+        if($count == 1){
+        $tpaginas = $result->Table_priv;
+        $rsp2 = explode(',', $tpaginas);
+        $this->setTpaginas($rsp2);   
+        $this->close_conecction();
+        }  
+      
+                                              }
+           }else{    
+                    $url="http://localhost/modular/sn10/login.php";
+                    $comando = "<script>alert('Error al tratar de editar el Usuario');</script><script>window.setTimeout('window.location=".chr(34).$url.chr(34).";',".'1000'.");</script>";
+                    throw new Exception($comando);
+            } 
+                }catch(Exception $e){
+                  echo $e->getMessage();  
+                }
+    }
+    
     function verificarRelacionAEliminar(){
     $iduser = $this->getId();
     $username = $this->getUsername();
@@ -196,6 +397,7 @@ class User extends PDO{
                         throw new Exception($arr[2]);     
                                        } 
                                     } 
+    $this->close_conecction();                                 
     if($contador1 >= 1 || $contador2 >= 1 || $contador3 >= 1 || $contador4 >= 1){
     $url="http://localhost/modular/sn10/index.php?page=pasarAUser&IdAElim=$iduser&username=$username";
     $comando = "<script>window.setTimeout('window.location=".chr(34).$url.chr(34).";',".'1000'.");</script>";    
@@ -223,7 +425,8 @@ class User extends PDO{
        $comando = "<script>alert(\"El usuario no puede ser Eliminado\");</script><script>window.setTimeout('window.location=".chr(34).$url.chr(34).";',".'1000'.");</script>";
        throw new Exception($comando);    
                             }                                                                
-    $this->open_UserConecction();                        
+    $this->open_UserConecction();
+    $this->beginTransaction();
     if($idTPass != NULL){
     $stmt = $this->prepare("UPDATE news SET news_author = :data2 WHERE news_author = :data1;");
     $stmt->bindValue(':data1', $iduser, PDO::PARAM_INT);
@@ -284,13 +487,16 @@ class User extends PDO{
                          throw new Exception($arr[2]);     
                                              } 
                                        }
-                                       
+      $this->commit();
+      $this->close_conecction();
       $url="http://localhost/modular/sn10/index.php?page=usuarios";
       $comando = "<script>alert(\"El usuario Fue Eliminado\");</script><script>window.setTimeout('window.location=".chr(34).$url.chr(34).";',".'1000'.");</script>";                            
       echo $comando;  
       
             }catch(Exception $e){
                $rsp = $e->getMessage();
+               $this->rollBack();
+               $this->close_conecction();
                $url="http://localhost/modular/sn10/index.php?page=usuarios";
                $comando = "<script>alert(\"$rsp\");</script><script>window.setTimeout('window.location=".chr(34).$url.chr(34).";',".'1000'.");</script>";                            
                echo $comando;
@@ -523,9 +729,7 @@ class User extends PDO{
         throw new Exception($arr[2]);     
                 } 
                                    } 
-                                   
-        
-        
+ 
           }
         $stmt = $this->prepare("INSERT INTO sitio.users(username,user_nickname,user_registertime,user_status,users_ID,isAdmin) VALUES(:data1, :data2, :data3, :data4, :data5, :data6);");
         $stmt->bindParam(':data1', $username);
@@ -546,26 +750,15 @@ class User extends PDO{
                     return true;
                 }
                                    }  
-        /* $this->exec("CREATE USER 'admin'@'localhost';") or die(print_r($this->errorInfo(),true));*/
         }catch(Exception $e){
              $this->close_conecction();
              echo $e->getMessage()."\n";
                             }
         }
-     /*function obtenerNickname() {  
-        $tables = array();
-        $user_id = $this->getId();
-        $stmt = $this->prepare("SELECT user_nickname FROM users WHERE ID = :data1;");
-        $stmt->bindParam(':data1', $user_id);
-        $stmt->execute();
-        $count =  $stmt->rowCount();
-        $result = $stmt->fetchObject();
-       if ($count==1) {
-           $this->setNickname($result->user_nickname);
-                      }
-      
-                                 }
-*/
+        
+        function getTeditUser(){
+            
+        }
 
 }
 

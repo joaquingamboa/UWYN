@@ -1,9 +1,9 @@
 <?php
 if (isset($_SESSION['user_id'])){
 ?>
-<h2 style="text-align:center;font-size-adjust: 0.5;">Agregar nuevo Usuario</h2>
+<h2 style="text-align:center;">Agregar nuevo Usuario</h2>
 <form action="modules/processuser.php" method="post" name="nuser" id="nuser">
-<div class="centered" style="font-size-adjust: 0.4;">
+<div class="centered">
     <table class="lst centrado">
         <tr>
             <td style="width:150px;text-align:right;"><label  for="username">username:</label></td>
