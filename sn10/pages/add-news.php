@@ -10,7 +10,7 @@ if (isset($_SESSION['user_id'])){
 <td colspan="2"><input style="float:left" id="newstitle" name="newstitle" type="text" class="required"/></td>
 </tr>
 <tr>
-<td><label for="permalink">Link Permanente:<br /> http://localhost/modular/noticias/</label></td>
+<td><label for="permalink">Link Permanente:<br /><?php echo $_SERVER['HTTP_HOST'];?>/noticias/</label></td>
 <td><input id="permalink" name="permalink" type="text" style="background-color:#E5E5E5;" readonly="readonly" /></td>
 <td><button type="button" id="iremove" class="iremove"></button></td>
 </tr>

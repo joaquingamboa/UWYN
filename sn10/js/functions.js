@@ -52,7 +52,7 @@ $("#nnews").validate({
 			data:"&resumen="+area1+"&contenido="+area2+"&newstitle="+newstitle+"&url="+permalink+"&imageurl="+mininewsimage+"&estado="+estado+"&fecha="+tiempo+"&tarea=add-new",
 			success:function(msg){
 				alert(msg);
-				window.setTimeout('window.location="http://localhost/modular/sn10/index.php?page=noticias"',500)
+				window.setTimeout('window.location="index.php?page=noticias"',500)
 								}
 				});
 									 }
@@ -76,7 +76,7 @@ $("#enews").validate({
 			data:"&resumen="+area1+"&contenido="+area2+"&newstitle="+newstitle+"&url="+permalink+"&imageurl="+mininewsimage+"&estado="+estado+"&cpermalink="+cpermalink+"&fecha="+tiempo+"&tarea=edit-new",
 			success:function(msg){
 				alert(msg);
-				window.setTimeout('window.location="http://localhost/modular/sn10/index.php?page=noticias"',500)
+				window.setTimeout('window.location="index.php?page=noticias"',500)
 								}
 				});
 									 }

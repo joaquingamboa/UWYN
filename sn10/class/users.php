@@ -550,12 +550,12 @@ class User extends PDO{
             if ($username==NULL && $pass==NULL) {
                 // Verifica sesion
                 if (isset($_SESSION['user_id'])) {
-                $url="http://localhost/modular/sn10/index.php?page=index";
+                $url="index.php?page=index";
                 $comando = "<script>window.setTimeout('window.location=".chr(34).$url.chr(34).";',".'1000'.");</script>";
                 echo ($comando);
                 }else{
                         // Si no hay sesion regresa al login
-                header( "Location: http://localhost/modular/sn10/index.php" );
+                header( "Location: index.php" );
                     }
    
             //Si email o pass tienen algo verifica el usuario     
@@ -583,7 +583,7 @@ class User extends PDO{
             $_SESSION['isAdmin'] = $result->isAdmin;
        }else{
             // Si la clave es incorrecta
-                $url="http://localhost/modular/sn10/login.php";
+                $url="login.php";
                 $comando = "<script>window.setTimeout('window.location=".chr(34).$url.chr(34).";',".'1000'.");</script>";
                 echo ($comando);
         }
