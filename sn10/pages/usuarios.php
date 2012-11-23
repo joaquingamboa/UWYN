@@ -1,5 +1,5 @@
 <?php
-if (isset($_SESSION['user_id'])){
+if (isset($_SESSION['user_id']) && $_SESSION['isAdmin'] == 1){
 include('class/users.php');
 $per_page = 10; 
 $users = new User(null, null, null, null, null, null, null, null, null);
@@ -30,5 +30,7 @@ $paged = $users->getAllUsersPagination($per_page);
     
 </div>
 <?php
+}else{
+    echo "ACCESO RESTRINGIDO";
 }
 ?>

@@ -3,7 +3,7 @@ session_start();
 require('../class/users.php');
 function getUserLogin(){
     $username=$_POST['user'];
-    $password=$_POST['pass'];
+    $password=md5($_POST['pass']);
     $usuario = new User(null, $username, $password, null, null, null,null,null,null);
     $usuario->inicia(3600);   
 }

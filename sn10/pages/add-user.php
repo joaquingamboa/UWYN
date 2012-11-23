@@ -1,5 +1,5 @@
 <?php
-if (isset($_SESSION['user_id'])){
+if (isset($_SESSION['user_id']) && $_SESSION['isAdmin'] == 1){
 ?>
 <h2 style="text-align:center;">Agregar nuevo Usuario</h2>
 <form action="modules/processuser.php" method="post" name="nuser" id="nuser">
@@ -62,5 +62,7 @@ if (isset($_SESSION['user_id'])){
 </div>  
 </form>
 <?php
+}else{
+    echo "ACCESO RESTRINGIDO";
 }
 ?>

@@ -65,9 +65,7 @@ echo ($comando);
 </form>
 <?php 
                       }
-                       } else {
-                           echo "Ninguna noticia ingresada.";                          
-                              }      
-                            } 
+                       }                         
+                         } 
 ?>
 

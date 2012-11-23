@@ -1,7 +1,7 @@
 <?php
 session_start();
 require('../class/users.php');
-if(isset($_SESSION['user_id'])){
+if(isset($_SESSION['user_id']) && $_SESSION['isAdmin'] == 1){
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -13,7 +13,7 @@ $tnoticias = $_POST['tnoticias'];
 $tpaginas = $_POST['tpaginas'];
 $usuario = $_POST['usuario'];
 $nickname = $_POST['nombredepila'];
-$password = $_POST['contrasena'];
+$password = md5($_POST['contrasena']);
 $status = $_POST['estado'];
 $usuarioEU = getUsernameInUse($usuario, 'register');
 $nicknameEU = getNicknameInUse($nickname, 'register');
@@ -105,6 +105,8 @@ if($_GET){
                 break;
         }
     }
+}else{
+    echo "ACCESO RESTRINGIDO";
 }
 ?>
 

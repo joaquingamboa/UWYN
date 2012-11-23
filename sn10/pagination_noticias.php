@@ -86,10 +86,7 @@ if(count($noticias)) {
 </tr> 
 <?php
                                 }
-                       } else {
-                           echo "Ninguna noticia ingresada.";
-                           
-                           }      
+                       }     
                                 ?>
 
 </table>

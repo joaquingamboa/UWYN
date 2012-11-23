@@ -47,159 +47,155 @@ class News extends PDO{
 
                                 }
         
-        function open_UserConecction(){
-        try {
-            $dsn="mysql:dbname=".DB_NAME.";host=".DB_HOST;
-            $this->db = parent::__construct($dsn, $_SESSION['user_username'], $_SESSION['user_password']);
-        }catch (PDOException $e ) {
-            print "Error!: " . $e->getMessage() . "<br/>";
-            die();
-        }
-
-                                }
-
-        
         function close_conecction(){
             $this->db==null;
         }
 
                                        
                 
-                public function getNuserMod(){
-			return $this->nombre_usermod;
+        public function getNuserMod(){
+		return $this->nombre_usermod;
 		}
 
 		
-		public function setNuserMod($value){
-			$this->nombre_usermod=$value;
+	public function setNuserMod($value){
+		$this->nombre_usermod=$value;
 		}
 
                 
-		public function getNA(){
-			return $this->nombre_author;
+	public function getNA(){
+		return $this->nombre_author;
 		}
 
 		
-		public function setNA($value){
-			$this->nombre_author=$value;
+	public function setNA($value){
+		$this->nombre_author=$value;
 		}
 
                 
 	
-		public function getId(){
-			return $this->id;
+	public function getId(){
+		return $this->id;
 		}
 
 		
-		public function setId($value){
-			$this->id=$value;
+	public function setId($value){
+		$this->id=$value;
 		}
 
 		
-		public function getAuthor(){
-			return $this->author;
+	public function getAuthor(){
+		return $this->author;
 		}
 
 		
-		public function setAuthor($value){
-			$this->author=$value;
+	public function setAuthor($value){
+		$this->author=$value;
 		}
 
 		
-		public function getTitle(){
-			return $this->title;
+	public function getTitle(){
+		return $this->title;
 		}
 
 		
-		public function setTitle($value){
-			$this->title=$value;
+	public function setTitle($value){
+		$this->title=$value;
 		}
 
 		
-		public function getUrl(){
-			return $this->url;
+	public function getUrl(){
+		return $this->url;
 		}
 
 		
-		public function setUrl($value){
-			$this->url=$value;
+	public function setUrl($value){
+		$this->url=$value;
 		}
 
 		
-		public function getContent(){
-			return $this->content;
+	public function getContent(){
+		return $this->content;
 		}
 
 		
-		public function setContent($value){
-			$this->content=$value;
+	public function setContent($value){
+		$this->content=$value;
 		}
 
 		
-		public function getDate(){
-			return $this->date;
+	public function getDate(){
+		return $this->date;
 		}
 
 		
-		public function setDate($value){
-			$this->date=$value;
+	public function setDate($value){
+		$this->date=$value;
 		}
 
 		
-		public function getModified(){
-			return $this->modified;
+	public function getModified(){
+		return $this->modified;
 		}
 
 		
-		public function setModified($value){
-			$this->modified=$value;
+	public function setModified($value){
+		$this->modified=$value;
 		}
 
 		
-		public function getDescription(){
-			return $this->description;
+	public function getDescription(){
+		return $this->description;
 		}
 
 		
-		public function setDescription($value){
-			$this->description=$value;
+	public function setDescription($value){
+		$this->description=$value;
 		}
 
 		
-		public function getStatus(){
-			return $this->status;
+	public function getStatus(){
+		return $this->status;
 		}
 
 		
-		public function setStatus($value){
-			$this->status=$value;
+	public function setStatus($value){
+		$this->status=$value;
 		}
 
 		
-		public function getImg(){
-			return $this->img;
+	public function getImg(){
+		return $this->img;
 		}
 
 		
-		public function setImg($value){
-			$this->img=$value;
+	public function setImg($value){
+		$this->img=$value;
 		}
 
 		
-		public function getUserMod(){
-			return $this->usermod;
+	public function getUserMod(){
+		return $this->usermod;
 		}
 
 		
-		public function setUserMod($value){
-			$this->usermod=$value;
+	public function setUserMod($value){
+		$this->usermod=$value;
 		}
 
                 
 		
 	/************************ FUNCIONES ***********************************/
 	public function addNews(){
-            $this->open_UserConecction();
+            try{
+            $this->open_conecction();
+              $rsp = $this->verificarPrivilegio('Insert', 'NEWS'); 
+                if($rsp === false){
+                 $UPATH = "http://".$_SERVER['HTTP_HOST'];
+              $url = "$UPATH/sn10/index.php?page=noticias";
+              $comando = "No tienes privilegios para Insertar registros en la tabla noticias\n";  
+              throw new Exception($comando); 
+                }  
             $stmt = $this->prepare('INSERT INTO news (news_author, news_title, news_url, news_content, news_date, news_modified,
                                     news_description, news_usermodified, news_status, url_image)
                                     VALUES(:author, :title, :url, :content, :date, :modified, :description, :usermodified, :status, :image)');       
@@ -221,12 +217,16 @@ class News extends PDO{
             $count[1] = $stmt->errorInfo();
             $this->close_conecction();
 	    return $count;
+            }catch(Exception $e){
+                $this->close_conecction();
+                echo $e->getMessage();
+            }
 	}
 
         
         public function getUrlUse(){
         $url = $this->getUrl();
-        $this->open_UserConecction();   
+        $this->open_conecction();   
         $stmt = $this->prepare("SELECT COUNT(*) FROM news WHERE news_url = ?;");
         //$stmt->bindParam(':data1', $url);
         $stmt->execute(array($url));
@@ -238,7 +238,13 @@ class News extends PDO{
 
         
         public function getNews($start, $per_page){
-        $this->open_UserConecction();
+        $this->open_conecction();  
+        try{         
+        $rsp = $this->verificarPrivilegio('Select', 'NEWS'); 
+        if($rsp === false){
+          $comando = "No tienes privilegios para ver registros de la tabla noticias"; 
+          throw new Exception($comando); 
+        }  
         $cont=0;    
         $stmt = $this->prepare("SELECT t1.*, t2.user_nickname, t3.user_nickname as user_modificador 
                                 FROM news t1 INNER JOIN users t2 ON t1.news_author = t2.ID 
@@ -252,14 +258,17 @@ class News extends PDO{
                $noticias[$cont]=$noticia;
                $cont++;
             }
- 
          $this->close_conecction();
-         return $noticias;            
+         return $noticias;
+               }catch (Exception $e){
+                   $this->close_conecction();
+                   echo $e->getMessage();
+               }
         }
 
         
         public function getAllNewsPagination($per_page){
-        $this->open_UserConecction();
+        $this->open_conecction();
         $stmt = $this->prepare("SELECT * FROM news");
         $stmt->execute();
         $count = $stmt->rowCount();
@@ -267,10 +276,18 @@ class News extends PDO{
         }
 
         
-        public function getNewsById(){     
+        public function getNewsById(){ 
+            try{ 
+            $this->open_conecction();
+            $rsp = $this->verificarPrivilegio('Update', 'NEWS');
+            if($rsp === false){
+             $UPATH = "http://".$_SERVER['HTTP_HOST'];
+              $url = "$UPATH/sn10/index.php?page=noticias";
+              $comando = "<script>alert(\"No tienes privilegios para Actualizar registros de la tabla noticias\");window.setTimeout('window.location=".chr(34).$url.chr(34).";',".'500'.");</script>";  
+              throw new Exception("".$comando); 
+            }  
             $noticias=array();
             $cont=0;
-            $this->open_UserConecction();
             $id = $this->getId();
             $stmt = $this->prepare('SELECT * from news WHERE news_id = ? LIMIT 1');
             $stmt->execute(array($id));
@@ -282,26 +299,43 @@ class News extends PDO{
                 $cont++;
             }
             $this->close_conecction();
-            return $noticias;             
+            return $noticias;   
+            }catch(Exception $e){
+                echo $e->getMessage();
+            }
         }
  
         
         
         public function deleteNewsById(){
-        $this->open_UserConecction();
+        $this->open_conecction();
+        try{
+        $rsp = $this->verificarPrivilegio('Delete', 'NEWS');
+        if($rsp === false){
+          throw new Exception("<script>alert(\"No tienes privilegios para borrar registros de la tabla noticias.\");</script>"); 
+        }   
         $id = $this->getId();
         $stmt = $this->prepare("DELETE FROM news WHERE news_id = ?");
         $stmt->execute(array($id));
         $count = array();
         $count[0] = $stmt->rowCount();
-        $count[1] = $stmt->errorInfo();
+        if ($stmt->errorCode()) {
+                        $arr = $stmt->errorInfo();
+                            if ($arr[0]!='00000'){           
+                                 throw new Exception($arr[2]);     
+                             }
+                       }            
         $this->close_conecction();
         return $count;
+        }catch(Exception $e){
+            $this->close_conecction();
+            echo $e->getMessage();
+        }
         }
 
         
         public function updateNewsById($firsturl){ 
-        $this->open_UserConecction();
+        $this->open_conecction();
         $stmt = $this->prepare("UPDATE news SET news_title = :title, news_content = :content ,news_modified = :modified, 
                                news_date = :date, news_description = :description, news_status = :status, 
                                 url_image = :image , news_usermodified = :usermodified, news_url = :url
@@ -322,15 +356,39 @@ class News extends PDO{
         $this->close_conecction();
         return $count;
         }
+        
+        private function verificarPrivilegio($privilegio,$tabla){
+        $uid = $_SESSION['user_id'];
+        $stmt = $this->prepare("SELECT isAdmin FROM users WHERE ID = :data1;");
+        $stmt->bindValue(':data1', $uid);
+        $stmt->execute();
+        $result = $stmt->fetchObject();
+        $isAdmin = $result->isAdmin;
+        if ($isAdmin == 1) {
+            return true;
+        }else{
+        $stmt = $this->prepare("SELECT * FROM users_privileges WHERE user_ID = :data1 AND privilege = :data2 AND object = :data3");
+        $stmt->bindValue(':data1', $uid);
+        $stmt->bindValue(':data2', $privilegio);
+        $stmt->bindValue(':data3', $tabla);
+        $stmt->execute();
+        $count = $stmt->rowCount();
+                if ($stmt->errorCode()) {
+                        $arr = $stmt->errorInfo();
+                            if ($arr[0]!='00000'){           
+                                 throw new Exception($arr[2]);     
+                             }
+                       }
+        if($count!=1){
+            return false;      
+        }else{
+            return true;
+        }   
+               
+                }
+        }
 
-	/************************ FUNCIONES ***********************************/
-		
-		
-		
-	
-	
-	
-	
+	/************************ FUNCIONES ***********************************/	
 	
 }
 

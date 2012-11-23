@@ -1,5 +1,6 @@
 <?php
 if (isset($_SESSION['user_id'])){
+require('class/news.php');
 ?>
 <h2 style="text-align:center;">Agregar nueva noticia</h2>
 <form action="modules/processnews.php" method="post" name="nnews" id="nnews">

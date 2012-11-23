@@ -115,7 +115,7 @@ $("#euser").validate({
 			data:"&idTEdit="+id+"&usuario="+usuario+"&nombredepila="+nombredepila+"&contrasena="+contrasena+"&estado="+estado+"&tpaginas="+tpaginas+"&tnoticias="+tnoticias+"&administrador="+admin+"&tarea=edit-user",
 			success:function(msg){
 				alert(msg);
-				window.setTimeout('window.location="http://localhost/modular/sn10/index.php?page=usuarios"',500)
+				window.setTimeout('window.location="index.php?page=usuarios"',500)
 								}
 				});
 					 }
@@ -155,7 +155,7 @@ $("#nuser").validate({
 			data:"&usuario="+usuario+"&nombredepila="+nombredepila+"&contrasena="+contrasena+"&estado="+estado+"&tpaginas="+tpaginas+"&tnoticias="+tnoticias+"&administrador="+admin+"&tarea=add-user",
 			success:function(msg){
 				alert(msg);
-				window.setTimeout('window.location="http://localhost/modular/sn10/index.php?page=usuarios"',500)
+				window.setTimeout('window.location="index.php?page=usuarios"',500)
 								}
 				});
 					 }

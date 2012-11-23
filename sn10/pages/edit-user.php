@@ -1,11 +1,12 @@
 <?php
-if (isset($_SESSION['user_id'])){
+if (isset($_SESSION['user_id']) && $_SESSION['isAdmin'] == 1){
 require('class/users.php');
 $id = $_GET['id'];
 $usuario = new User($id, null, null, null, null, null, null, null, null);
 $usuario->getInfoTEdit();
 $tnoticias = $usuario->getTnoticias();
 $tpaginas = $usuario->getTpaginas();
+if ($usuario->getUsername()!='admin'){
 ?>
 <h2 style="text-align:center;">Editar Datos Usuario</h2>
 <form action="modules/processuser.php" method="post" name="euser" id="euser">
@@ -65,5 +66,8 @@ $tpaginas = $usuario->getTpaginas();
 </div>  
 </form>
 <?php
+}
+}else{
+    echo "ACCESO RESTRINGIDO";
 }
 ?>

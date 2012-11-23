@@ -1,5 +1,5 @@
 <?php
-if (isset($_SESSION['user_id'])){
+if (isset($_SESSION['user_id']) && $_SESSION['isAdmin'] == 1){
 require('class/users.php');
 $users = new User(null, null, null, null, null, null, null, null, null);
 $usuarios = $users->getUsersTPass($_GET['IdAElim']);
@@ -35,5 +35,7 @@ Porfavor Seleccione a que usuario le traspasara las noticias/paginas;
 <input type="submit" value="OK"/>        
 </form>
 <?php
+}else{
+    echo "ACCESO RESTRINGIDO";
 }
 ?>
