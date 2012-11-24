@@ -14,16 +14,16 @@ if(count($noticias)) {
 <table class="lst">
 <tr>
 <td style="width:291px;"><label for="newstitle">T&iacute;tulo:</label></td>
-<td><input id="newstitle" name="newstitle" type="text" class="required" value="<?php echo $news->getTitle();?>" /></td>
+<td><input style="float:left;" id="newstitle" name="newstitle" type="text" class="required" value="<?php echo $news->getTitle();?>" /></td>
 </tr>
 <tr>
 <td><label for="permalink">Link Permanente:<br /> http://localhost/modular/noticias/</label></td>
-<td><input id="permalink" name="permalink" type="text" style="background-color:#E5E5E5;" readonly="readonly" value="<?php echo $news->getUrl();?>" /></td>
+<td><input id="permalink" name="permalink" type="text" style="background-color:#E5E5E5;float:left;" readonly="readonly" value="<?php echo $news->getUrl();?>" /></td>
 <td><button type="button" id="iremove" class="iremove"></button></td>
 </tr><?php $url = $news->getUrl();?>
 <tr>
 <td><label for="mininewsimage">Imagen miniatura noticia:</label></td>
-<td><input id="mininewsimage" name="mininewsimage" type="text" style="background-color:#E5E5E5;" readonly="readonly" value="<?php echo $news->getImg();?>" /></td>
+<td><input id="mininewsimage" name="mininewsimage" type="text" style="background-color:#E5E5E5;float:left;" readonly="readonly" value="<?php echo $news->getImg();?>" /></td>
 <td><button type="button" id="ichange" onclick="selectFile2('listFiles.php','src');"></button></td>
 </tr>
 <tr>

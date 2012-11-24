@@ -566,7 +566,7 @@ class User extends PDO{
         try{  
         $this->open_conecction();  
         $this->beginTransaction();
-        $rsp = $this->verificarPrivilegio('INSERT', 'NEWS');
+        $rsp = $this->verificarPrivilegio('Insert', 'NEWS');
         if ($rsp === false){
          throw new Exception('No tiene privilegios para realizar esta accion');         
         }
@@ -646,6 +646,7 @@ class User extends PDO{
         $stmt->execute();
         $result = $stmt->fetchObject();
         $isAdmin = $result->isAdmin;
+        $_SESSION['isAdmin'] = $isAdmin;
         if ($isAdmin == 1) {
             return true;
         }else{

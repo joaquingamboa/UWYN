@@ -212,12 +212,26 @@ float:left;
 }
 
 
-#newstitle{
-	width: 609px;
+#newstitle {
+	width: 409px;
+}
+
+#page_title{
+	width: 450px;
+}
+#html_title{
+	width: 450px;
 }
 
 #permalink{
-	width:609px;
+	width: 450px;
+}
+#html_description{
+        width:450px;
+}
+
+#html_keywords{
+        width:450px;
 }
 
 #mininewsimage{

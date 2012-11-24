@@ -1,4 +1,4 @@
-	$(document).ready(function(){	
+$(document).ready(function(){	
 	var area1="";
 	var area2="";
 	var newstitle="";
@@ -19,18 +19,7 @@
                     $('#fechaRegistro').datetimepicker({ dateFormat:'yy-mm-dd ', timeFormat: "HH:mm:ss", showSecond: true, showButtonPanel: true, changeMonth: true, changeYear: true, currentText: "Hoy", hourText: "Hora", minuteText: "minuto", timeText: "Tiempo", secondText: "Segundo",closeText: "Cerrar", dayNamesMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],monthNamesShort: ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"] });
             })   
             }
-$("#add-page").validate({
-	rules:{
-		editor:"required"	                       
-	},
-	messages:{
-		editor: "Texto de Resumen Requerido"
-	},
-		  submitHandler: function(form) {										   	
-  		}
-									});            
-            
-
+           
 $("#nnews").validate({
 	rules:{
 		area3:"required",

@@ -12,7 +12,7 @@ require('class/news.php');
 </tr>
 <tr>
 <td><label for="permalink">Link Permanente:<br /><?php echo $_SERVER['HTTP_HOST'];?>/noticias/</label></td>
-<td><input id="permalink" name="permalink" type="text" style="background-color:#E5E5E5;" readonly="readonly" /></td>
+<td><input id="permalink" name="permalink" type="text" style="background-color:#E5E5E5;float:left;" readonly="readonly" /></td>
 <td><button type="button" id="iremove" class="iremove"></button></td>
 </tr>
 <tr>

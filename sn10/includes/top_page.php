@@ -8,20 +8,21 @@
 <?php
 if ($_SERVER['REQUEST_URI']=="/sn10/index.php?page=add-news" || substr($_SERVER['REQUEST_URI'],0,30)=="/sn10/index.php?page=edit-news"){
 echo "<script type=\"text/javascript\" src=\"js/jquery-1.8.2.min.js\"></script>  
-<script type=\"text/javascript\" src=\"js/jquery-ui-1.9.1.custom/js/jquery-ui-1.9.1.custom.min.js\"></script>
-<link href=\"css/smoothness/jquery-ui-1.9.1.custom.min.css\" rel=\"stylesheet\" type=\"text/css\" />
+<script type=\"text/javascript\" src=\"js/jquery-ui-1.9.1.custom.min.js\"></script>
+<link href=\"css/jquery-ui-1.9.1.custom.min.css\" rel=\"stylesheet\" type=\"text/css\" />
 <script type=\"text/javascript\" src=\"js/jquery-ui-timepicker-addon.js\"></script>
 <script type=\"text/javascript\" src=\"editor/nicEdit.js\"></script>
 <script type=\"text/javascript\" src=\"js/functions.js\"></script>
 <script type=\"text/javascript\" src=\"js/jquery.validate.js\"></script>";}?>
 <?php if ($_SERVER['REQUEST_URI']=="/sn10/index.php?page=add-page"){
-echo "<link rel=\"stylesheet\" href=\"css/smoothness/jquery-ui-1.8.13.custom.css\" type=\"text/css\" media=\"screen\" charset=\"utf-8\">
+echo "<link rel=\"stylesheet\" href=\"css/jquery-ui-1.8.13.custom.css\" type=\"text/css\" media=\"screen\" charset=\"utf-8\">
 <link rel=\"stylesheet\" href=\"css/elrte.min.css\" type=\"text/css\" media=\"screen\" charset=\"utf-8\">
 <script src=\"js/jquery-1.7.2.min.js\" type=\"text/javascript\" charset=\"utf-8\"></script>
 <script src=\"js/jquery-ui-1.8.13.custom.min.js\" type=\"text/javascript\" charset=\"utf-8\"></script>
 <script src=\"js/elrte.min.js\" type=\"text/javascript\" charset=\"utf-8\"></script>
 <script src=\"js/i18n/elrte.es.js\" type=\"text/javascript\" charset=\"utf-8\"></script>
-
+<script type=\"text/javascript\" src=\"js/jquery-ui-timepicker-addon.js\"></script>
+<script type=\"text/javascript\" src=\"js/validatePagesManagement.js\"></script>
 <link rel=\"stylesheet\" href=\"css/elfinder.min.css\" type=\"text/css\" media=\"screen\" charset=\"utf-8\">
 <link rel=\"stylesheet\" type=\"text/css\" media=\"screen\" href=\"css/theme.css\">
 
@@ -34,7 +35,7 @@ $().ready(function() {
 			var opts = {
                                 cssClass : 'el-rte',
                                 lang     : 'es',
-                                width    : 966,
+                                width    : 900,
 				height   : 450,
 				toolbar  : 'maxi',
 				cssfiles : ['css/elrte-inner.css'],
@@ -43,7 +44,7 @@ $().ready(function() {
 					url : 'class/connector.php', // connector URL (REQUIRED)
 				        lang: 'es', // elFinder language (OPTIONAL)
 					commandsOptions: {
-                                         title: 'hola',
+                                         title: 'Documentos',
 					  getfile: {
 						oncomplete: 'destroy' // destroy elFinder after file selection
 					  }
@@ -54,28 +55,9 @@ $().ready(function() {
 			}						
 $('#editor').elrte(opts);	   
 
-$(\"#add-page\").submit(function(e) {
-  var text = $(\"#editor\").elrte('val');
-  if (!text) {
-    e.preventDefault();
-    alert('La pagina esta vacia')
-  }else{
-  e.preventDefault();
-   $.ajax({ 
-   
-			type:\"POST\",
-			dataType:\"html\",
-			url: \"modules/processnews.php\",
-			data:\"&resumsen=\"+area1+\"&tarea=add-new\",
-			success:function(msg){
-				alert(msg);
-				window.location.href=\"index.php?page=noticias\";
-								}
-				});
-    }
-})
 		});
-	</script>";
+</script>
+<script type=\"text/javascript\" src=\"js/jquery.validate.js\"></script>";
 }?>
 <?php if ($_SERVER['REQUEST_URI']=="/sn10/index.php?page=noticias" || $_SERVER['REQUEST_URI']=="/sn10/index.php?page=usuarios"){
 echo "<script type=\"text/javascript\" src=\"js/jquery-1.8.2.min.js\"></script>
@@ -88,7 +70,7 @@ echo "<script type=\"text/javascript\" src=\"js/jquery-1.8.2.min.js\"></script>
 
 }?>     
 <?php if ($_SERVER['REQUEST_URI']=="/sn10/index.php?page=files-management") {
-echo "<link rel=\"stylesheet\" href=\"css/smoothness/jquery-ui-1.8.13.custom.css\" type=\"text/css\" media=\"screen\" charset=\"utf-8\">
+echo "<link rel=\"stylesheet\" href=\"css/jquery-ui-1.8.13.custom.css\" type=\"text/css\" media=\"screen\" charset=\"utf-8\">
 <script src=\"js/jquery-1.7.2.min.js\" type=\"text/javascript\" charset=\"utf-8\"></script>
 <script src=\"js/jquery-ui-1.8.13.custom.min.js\" type=\"text/javascript\" charset=\"utf-8\"></script>
 <link rel=\"stylesheet\" type=\"text/css\" media=\"screen\" href=\"css/elfinder.min.css\">

@@ -102,7 +102,7 @@ $("#euser").validate({
                            },
 		nickname: {
                     required : "Campo Requerido",
-                    maxlength: "Maximo 16 caracteres",
+                    maxlength: "Maximo 40 caracteres",
                     minlength: "Minimo 4 caracteres",
                     remote: "Nickname en Uso"
                            }

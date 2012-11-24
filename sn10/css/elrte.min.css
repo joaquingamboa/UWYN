@@ -16,7 +16,7 @@
 .rounded-7{-moz-border-radius:7px;-webkit-border-radius:7px;border-radius:7px}
 .rounded-left-3{-moz-border-radius-topleft:3px;-webkit-border-top-left-radius:3px;-moz-border-radius-bottomleft:3px;-webkit-border-bottom-left-radius:3px}
 .rounded-bottom-7{-moz-border-radius-bottomleft:7px;-moz-border-radius-bottomright:7px;-webkit-border-bottom-left-radius:7px;-webkit-border-bottom-right-radius:7px;border-bottom-left-radius:7px;border-bottom-right-radius:7px}
-.ui-widget{font-size:.9em}
+.ui-widget{/*font-size:.9em*/}
 .ui-dialog .ui-dialog-buttonpane button{padding:.1em .6em .2em .6em}
 .el-colorpicker{width:16px;height:16px;border:1px solid #ccc;position:relative;cursor:default}
 .el-palette{width:182px;border:1px solid #ccc;background:#fff;padding:3px 2px 3px 3px;z-index:99000;position:absolute;top:16px;left:0}
@@ -28,7 +28,7 @@
 .ui-widget .el-dialogform-rtl{direction:rtl}
 .ui-widget .el-dialogform-rtl .ui-tabs-nav li{float:right}
 .el-dialogform div.tab:hover{background:transparent}
-.ui-dialog .ui-dialog-title,.ui-dialog .ui-dialog-content{font-size:.9em}
+.ui-dialog .ui-dialog-title,.ui-dialog .ui-dialog-content{/*font-size:.9em*/}
 .ui-tabs .ui-tabs-nav li a{padding:.2em .7em}
 .el-dialogform .tab{padding:5px 0 12px 0;border:0}
 .el-dialogform .separator{border-top:1px solid #ccc;margin:5px 2px}
@@ -52,7 +52,7 @@
 .el-select .list .hover{background:#efefef}
 .el-select .list .active{background-color:#c3dbef}
 .el-select .list div *{padding:0;margin:0;border:0;white-space:nowrap;display:block}
-.el-rte{font-family:Trebuchet MS,Verdana,Geneva,sans-serif;overflow:hidden}
+.el-rte{/*font-family:Trebuchet MS,Verdana,Geneva,sans-serif;*/overflow:hidden}
 .el-rte.el-fullscreen{position:absolute;width:99%;top:0;left:0;margin:0;z-index:10}
 .elrte-swf-placeholder{width:1px;background:url('../images/swf.png') 0 0 no-repeat}
 .elrtetesturl{color:red;background-image:url(../images/pixel.gif)}
@@ -144,22 +144,22 @@
 .el-rte-rtl .toolbar ul li div.color-indicator{margin:16px 2px 2px 0}
 .el-rte .toolbar .panel-format{z-index:10}
 .el-palette{top:20px}
-.el-dialogform,.el-dialogform td{font-size:.9em}
-.el-dialogform select{font-size:.9em}
+.el-dialogform,.el-dialogform td{/*font-size:.9em*/}
+.el-dialogform select{/*font-size:.9em*/}
 .ui-dialog .ui-dialog-buttonpane{padding:.4em,1em}
-.ui-dialog .ui-dialog-buttonpane button{margin:.3em .4em .1em 0;font-size:.9em}
+.ui-dialog .ui-dialog-buttonpane button{margin:.3em .4em .1em 0;/*font-size:.9em*/}
 .ui-dialog .ui-dialog-titlebar{padding:.3em 1em .3em}
 .el-dialogform label{display:block}
 .el-dialogform label input{margin-right:2px}
 .el-dialogform iframe.el-rte-preview{width:100%;height:235px;margin:0;padding:0;outline:0;border:0}
 .el-dialogform fieldset{border:1px solid #ccc;padding:0}
-.el-dialogform fieldset legend{font-size:.9em;padding:.1em .5em;margin:0 0 5px 1em;border:1px solid #ccc;background-color:#eee}
+.el-dialogform fieldset legend{/*font-size:.9em;*/padding:.1em .5em;margin:0 0 5px 1em;border:1px solid #ccc;background-color:#eee}
 .el-dialogform p{padding:.2em .3em}
 .el-dialogform h3{color:#555;padding:1.2em 0 0 0;margin:0;font-size:1.2em}
 .el-dialogform h4{color:#555;font-size:1em;padding:0;margin:3px 9px}
 .elrte-logo{width:48px;height:46px;float:left;margin:.5em 1em;background:url('../images/elrte-toolbar.png') -880px -7px no-repeat}
-.elrte-ver{font-size:.9em;padding-left:.7em}
-.elrte-copy{font-size:.9em;padding-left:.3em}
+.elrte-ver{/*font-size:.9em;*/padding-left:.7em}
+.elrte-copy{/*font-size:.9em;*/padding-left:.3em}
 table.elrte-authors{margin-bottom:1em}
 table.elrte-authors td{border-bottom:1px solid #eee}
 .el-borderselect table{margin:0}
