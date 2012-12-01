@@ -1,5 +1,6 @@
 <?php
 function instalar(){
+    $path = $_POST['path'];
     $ubd = $_POST['userbd'];
     $cbd = $_POST['contrabd'];
     $passadmin = md5($_POST['passadmin']);
@@ -32,8 +33,7 @@ function instalar(){
                if ($arr[0]!='00000'){           
         throw new Exception(2);     
                 }
-          }
-          $path = "http://".$_SERVER['HTTP_HOST']."/".basename(getcwd())."/";
+          }  
           $fp = fopen("../class/conexion.php","w");
 fwrite($fp, "<?php
 define('DB_HOST','localhost');

@@ -130,12 +130,11 @@ class User extends PDO{
     $this->open_conecction();
     $this->beginTransaction();
     $id = $this->getId();
-    $username = $this->getUsername();
     $status = $this->getStatus();
     $tnoticias = explode(',', $this->getTnoticias());
     $tpaginas = explode(',', $this->getTpaginas());
     $isAdmin = $this->getAdmin();
-        $stmt = $this->prepare("UPDATE SITIO.users set user_status = :data1, isAdmin = :data2 WHERE ID=:data3;");  
+        $stmt = $this->prepare("UPDATE users set user_status = :data1, isAdmin = :data2 WHERE ID=:data3;");  
         $stmt->bindValue(':data1', $status, PDO::PARAM_INT);
         $stmt->bindValue(':data2', $isAdmin, PDO::PARAM_INT);
         $stmt->bindValue(':data3', $id, PDO::PARAM_INT);
@@ -578,7 +577,7 @@ class User extends PDO{
         $status = $this->getStatus();
         $registertime = $this->getRegistertime();
         $isAdmin = $this->getAdmin();  
-        $stmt = $this->prepare("INSERT INTO sitio.users(username,user_nickname,user_registertime,user_status,users_ID,isAdmin,user_password) VALUES(:data1, :data2, :data3, :data4, :data5, :data6, :data7);");
+        $stmt = $this->prepare("INSERT INTO users(username,user_nickname,user_registertime,user_status,users_ID,isAdmin,user_password) VALUES(:data1, :data2, :data3, :data4, :data5, :data6, :data7);");
         $stmt->bindParam(':data1', $username);
         $stmt->bindParam(':data2', $nickname);
         $stmt->bindParam(':data3', $registertime);

@@ -281,8 +281,7 @@ class News extends PDO{
             $this->open_conecction();
             $rsp = $this->verificarPrivilegio('Update', 'NEWS');
             if($rsp === false){
-             $UPATH = "http://".$_SERVER['HTTP_HOST'];
-              $url = "$UPATH/sn10/index.php?page=noticias";
+              $url = UPATH."index.php?page=noticias";
               $comando = "<script>alert(\"No tienes privilegios para Actualizar registros de la tabla noticias\");window.setTimeout('window.location=".chr(34).$url.chr(34).";',".'500'.");</script>";  
               throw new Exception("".$comando); 
             }  

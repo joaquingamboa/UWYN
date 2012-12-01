@@ -5,8 +5,8 @@
 <title>Mi pagina modular Parte 2</title>
 <link href="style.css" rel="stylesheet" type="text/css" />
 <link href="tables.css" rel="stylesheet" type="text/css" />	
-<?php
-if ($_SERVER['REQUEST_URI']=="/sn10/index.php?page=add-news" || substr($_SERVER['REQUEST_URI'],0,30)=="/sn10/index.php?page=edit-news"){
+<?php //if ($_SERVER['REQUEST_URI']=="/sn10/index.php?page=add-news" || substr($_SERVER['REQUEST_URI'],0,30)=="/sn10/index.php?page=edit-news"){
+if ( strpos($_SERVER['REQUEST_URI'], 'index.php?page=add-news') != false || strpos($_SERVER['REQUEST_URI'], 'index.php?page=edit-news') != false ){
 echo "<script type=\"text/javascript\" src=\"js/jquery-1.8.2.min.js\"></script>  
 <script type=\"text/javascript\" src=\"js/jquery-ui-1.9.1.custom.min.js\"></script>
 <link href=\"css/jquery-ui-1.9.1.custom.min.css\" rel=\"stylesheet\" type=\"text/css\" />
@@ -14,7 +14,7 @@ echo "<script type=\"text/javascript\" src=\"js/jquery-1.8.2.min.js\"></script>
 <script type=\"text/javascript\" src=\"editor/nicEdit.js\"></script>
 <script type=\"text/javascript\" src=\"js/functions.js\"></script>
 <script type=\"text/javascript\" src=\"js/jquery.validate.js\"></script>";}?>
-<?php if ($_SERVER['REQUEST_URI']=="/sn10/index.php?page=add-page"){
+<?php if (strpos($_SERVER['REQUEST_URI'], 'index.php?page=add-page') != false || strpos($_SERVER['REQUEST_URI'], 'index.php?page=edit-page') != false){
 echo "<link rel=\"stylesheet\" href=\"css/jquery-ui-1.8.13.custom.css\" type=\"text/css\" media=\"screen\" charset=\"utf-8\">
 <link rel=\"stylesheet\" href=\"css/elrte.min.css\" type=\"text/css\" media=\"screen\" charset=\"utf-8\">
 <script src=\"js/jquery-1.7.2.min.js\" type=\"text/javascript\" charset=\"utf-8\"></script>
@@ -25,7 +25,6 @@ echo "<link rel=\"stylesheet\" href=\"css/jquery-ui-1.8.13.custom.css\" type=\"t
 <script type=\"text/javascript\" src=\"js/validatePagesManagement.js\"></script>
 <link rel=\"stylesheet\" href=\"css/elfinder.min.css\" type=\"text/css\" media=\"screen\" charset=\"utf-8\">
 <link rel=\"stylesheet\" type=\"text/css\" media=\"screen\" href=\"css/theme.css\">
-
 <script type=\"text/javascript\" src=\"js/elfinder.min.js\"></script>
 <script type=\"text/javascript\" src=\"js/i18n/elfinder.es.js\"></script>
 
@@ -59,17 +58,16 @@ $('#editor').elrte(opts);
 </script>
 <script type=\"text/javascript\" src=\"js/jquery.validate.js\"></script>";
 }?>
-<?php if ($_SERVER['REQUEST_URI']=="/sn10/index.php?page=noticias" || $_SERVER['REQUEST_URI']=="/sn10/index.php?page=usuarios"){
+<?php if (strpos($_SERVER['REQUEST_URI'], 'index.php?page=noticias') != false || strpos($_SERVER['REQUEST_URI'], 'index.php?page=usuarios') != false || strpos($_SERVER['REQUEST_URI'], 'index.php?page=paginas') != false){
 echo "<script type=\"text/javascript\" src=\"js/jquery-1.8.2.min.js\"></script>
 <script type=\"text/javascript\" src=\"js/pagination.js\"></script>";
 }?> 
-<?php if ($_SERVER['REQUEST_URI']=="/sn10/index.php?page=add-user" || substr($_SERVER['REQUEST_URI'],0,30)=="/sn10/index.php?page=edit-user"){
+<?php if (strpos($_SERVER['REQUEST_URI'], 'index.php?page=add-user') != false || strpos($_SERVER['REQUEST_URI'], 'index.php?page=edit-user') != false){
 echo "<script type=\"text/javascript\" src=\"js/jquery-1.8.2.min.js\"></script>
 <script type=\"text/javascript\" src=\"js/validateUserManagement.js\"></script>
 <script type=\"text/javascript\" src=\"js/jquery.validate.js\"></script>";
-
 }?>     
-<?php if ($_SERVER['REQUEST_URI']=="/sn10/index.php?page=files-management") {
+<?php if (strpos($_SERVER['REQUEST_URI'], 'index.php?page=files-management') != false) {
 echo "<link rel=\"stylesheet\" href=\"css/jquery-ui-1.8.13.custom.css\" type=\"text/css\" media=\"screen\" charset=\"utf-8\">
 <script src=\"js/jquery-1.7.2.min.js\" type=\"text/javascript\" charset=\"utf-8\"></script>
 <script src=\"js/jquery-ui-1.8.13.custom.min.js\" type=\"text/javascript\" charset=\"utf-8\"></script>
@@ -95,7 +93,5 @@ label.error {
 /* .submit { margin-left: 12em; }*/
 
 </style>
-
 </head>
-
 <body<?php if($_SERVER['REQUEST_URI']=="/sn10/index.php?page=add-news") echo " onLoad=\"window_onload()\"";?>>

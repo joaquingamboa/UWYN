@@ -30,38 +30,37 @@ function registerPage(){
               }                       
                     }
 
-function updateNews(){
-    $titulo = $_POST['newstitle'];
-    $url = $_POST['url'];
+function updatePage(){
+    $idpage = $_POST['idAEditar'];
     $firsttitle = $_POST['cpermalink'];
-    $estado = $_POST['estado'];
-     if($estado==""){
-            $estado = 1;
-        }
-     $imageurl = $_POST['imageurl'];
-     if($url==""){
+    $titulo = $_POST['page_title'];
+    $html_title = $_POST['titulo_html'];
+    $html_description = $_POST['descripcion_html'];
+    $html_keywords = $_POST['keywords'];
+    $html_content = $_POST['contenido_html'];
+    $url = $_POST['url'];
+    if($url==""){
          $url = $firsttitle;
      }
-     $contenido = $_POST['contenido'];
-     $resumen=$_POST['resumen'];
-     date_default_timezone_set('Chile/Continental');
-     $fechaModificacion=date("Y-m-d H:i:s");
-     $user_id=$_SESSION['user_id']; 
-     $user_modificador = $_SESSION['user_nickname'];
-     $fecha = $_POST['fecha'];
-     $noticia = new News(null,null,$titulo,$url,$contenido,$fecha,$fechaModificacion,$resumen,$estado,$imageurl,$user_id,null,$user_modificador);
-     $count = $noticia->updateNewsById($firsttitle);
-
-        if($count[0] == 1){
-        echo "Noticia Actualizada";
-     }else{
-         if($count[0] == 0){
-         echo "Noticia no Actualizada"; 
-         }else{
-          echo "Error";
-         }       
-     }             
-					}
+    date_default_timezone_set('Chile/Continental');
+    $fechaModificacion=date("Y-m-d H:i:s");
+    $page_category = $_POST['principal_cat'];
+    $pagina = new Pages($idpage, $titulo, $url, null, $fechaModificacion, $html_title, $html_description, $html_keywords, $html_content, $_SESSION['user_id'], null, null, null, $page_category);
+    if($page_category == ""){
+            $pagina->setPage_category(NULL);
+                             }
+    $rsp = $pagina->editarPaginaPorId();
+    echo $rsp;
+			}
+                                        
+function updateFinal(){
+ $idpage = $_POST['IdAEdit'];   
+ $TPass = $_POST['IdTPass'];
+ $pagina = new Pages(null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+ $rsp = $pagina->pasarACategoria($idpage, $TPass);
+ echo $rsp;
+}                                        
+                                        
 
 function permLinkUsed($value){
          $pagina = new Pages(null, null, $value, null, null, null, null, null, null, null, null, null, null, null);
@@ -89,22 +88,16 @@ function getPermLink($value,$from){
                       }
 }
 
-function deleteBI($id){
-     $noticia = new News($id,null,null,null,null,null,null,null,null,null,null,null,null);
-     $count = $noticia->deleteNewsById();
-        if($count[0] == 1){
-        echo "<script>alert(\"Noticia Eliminada.\");</script>";
-     }else{
-         if($count[0] == 0){
-         echo "<script>alert(\"Noticia no Eliminada.\");</script>";     
-         }else{
-          echo "<script>alert(\"Error.\");</script>";
-         }       
-     }  
-    $UPATH = "http://".$_SERVER['HTTP_HOST'];
-    $url = "$UPATH/sn10/index.php?page=noticias";
-    $comando = "<script>window.setTimeout('window.location=".chr(34).$url.chr(34).";',".'500'.");</script>";
-    echo ($comando);
+function deleteById($id, $page_title){
+    $pagina = new Pages($id, $page_title, null, null, null, null, null, null, null, null, null, null, null, null);
+    $rsp = $pagina->verificarRelacionAEliminar();
+    echo $rsp;
+}
+
+function deleteFinal(){
+$pagina = new Pages($_POST['IdAElim'], null, null, null, null, null, null, null, null, null, null, null, null, null);
+$IdTPass = $_POST['IdTPass'];
+$pagina->borrarPaginaPorId($IdTPass);
 }
 
 
@@ -117,12 +110,14 @@ if($_POST){
                 break;
                 case "edit-page":updatePage();
                 break;
+                case "finalUpdate":updateFinal();
+                break;
         }
     }
 
 if($_GET){
         switch($_GET["tarea"]){
-                case "deletePage":deleteBI($_GET['id']);
+                case "deletePage":deleteById($_GET['id'], $_GET['page_title']);
                 break;		
         }
     }

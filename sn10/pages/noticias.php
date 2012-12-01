@@ -7,13 +7,13 @@ $paged = $news->getAllNewsPagination($per_page);
 ?>
 
 <div id="content">  
-<h2 style="font-size-adjust: 0.5;">Noticias
+<h2>Noticias
 <a class="add-new" href="index.php?page=add-news" alt="Agregar Noticia"><img src="img/page_add.png" alt="Agregar Noticia" height="16" width="16" style="border:none;" />Agregar Nueva</a>      
 </h2>    
+
 <div id="loading" ></div>
- 
+
 <div id="contenttNoticias" class="sizeEleven"></div>
-   
      <ul id="paginationNoticias">
 				<?php
 				//Show page links

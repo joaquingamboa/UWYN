@@ -1,3 +1,6 @@
+<?php
+$path = "http://".$_SERVER['HTTP_HOST']."/".basename(getcwd())."/";
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -17,6 +20,7 @@ $(document).ready(function(){
     var $mycbd = $("#cbd");
     var $myadminpass = $("#adminpass");
     var $mynick = $("#anick");
+    var $mypath = $("#path");
     
          
 jQuery.validator.addMethod("lettersonly", function(value, element) {
@@ -39,7 +43,7 @@ $("#instalacion").validate({
 			type:"POST",
 			dataType:"html",
 			url: "modules/processinstalacion.php",
-			data:"&userbd="+ubd+"&contrabd="+cbd+"&passadmin="+adminpass+"&nickname="+anick+"&tarea=instalar",
+			data:"&userbd="+ubd+"&contrabd="+cbd+"&passadmin="+adminpass+"&nickname="+anick+"&path="+path+"&tarea=instalar",
 			success:function(msg){
                             if (msg == 3){
                             alert('Error al crear archivo de inicio');
@@ -65,6 +69,7 @@ $('#instalar').click(function(){
     cbd = $.trim($mycbd.val());
     adminpass = $.trim($myadminpass.val());
     anick = $.trim($mynick.val());
+    path = $mypath.val();
     });
 });
 </script>   
@@ -83,6 +88,7 @@ label.error {
 <span style="font-weight: bold;font-size: 12px;text-align:center;">Yo me encargare de crear la base de datos, y configurar las rutas de los archivos</span><br/>
 <span style="color:red;font-size:10px;font-weight: bold;text-align:center;">***ASEGURESE DE QUE LA BASE DE DATOS NO ESTE CREADA, SI LO ESTA LA BORRARE</span><br/>
 <form id="instalacion" name="instalacion" action="#" method="POST">
+    <input type="hidden" id="path" name="path" value="<?php echo "http://" . $_SERVER['HTTP_HOST'] . "/" . basename(getcwd()) . "/";?>" />
 <table class="lst" style="margin: 0 auto;">
     <tr>
         <td colspan="2" style="text-align:center;"><h2>DATOS DE INSTALACION</h2></td>

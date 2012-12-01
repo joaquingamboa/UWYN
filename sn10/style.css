@@ -108,7 +108,9 @@ text-decoration:underline;
 }
 
 #loading { 
-width: 100%; 
+width: 70px;
+height: 70px;
+margin: 0 auto;
 position: absolute;
 }
 
@@ -120,6 +122,13 @@ overflow: auto;
 }
 
 #paginationUsuarios{
+text-align:center;
+margin:0 auto;
+width: 300px;
+overflow: auto;
+}
+
+#paginationPaginas{
 text-align:center;
 margin:0 auto;
 width: 300px;

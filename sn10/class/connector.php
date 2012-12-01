@@ -1,7 +1,7 @@
 <?php
 
 error_reporting(0); // Set E_ALL for debuging
-$UPATH = "http://".$_SERVER['HTTP_HOST']."/sn10/";
+require('conexion.php');
 include_once dirname(__FILE__).DIRECTORY_SEPARATOR.'elFinderConnector.class.php';
 include_once dirname(__FILE__).DIRECTORY_SEPARATOR.'elFinder.class.php';
 include_once dirname(__FILE__).DIRECTORY_SEPARATOR.'elFinderVolumeDriver.class.php';
@@ -33,7 +33,7 @@ $opts = array(
 			'driver'        => 'LocalFileSystem',   // driver for accessing file system (REQUIRED)
 			'path'          => '../mydocuments/',         // path to files (REQUIRED)
 			//'URL'           => dirname($_SERVER['PHP_SELF']) . '/../mydocuments/', // URL to files (REQUIRED)
-                        'URL'           => $UPATH.'mydocuments/',
+                        'URL'           => UPATH.'mydocuments/',
 			'accessControl' => 'access'             // disable and hide dot starting files (OPTIONAL)
 		)
 	)

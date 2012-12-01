@@ -11,6 +11,7 @@ if(count($noticias)) {
 <h2 style="text-align:center;">Editar Noticia</h2>
 <form action="modules/processnews.php" method="post" name="enews" id="enews">
 <div class="centered">
+<div id="loading"></div>
 <table class="lst">
 <tr>
 <td style="width:291px;"><label for="newstitle">T&iacute;tulo:</label></td>

@@ -7,6 +7,7 @@ $paginas = $pages->obtenerCategoriasPrincipales();
 <div class="centered">
 <h2 style="text-align:center;">Agregar nueva pagina</h2>    
 <form name="add-page" id="add-page" method="post" action="modules/processpages.php">
+<div id="loading"></div>    
 <table class="lst" style="width:900px;">
     <tr>
         <td style="width:150px;"><label for="page_title">T&iacute;tulo:</label></td>

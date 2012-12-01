@@ -3,8 +3,9 @@ if (isset($_SESSION['user_id'])){
 require('class/news.php');
 ?>
 <h2 style="text-align:center;">Agregar nueva noticia</h2>
-<form action="modules/processnews.php" method="post" name="nnews" id="nnews">
+<form action="modules/processnews.php" method="post" name="nnews" id="nnews">   
 <div class="centered">
+<div id="loading"></div>
 <table class="lst">
 <tr>
 <td style="width:291px;"><label for="newstitle">T&iacute;tulo:</label></td>
