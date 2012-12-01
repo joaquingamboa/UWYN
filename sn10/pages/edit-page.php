@@ -13,6 +13,7 @@ $categorias = $categoria->obtenerCategoriasParaPasar($id);
 <div class="centered">
 <h2 style="text-align:center;">Editar Pagina</h2>    
 <form name="edit-page" id="edit-page" method="post" action="modules/processpages.php">
+<input type="hidden" name="from" id="from" value="<?php if(isset($_GET['from']))echo $_GET['from']?>"/>       
 <input type="hidden" id="idtedit" name="idtedit" value="<?php echo $id;?>"/>
 <div id="loading"></div>
 <table class="lst" style="width:900px;">

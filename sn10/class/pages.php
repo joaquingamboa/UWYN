@@ -282,6 +282,46 @@ class Pages extends PDO{
         $this->close_conecction();
         return ceil($count/$per_page);
       }
+      
+      public function obtenerTodasParaPaginacionPropias($per_page){
+        $this->open_conecction();
+        $stmt = $this->prepare("SELECT * FROM pages WHERE page_author = :data1;");
+        $stmt->bindValue(':data1', $_SESSION['user_id'], PDO::PARAM_INT);
+        $stmt->execute();
+        $count = $stmt->rowCount();
+        $this->close_conecction();
+        return ceil($count/$per_page);
+      }
+      
+      public function obtenerPaginasPropias($start, $per_page){
+        $this->open_conecction();  
+        try{         
+        $rsp = $this->verificarPrivilegio('Select', 'PAGES'); 
+        if($rsp === false){
+          $comando = "No tienes privilegios para ver registros de la tabla noticias"; 
+          throw new Exception($comando); 
+        }  
+        $cont=0;    
+        $stmt = $this->prepare("SELECT t1.*, t2.user_nickname, t3.user_nickname as user_modificador 
+                                FROM pages t1 INNER JOIN users t2 ON t1.page_author = t2.ID 
+                                INNER JOIN users t3 ON t1.user_mod = t3.ID AND t1.page_author = :data1 ORDER BY t1.page_date DESC LIMIT $start,$per_page");
+        $stmt->bindValue(':data1', $_SESSION['user_id'], PDO::PARAM_INT);
+        $stmt->execute();
+        $paginas=array();     
+         while($fila = $stmt->fetch()){
+               $pagina = new Pages($fila['page_id'], $fila['page_title'], $fila['page_url'], $fila['page_date'], $fila['page_modified'], $fila['html_title'],
+                                   $fila['html_description'],$fila['html_keywords'], $fila['html_content'], $fila['user_mod'], $fila['page_author'],
+                                   $fila['user_nickname'], $fila['user_modificador'], $fila['page_category']);         
+               $paginas[$cont]=$pagina;
+               $cont++;
+            }
+         $this->close_conecction();
+         return $paginas;
+               }catch (Exception $e){
+                   $this->close_conecction();
+                   echo $e->getMessage();
+               }
+        }
            
       public function obtenerPaginas($start, $per_page){
         $this->open_conecction();  
@@ -311,6 +351,8 @@ class Pages extends PDO{
                    echo $e->getMessage();
                }
         }
+        
+        
         
     function verificarRelacionAEliminar(){
      try{
@@ -349,7 +391,7 @@ class Pages extends PDO{
      }
      }
      
-    function pasarACategoria($idpage,$idTPass){
+    function pasarACategoria($idpage,$idTPass,$from){
     try{
     $this->open_conecction();
     $stmt = $this->prepare("UPDATE pages SET page_category = :data1 WHERE page_category = :data2;");
@@ -365,7 +407,11 @@ class Pages extends PDO{
                                                    }              
                                                 }
     $this->close_conecction();                                            
-    $url = UPATH."index.php?page=paginas";
+    if($from == "index"){
+         $url = UPATH."index.php?page=inicio";    
+          }else{
+          $url = UPATH."index.php?page=paginas";  
+                                                                }    
     $comando = "<script>alert(\"La Pagina Fue Actualizada Exitosamente\");</script><script>window.setTimeout('window.location=".chr(34).$url.chr(34).";',".'1000'.");</script>";                            
     echo $comando;                                              
     }catch(Exception $e){
@@ -375,12 +421,16 @@ class Pages extends PDO{
                         }    
     }
     
-    function editarPaginaPorId(){
+    function editarPaginaPorId($from){
     try{
     $this->open_conecction();
     $rsp = $this->verificarPrivilegio('Update', 'PAGES'); 
             if($rsp === false){
-            $url = UPATH."index.php?page=paginas";
+                    if($from == "index"){
+            $url = UPATH."index.php?page=inicio";    
+                          }else{
+            $url = UPATH."index.php?page=paginas";  
+                            }
             $comando = array("No tienes privilegios para Actualizar paginas","<script>window.setTimeout('window.location=".chr(34).$url.chr(34).";',".'1000'.");</script>");  
             throw new Exception($comando); 
                                 }          
@@ -416,16 +466,20 @@ class Pages extends PDO{
                         throw new Exception($arr[2]);     
                                        } 
                                     }        
-           $stmt = $this->prepare("UPDATE pages SET page_category = :data1 WHERE page_id = :data2;");
+                $stmt = $this->prepare("UPDATE pages SET page_category = :data1 WHERE page_id = :data2;");
                 $stmt->bindValue(':data1', $page_category, PDO::PARAM_INT);
                 $stmt->bindValue(':data2', $idpage, PDO::PARAM_INT);
                 $stmt->execute();
                        if ($stmt->errorCode()) {
                            $arr = $stmt->errorInfo();
                              if ($arr[0]!='00000'){
-                                  $url = UPATH."index.php?page=paginas";          
+                                          if($from == "index"){
+                                                $url = UPATH."index.php?page=inicio";    
+                                                }else{
+                                                $url = UPATH."index.php?page=paginas";  
+                                                                }         
                                   $comando = array("ERROR AL ACTUALIZAR PAGINA","<script>window.setTimeout('window.location=".chr(34).$url.chr(34).";',".'1000'.");</script>");     
-                                    throw new Exception($comando);     
+                                   throw new Exception($comando);     
                                                    }              
                                                 }  
           if($page_category!=null){
@@ -440,21 +494,32 @@ class Pages extends PDO{
                                                    }              
                                                 }
               if($count > 0){
-                $url = UPATH."index.php?page=cambioCatPorSubp&IdAEdit=$idpage&page_title=$page_title";          
+                $url = UPATH."index.php?page=cambioCatPorSubp&IdAEdit=$idpage&page_title=$page_title&from=$from";          
                 $comando = array("Pagina Actualizada, Lea las siguientes instrucciones","<script>window.setTimeout('window.location=".chr(34).$url.chr(34).";',".'1000'.");</script>");     
-                echo json_encode($comando);     
+                return ($comando);     
+                }else{
+                if($from == "index"){
+                $url = UPATH."index.php?page=inicio";    
+                }else{
+                $url = UPATH."index.php?page=paginas";  
+                                }
+                $comando = array("Pagina Actualizada","<script>window.setTimeout('window.location=".chr(34).$url.chr(34).";',".'1000'.");</script>"); 
+                return ($comando);     
                 }
  
                                  }else{
-            $url = UPATH."index.php?page=paginas";
+            if($from == "index"){
+            $url = UPATH."index.php?page=inicio";    
+            }else{
+            $url = UPATH."index.php?page=paginas";  
+                            }
             $comando = array("Pagina Actualizada","<script>window.setTimeout('window.location=".chr(34).$url.chr(34).";',".'1000'.");</script>"); 
-            echo json_encode($comando); 
-                                 }
-                             
+            return ($comando); 
+                                 }                 
         }catch (Exception $e){
             $this->close_conecction();
             $rsp = $e->getMessage();
-            echo json_encode($rsp);
+            return ($rsp);
         }
     }
      

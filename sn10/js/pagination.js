@@ -7,7 +7,16 @@ $(document).ready(function(){
 	//Hide Loading Image
 	function Hide_Load(){
 		$("#loading").fadeOut('slow');
-	};
+	}
+        
+        function Display_Load2(){
+                $("#loading1").fadeIn(900,0);
+		$("#loading1").html("<img src='bigLoader.gif' />");
+	}
+	//Hide Loading Image
+	function Hide_Load2(){
+		$("#loading1").fadeOut('slow');
+	}
 	
 
    //Default Starting Page Results
@@ -57,7 +66,7 @@ $(document).ready(function(){
 		Display_Load();
 		
 		//CSS Styles
-		$("#paginationNoticias li")
+		$("#paginationUsuarios li")
 		.css({'border' : 'solid #dddddd 1px'})
 		.css({'color' : 'black'});
 		
@@ -101,4 +110,64 @@ $(document).ready(function(){
 		$("#contenttPaginas").load("pagination_pages.php?pagina=" + pageNum, Hide_Load());
         });
               /*****************************************************************/   
+                      
+       $("#PNoticiasPropias li:first").css({'color' : 'black'}).css({'border' : 'none'});
+	
+	Display_Load();
+	
+	$("#contenttNoticiasPropias").load("pagination_noticias_propias.php?pagina=1", Hide_Load());
+
+
+
+	//Pagination Click
+	$("#PNoticiasPropias li").click(function(){
+			
+		Display_Load();
+		
+		//CSS Styles
+		$("#PNoticiasPropias li")
+		.css({'border' : 'solid #dddddd 1px'})
+		.css({'color' : 'black'});
+		
+		$(this)
+		.css({'color' : 'blue'})
+		.css({'border' : 'none'});
+
+		//Loading Data
+		var pageNum = this.id;
+		
+	$("#contenttNoticiasPropias").load("pagination_noticias_propias.php?pagina=" + pageNum, Hide_Load());
+        });
+              /*****************************************************************/         
+        $("#paginationPaginasPropias li:first").css({'color' : 'black'}).css({'border' : 'none'});
+	
+	Display_Load2();
+	
+	$("#contenttPaginasPropias").load("pagination_pages_propias.php?pagina=1", Hide_Load2());
+
+
+
+	//Pagination Click
+	$("#paginationPaginasPropias li").click(function(){
+			
+		Display_Load2();
+		
+		//CSS Styles
+		$("#paginationPaginasPropias li")
+		.css({'border' : 'solid #dddddd 1px'})
+		.css({'color' : 'black'});
+		
+		$(this)
+		.css({'color' : 'blue'})
+		.css({'border' : 'none'});
+
+		//Loading Data
+		var pageNum = this.id;
+		
+		$("#contenttPaginasPropias").load("pagination_pages_propias.php?pagina=" + pageNum, Hide_Load2());
+        });              
+   
+              /*****************************************************************/         
+                     
+              
 });

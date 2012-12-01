@@ -16,6 +16,8 @@ $(document).ready(function(){
     var $myCategory = $("#categoria");
     var ppagetitle = $myPageTitle.val();
     var $myeditor = $("#editor");
+    var $myfrom = $("#from");
+    var from = "";
     
          
 jQuery.validator.addMethod("lettersonly", function(value, element) {
@@ -76,15 +78,19 @@ $("#add-page").validate({
 	submitHandler: function(form) {										   	
                $.ajax({
 			type:"POST",
-			dataType:"html",
 			url: "modules/processpages.php",
                         dataType: 'json',
-			data:"&cpermalink="+ppagetitle+"&idAEditar="+idtedit+"&page_title="+pageTitle+"&titulo_html="+html_title+"&descripcion_html="+html_description+"&keywords="+html_keywords+"&contenido_html="+html_content+"&url="+permalink+"&principal_cat="+Cat_princ+"&tarea=edit-page",
+			data:"&from="+from+"&cpermalink="+ppagetitle+"&idAEditar="+idtedit+"&page_title="+pageTitle+"&titulo_html="+html_title+"&descripcion_html="+html_description+"&keywords="+html_keywords+"&contenido_html="+html_content+"&url="+permalink+"&principal_cat="+Cat_princ+"&tarea=edit-page",
 			beforeSubmit: Display_Load(),
                         success:function(msg){
                                 Hide_Load();
-                                alert(msg[0]);
-                                $('#loading').html(msg[1]);
+                                if(msg[0]!=null){
+                                 alert(msg[0]);    
+                                }
+                                if(msg[1]!=null){
+                                $('#loading').html(msg[1]);   
+                                }
+                               
                            
 								}
 				});                   
@@ -112,6 +118,7 @@ $('#senteditpage').click(function(){
     Cat_princ = $myCategory.val();
     html_content = $myeditor.elrte('val');
     idtedit = $myID.val();
+    from = $myfrom.val();
     });    
     
 $('#iremove').click(function(){

@@ -7,6 +7,7 @@ $paginas = $pages->obtenerCategoriasPrincipales();
 <div class="centered">
 <h2 style="text-align:center;">Agregar nueva pagina</h2>    
 <form name="add-page" id="add-page" method="post" action="modules/processpages.php">
+<input type="hidden" name="from" id="from" value="<?php if(isset($_GET['from']))echo $_GET['from']?>"/>   
 <div id="loading"></div>    
 <table class="lst" style="width:900px;">
     <tr>

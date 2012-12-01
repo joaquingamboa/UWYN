@@ -31,6 +31,7 @@ function registerPage(){
                     }
 
 function updatePage(){
+    $from = $_POST['from'];
     $idpage = $_POST['idAEditar'];
     $firsttitle = $_POST['cpermalink'];
     $titulo = $_POST['page_title'];
@@ -49,16 +50,17 @@ function updatePage(){
     if($page_category == ""){
             $pagina->setPage_category(NULL);
                              }
-    $rsp = $pagina->editarPaginaPorId();
-    echo $rsp;
+    $rsp = $pagina->editarPaginaPorId($from);
+    echo json_encode($rsp);
 			}
                                         
 function updateFinal(){
  $idpage = $_POST['IdAEdit'];   
  $TPass = $_POST['IdTPass'];
+ $from = $_POST['from'];
  $pagina = new Pages(null, null, null, null, null, null, null, null, null, null, null, null, null, null);
- $rsp = $pagina->pasarACategoria($idpage, $TPass);
- echo $rsp;
+ $rsp = $pagina->pasarACategoria($idpage, $TPass,$from);
+ echo json_encode($rsp);
 }                                        
                                         
 

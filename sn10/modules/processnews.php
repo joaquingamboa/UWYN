@@ -34,6 +34,7 @@ function updateNews(){
     $url = $_POST['url'];
     $firsttitle = $_POST['cpermalink'];
     $estado = $_POST['estado'];
+    $from = $_POST['from'];
      if($estado==""){
             $estado = 1;
         }
@@ -49,22 +50,10 @@ function updateNews(){
      $user_modificador = $_SESSION['user_nickname'];
      $fecha = $_POST['fecha'];
      $noticia = new News(null,null,$titulo,$url,$contenido,$fecha,$fechaModificacion,$resumen,$estado,$imageurl,$user_id,null,$user_modificador);
-     $count = $noticia->updateNewsById($firsttitle);
-
-        if($count[0] == 1){
-        echo "Noticia Actualizada";
-     }else{
-         if($count[0] == 0){
-         echo "Noticia no Actualizada"; 
-         }else{
-          echo "Error";
-         }       
+     $count = $noticia->updateNewsById($firsttitle,$from);
+     echo json_encode($count);   
      }             
-    /*$url="../index.php?page=noticias";
-    $comando = "<script>window.setTimeout('window.location=".chr(34).$url.chr(34).";',".'500'.");</script>";
-    echo ($comando);*/  //Realizado en javascript
- 
-					}
+					
 
 function permLinkUsed($value){
          $noticia = new News(null,null,null,$value,null,null,null,null,null,null,null,null,null);
@@ -97,7 +86,7 @@ function getPermLink($value,$from)
     echo json_encode($result);   */
 }
 
-function deleteBI($id){
+function deleteBI($id,$from){
      $noticia = new News($id,null,null,null,null,null,null,null,null,null,null,null,null);
      $count = $noticia->deleteNewsById();
         if($count[0] == 1){
@@ -108,11 +97,16 @@ function deleteBI($id){
          }else{
           echo "<script>alert(\"Error.\");</script>";
          }       
-     }  
-    $UPATH = "http://".$_SERVER['HTTP_HOST'];
-    $url = "$UPATH/sn10/index.php?page=noticias";
+     }
+    
+    if($from == "index"){
+    $url = UPATH."index.php?page=inicio";    
+    }else{
+    $url = UPATH."index.php?page=noticias";  
+    } 
     $comando = "<script>window.setTimeout('window.location=".chr(34).$url.chr(34).";',".'500'.");</script>";
-    echo ($comando);
+    echo ($comando);    
+   
 }
 
 
@@ -130,7 +124,7 @@ if($_POST){
 
 if($_GET){
         switch($_GET["tarea"]){
-                case "deleteNew":deleteBI($_GET['id']);
+                case "deleteNew":deleteBI($_GET['id'],$_GET['from']);
                 break;		
         }
     }

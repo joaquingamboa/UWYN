@@ -10,6 +10,7 @@ if(count($noticias)) {
 ?>
 <h2 style="text-align:center;">Editar Noticia</h2>
 <form action="modules/processnews.php" method="post" name="enews" id="enews">
+<input type="hidden" name="from" id="from" value="<?php if(isset($_GET['from']))echo $_GET['from']?>"/>   
 <div class="centered">
 <div id="loading"></div>
 <table class="lst">

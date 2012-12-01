@@ -1,17 +1,15 @@
 <?php
 session_start();
 if (isset($_SESSION['user_id'])){
-require('class/news.php');
-
-if($_GET)
-{
+if($_GET){
 $pagina=$_GET['pagina'];
 }
+require_once('class/news.php');
 $per_page = 10;
 $start = ($pagina-1)*$per_page;
 
 $news = new News(null,null,null,null,null,null,null,null,null,null,null,null,null);
-$noticias = $news->getNews($start, $per_page);
+$noticias = $news->obtenerNoticiasPropias($start, $per_page);
 ?>
 
 
@@ -35,9 +33,6 @@ if(count($noticias)) {
 <td> 
     <?php echo $news->getTitle();?>
 </td>
-<!--<td> 
-    <?php // echo "http://localhost/modular/".$news->getUrl();?>
-</td>-->
 <td> 
     <?php echo $news->getNA();?>
 </td>   
@@ -67,10 +62,10 @@ if(count($noticias)) {
 ?>
 </td>
 <td> 
-    <a href="modules/processnews.php?tarea=deleteNew&amp;id=<?php echo $id;?>" onClick="if(confirm('Seguro de Eliminar noticia?'))return true;else return false;"><img src="img/page_delete.png" alt="Eliminar noticia" height="16" width="16" style="border:none;" /></a>
+    <a href="modules/processnews.php?tarea=deleteNew&amp;id=<?php echo $id;?>&amp;from=index" onClick="if(confirm('Seguro de Eliminar noticia?'))return true;else return false;"><img src="img/page_delete.png" alt="Eliminar noticia" height="16" width="16" style="border:none;" /></a>
 </td>
 <td>
-    <a href="index.php?page=edit-news&amp;id=<?php echo $id;?>"><img src="img/page_edit.png" alt="Editar noticia" height="16" width="16" style="border:none;" /></a>
+    <a href="index.php?page=edit-news&amp;id=<?php echo $id;?>&amp;from=index"><img src="img/page_edit.png" alt="Editar noticia" height="16" width="16" style="border:none;" /></a>
 </td>
 </tr> 
 <?php

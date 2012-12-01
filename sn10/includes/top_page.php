@@ -5,7 +5,8 @@
 <title>Mi pagina modular Parte 2</title>
 <link href="style.css" rel="stylesheet" type="text/css" />
 <link href="tables.css" rel="stylesheet" type="text/css" />	
-<?php //if ($_SERVER['REQUEST_URI']=="/sn10/index.php?page=add-news" || substr($_SERVER['REQUEST_URI'],0,30)=="/sn10/index.php?page=edit-news"){
+<?php 
+//if ($_SERVER['REQUEST_URI']=="/sn10/index.php?page=add-news" || substr($_SERVER['REQUEST_URI'],0,30)=="/sn10/index.php?page=edit-news"){
 if ( strpos($_SERVER['REQUEST_URI'], 'index.php?page=add-news') != false || strpos($_SERVER['REQUEST_URI'], 'index.php?page=edit-news') != false ){
 echo "<script type=\"text/javascript\" src=\"js/jquery-1.8.2.min.js\"></script>  
 <script type=\"text/javascript\" src=\"js/jquery-ui-1.9.1.custom.min.js\"></script>
@@ -58,7 +59,7 @@ $('#editor').elrte(opts);
 </script>
 <script type=\"text/javascript\" src=\"js/jquery.validate.js\"></script>";
 }?>
-<?php if (strpos($_SERVER['REQUEST_URI'], 'index.php?page=noticias') != false || strpos($_SERVER['REQUEST_URI'], 'index.php?page=usuarios') != false || strpos($_SERVER['REQUEST_URI'], 'index.php?page=paginas') != false){
+<?php if (strpos($_SERVER['REQUEST_URI'], 'index.php?page=noticias') != false || strpos($_SERVER['REQUEST_URI'], 'index.php?page=usuarios') != false || strpos($_SERVER['REQUEST_URI'], 'index.php?page=paginas') != false || strpos($_SERVER['REQUEST_URI'], 'index.php?page=inicio') != false ){
 echo "<script type=\"text/javascript\" src=\"js/jquery-1.8.2.min.js\"></script>
 <script type=\"text/javascript\" src=\"js/pagination.js\"></script>";
 }?> 

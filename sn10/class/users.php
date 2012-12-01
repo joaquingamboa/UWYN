@@ -475,7 +475,7 @@ class User extends PDO{
             if ($username==NULL && $pass==NULL) {
                 // Verifica sesion
                 if (isset($_SESSION['user_id'])) {
-                $url="index.php?page=index";
+                $url="index.php?page=inicio";
                 $comando = "<script>window.setTimeout('window.location=".chr(34).$url.chr(34).";',".'1000'.");</script>";
                 echo ($comando);
                 }else{
@@ -668,6 +668,31 @@ class User extends PDO{
         }   
                
                 }
+        }
+        
+        function obtenerDatosIndex(){
+        try{
+        $id = $this->getId();
+        $this->open_conecction();
+        $stmt = $this->prepare("SELECT username, user_nickname, user_registertime from users WHERE ID = :data1;");
+        $stmt->bindValue(':data1', $id, PDO::PARAM_INT);
+        $stmt->execute();
+                 if ($stmt->errorCode()) {
+                        $arr = $stmt->errorInfo();
+                            if ($arr[0]!='00000'){           
+                                 throw new Exception($arr[2]);     
+                             }
+                       }
+        $result = $stmt->fetchObject();
+        $this->setNickname($result->user_nickname);
+        $this->setRegistertime($result->user_registertime);
+        $this->setUsername($result->username);
+        $this->close_conecction();
+                }catch(Exception $e){
+                    $this->close_conecction();
+                     $rsp = $e->getMessage();
+                     echo $rsp;
+                                     }
         }
         
 

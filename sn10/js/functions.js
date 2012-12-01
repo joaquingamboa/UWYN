@@ -8,6 +8,8 @@ $(document).ready(function(){
         var cpermalink=$("#permalink").val();
         var pnewstitle=$("#newstitle").val();
         var tiempo="";
+        var from="";
+        var $myfrom = $('#from');
         var datefield=document.createElement("input")
             datefield.setAttribute("type", "date")    
             if (datefield.type!="date"){ //if browser doesn't support input type="date", initialize date picker widget:
@@ -71,14 +73,20 @@ $("#enews").validate({
 		  submitHandler: function(form) {										   	
   		  $.ajax({
 			type:"POST",
-			dataType:"html",
+			dataType: 'json',
 			url: "modules/processnews.php",
-			data:"&resumen="+area1+"&contenido="+area2+"&newstitle="+newstitle+"&url="+permalink+"&imageurl="+mininewsimage+"&estado="+estado+"&cpermalink="+cpermalink+"&fecha="+tiempo+"&tarea=edit-new",
+			data:"&from="+from+"&resumen="+area1+"&contenido="+area2+"&newstitle="+newstitle+"&url="+permalink+"&imageurl="+mininewsimage+"&estado="+estado+"&cpermalink="+cpermalink+"&fecha="+tiempo+"&tarea=edit-new",
 			beforeSubmit: Display_Load(),
                         success:function(msg){
                                 Hide_Load();
-				alert(msg);
-				window.setTimeout('window.location="index.php?page=noticias"',500)
+				if(msg[0]==1){
+                                    alert('Noticia Actualizada');
+                                }
+                                if(msg[0]==0){
+                                    alert('Noticia no Actualizada');
+                                }
+                                $("#loading").html(msg[2]);
+				//window.setTimeout('window.location="index.php?page=noticias"',500)
 								}
 				});
 									 }
@@ -140,6 +148,7 @@ $("#updatenews").click(function(){
           estado=parseInt(estado);
           tiempo=$("#fechaRegistro").val();
 	  mininewsimage=$("#mininewsimage").val();
+          from = $myfrom.val();
 	  if (typeof nicEditors.findEditor("area1") != "undefined"){	
 	  	  area1=myNicEditor1.instanceById('area1').getContent();
                   area1=area1.trim();		                
@@ -159,15 +168,7 @@ $("#updatenews").click(function(){
 							          }                                                                 
 								    }
                                                               
-            });	
-	
-	/*$('#area1').focus(function(){
-	  myNicEditor1.panelInstance('area1');	
-	});
-	
-	$('#area2').focus(function(){
-	  myNicEditor2.panelInstance('area2');		
-	});*/
+            });		
 	
 function sleep(milliSeconds){
 var startTime = new Date().getTime(); // get the current time

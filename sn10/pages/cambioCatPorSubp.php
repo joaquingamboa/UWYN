@@ -13,6 +13,7 @@ Porfavor Seleccione a que Pagina/Categoria principal le traspasara las subpagina
 <input type="hidden" name="IdAEdit" value="<?php echo $_GET['IdAEdit'];?>"/>
 <input type="hidden" name="page_title" value="<?php echo $_GET['page_title'];?>"/>
 <input type="hidden" name="tarea" value="finalUpdate"/>
+<input type="hidden" name="from" id="from" value="<?php echo $_GET['from'];?>"/>
 <br />
 <table class="lst">
     <tr>

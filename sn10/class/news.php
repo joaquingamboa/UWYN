@@ -1,5 +1,5 @@
 <?php
-require('conexion.php');
+require_once('conexion.php');
 class News extends PDO{
 	protected $id;
 	public $author;
@@ -235,7 +235,33 @@ class News extends PDO{
         $this->close_conecction();
         return $result;
         }
-
+        
+        function obtenerNoticiasPropias($start,$per_page){
+        $this->open_conecction();  
+        try{         
+        $rsp = $this->verificarPrivilegio('Select', 'NEWS'); 
+        if($rsp === false){
+          $comando = "No tienes privilegios para ver registros de la tabla noticias"; 
+          throw new Exception($comando); 
+        }  
+        $cont=0;    
+        $stmt = $this->prepare("SELECT t1.*,t2.user_nickname, t3.user_nickname as user_modificador FROM news t1 INNER JOIN users t2 ON 
+                                t1.news_author = t2.ID INNER JOIN users t3 ON t1.news_usermodified = t3.ID AND news_author = :data1 ORDER BY news_date DESC LIMIT $start,$per_page");
+        $stmt->bindValue(':data1', $_SESSION['user_id']);
+        $stmt->execute();
+        $noticias=array();     
+         while($fila = $stmt->fetch()){     
+               $noticia = new News($fila['news_id'], $fila['news_author'], $fila['news_title'], $fila['news_url'], null, $fila['news_date'], $fila['news_modified'], null, $fila['news_status'], null, null, $fila['user_nickname'], $fila['user_modificador']);
+               $noticias[$cont]=$noticia;
+               $cont++;
+            }
+         $this->close_conecction();
+         return $noticias;
+               }catch (Exception $e){
+                   $this->close_conecction();
+                   echo $e->getMessage();
+               }
+        }
         
         public function getNews($start, $per_page){
         $this->open_conecction();  
@@ -270,6 +296,15 @@ class News extends PDO{
         public function getAllNewsPagination($per_page){
         $this->open_conecction();
         $stmt = $this->prepare("SELECT * FROM news");
+        $stmt->execute();
+        $count = $stmt->rowCount();
+        return ceil($count/$per_page);
+        }
+        
+        public function obtenerPaginacionPropia($per_page){
+        $this->open_conecction();
+        $stmt = $this->prepare("SELECT * FROM news WHERE news_author = :data1;");
+        $stmt->bindValue(':data1', $_SESSION['user_id'], PDO::PARAM_INT);
         $stmt->execute();
         $count = $stmt->rowCount();
         return ceil($count/$per_page);
@@ -333,7 +368,7 @@ class News extends PDO{
         }
 
         
-        public function updateNewsById($firsturl){ 
+        public function updateNewsById($firsturl,$from){ 
         $this->open_conecction();
         $stmt = $this->prepare("UPDATE news SET news_title = :title, news_content = :content ,news_modified = :modified, 
                                news_date = :date, news_description = :description, news_status = :status, 
@@ -350,10 +385,14 @@ class News extends PDO{
         $stmt->bindValue(':url', $this->getUrl(), PDO::PARAM_STR);
         $stmt->bindValue(':firsturl', $firsturl, PDO::PARAM_STR);
         $stmt->execute();
-        $count[0] = $stmt->rowCount();
-        $count[1] = $stmt->errorInfo(); 
+        if($from == "index"){
+            $url = UPATH."index.php?page=inicio";    
+            }else{
+            $url = UPATH."index.php?page=noticias";  
+                            }
+        $count = array($stmt->rowCount(),$stmt->errorInfo(),"<script>window.setTimeout('window.location=".chr(34).$url.chr(34).";',".'1000'.");</script>");      
         $this->close_conecction();
-        return $count;
+        return $count; 
         }
         
         private function verificarPrivilegio($privilegio,$tabla){

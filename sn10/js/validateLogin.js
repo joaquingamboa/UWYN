@@ -30,7 +30,7 @@ jQuery.validator.addMethod("lettersonly", function(value, element) {
 			url: "modules/processlogin.php",
 			data:"&user="+user+"&pass="+pass+"&tarea=ajax",
 			success:function(msg){
-			window.location.href="index.php?page=index";
+			window.location.href="index.php?page=inicio";
 								}
 				});
 									 }
