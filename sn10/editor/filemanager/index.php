@@ -61,7 +61,7 @@ $(document).ready(function(){
 <body>
 <div id="fileWrapper" src="#">		
 	<h2>File Manager</h2>
-    <a href="http://www.miguelmanchego.com/2008/file-manager-para-nicedit/" style="text-decoration:none; color:#666666; font-size:9px;" target="_blank">Designed by http://www.miguelmanchego.com</a>
+    <a href="http://www.miguelmanchego.com/2008/file-manager-para-nicedit/" style="text-decoration:none; color:#666666; font-size:9px;" target="_blank">Designed by JG</a>
 	<div id="navBar" class="demo" src="#"></div>
     <div id="fileDetails">
     	<?php
