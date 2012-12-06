@@ -47,7 +47,7 @@ if(count($paginas)) {
    <?php echo $pages->getPage_modified();?> 
 </td>
 <td> 
-    <a href="modules/processpages.php?tarea=deletePage&amp;id=<?php echo $pages->getPage_id();?>&amp;page_title=<?php echo $pages->getPage_title();?>" onClick="if(confirm('Seguro de Eliminar Pagina?'))return true;else return false;"><img src="img/page_delete.png" alt="Eliminar Pagina" height="16" width="16" style="border:none;" /></a>
+    <a href="modules/processpages.php?tarea=deletePage&amp;id=<?php echo $pages->getPage_id();?>&amp;page_title=<?php echo $pages->getPage_title();?>&from=paginas" onClick="if(confirm('Seguro de Eliminar Pagina?'))return true;else return false;"><img src="img/page_delete.png" alt="Eliminar Pagina" height="16" width="16" style="border:none;" /></a>
 </td>
 <td>
     <a href="index.php?page=edit-page&amp;id=<?php echo $pages->getPage_id();?>"><img src="img/page_edit.png" alt="Editar Pagina" height="16" width="16" style="border:none;" /></a>

@@ -67,7 +67,7 @@ if(count($noticias)) {
 ?>
 </td>
 <td> 
-    <a href="modules/processnews.php?tarea=deleteNew&amp;id=<?php echo $id;?>" onClick="if(confirm('Seguro de Eliminar noticia?'))return true;else return false;"><img src="img/page_delete.png" alt="Eliminar noticia" height="16" width="16" style="border:none;" /></a>
+    <a href="modules/processnews.php?tarea=deleteNew&amp;id=<?php echo $id;?>&from=noticias" onClick="if(confirm('Seguro de Eliminar noticia?'))return true;else return false;"><img src="img/page_delete.png" alt="Eliminar noticia" height="16" width="16" style="border:none;" /></a>
 </td>
 <td>
     <a href="index.php?page=edit-news&amp;id=<?php echo $id;?>"><img src="img/page_edit.png" alt="Editar noticia" height="16" width="16" style="border:none;" /></a>

@@ -99,7 +99,7 @@ $("#sentnews").click(function(){
           estado=$("#estado").val();
           estado=parseInt(estado);
 	  mininewsimage=$("#mininewsimage").val();
-          if(mininewsimage=""){
+          if(mininewsimage==""){
               mininewsimage=null;
           }
 	  if (typeof nicEditors.findEditor("area1") != "undefined"){	

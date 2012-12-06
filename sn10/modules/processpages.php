@@ -8,6 +8,7 @@ function registerPage(){
         $html_description = $_POST['descripcion_html'];
         $html_keywords = $_POST['keywords'];
         $html_content = $_POST['contenido_html'];
+        $html_content = str_replace(array("\r", "\n"), array("", ""), $html_content);   
 	$url = $_POST['url'];
 	if($url==""){
 		$url=getPermLink($titulo,"registerPage");
@@ -39,6 +40,7 @@ function updatePage(){
     $html_description = $_POST['descripcion_html'];
     $html_keywords = $_POST['keywords'];
     $html_content = $_POST['contenido_html'];
+    $html_content = str_replace(array("\r", "\n"), array("", ""), $html_content);   
     $url = $_POST['url'];
     if($url==""){
          $url = $firsttitle;

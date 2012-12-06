@@ -58,7 +58,7 @@ echo ($comando);
 <textarea id="area4" name="area4" class="required" style="visibility:hidden;" ></textarea>
 <?php 
 $content = $news->getContent();
-$comando = "<script type=\"text/javascript\">myNicEditor2 = new nicEditor({fullPanel : false, iconsPath : 'editor/nicEditorIcons.gif'}).panelInstance('area2');nicEditors.findEditor('area2').setContent('$content');</script>";
+$comando = "<script type=\"text/javascript\">myNicEditor2 = new nicEditor({fullPanel : false, iconsPath : 'editor/nicEditorIcons.gif'}).panelInstance('area2');nicEditors.findEditor('area2').setContent('".$content."');</script>";
 echo ($comando); 
 ?>
 <br />
