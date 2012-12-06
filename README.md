@@ -1,6 +1,7 @@
-jgsystem
+UWYN
 ========
 
-CMS news system.
+UWYN CMS
+Es un CMS pensado en los usuarios con bajo-medio conocimiento de computación.
+Maneja USUARIOS - PAGINAS - NOTICIAS - ARCHIVOS.
 
-The idea its make an CMS but independent from the website.
