@@ -95,8 +95,8 @@ class Pages extends PDO{
             return $this->html_description;
         }
 
-        public function setHtml_description($html_decription) {
-            $this->html_decription = $html_decription;
+        public function setHtml_description($html_description) {
+            $this->html_description = $html_description;
         }
 
         public function getHtml_keywords() {

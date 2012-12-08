@@ -18,13 +18,15 @@ function registerNews(){
         }
         $contenido = $_POST['contenido'];  
         $contenido = str_replace(array("\r", "\n"), array("", ""),$contenido);
-        /* $todas = get_html_translation_table(HTML_ENTITIES, ENT_NOQUOTES);
+        $todas = get_html_translation_table(HTML_ENTITIES, ENT_NOQUOTES);
         $etiquetas = get_html_translation_table(HTML_SPECIALCHARS, ENT_NOQUOTES);
         $r["caracteres_latinos"] = array_diff($todas, $etiquetas);
-        $contenido = strtr($contenido, $r["caracteres_latinos"]); */   
+        $contenido = strtr($contenido, $r["caracteres_latinos"]);  
         // $contenido = iconv("utf-8", "us-ascii//TRANSLIT", $contenido); // TRANSLIT does the whole job
-	$resumen=$_POST['resumen'];
-        $resumen = str_replace(array("\r", "\n"), array("", ""), $resumen);   
+	$resumen = $_POST['resumen'];
+        $resumen = str_replace(array("\r", "\n"), array("", ""), $resumen);
+        $r["caracteres_latinos"] = array_diff($todas, $etiquetas);
+        $resumen = strtr($resumen, $r["caracteres_latinos"]);  
         date_default_timezone_set('Chile/Continental');
         $fechaInicio=$_POST['fecha'];
         $fechaModificacion=date("Y-m-d H:i:s");
@@ -54,8 +56,14 @@ function updateNews(){
      }
      $contenido = $_POST['contenido'];
      $contenido = str_replace(array("\r", "\n"), array("", ""), $contenido);
+     $todas = get_html_translation_table(HTML_ENTITIES, ENT_NOQUOTES);
+     $etiquetas = get_html_translation_table(HTML_SPECIALCHARS, ENT_NOQUOTES);
+     $r["caracteres_latinos"] = array_diff($todas, $etiquetas);
+     $contenido = strtr($contenido, $r["caracteres_latinos"]);  
      $resumen = $_POST['resumen'];
      $resumen = str_replace(array("\r", "\n"), array("", ""), $resumen);
+     $r["caracteres_latinos"] = array_diff($todas, $etiquetas);
+     $resumen = strtr($resumen, $r["caracteres_latinos"]);  
      date_default_timezone_set('Chile/Continental');
      $fechaModificacion=date("Y-m-d H:i:s");
      $user_id=$_SESSION['user_id']; 
